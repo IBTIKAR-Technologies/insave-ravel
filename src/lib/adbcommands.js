@@ -1,0 +1,1 @@
+adb shell "run-as com.ibt.deyloul cat /data/user/0/com.ibt.deyloul/files/62e7b5c3ba19300f9c65a718" > default.realm
