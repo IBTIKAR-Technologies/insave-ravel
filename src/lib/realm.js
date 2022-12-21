@@ -70,7 +70,7 @@ const createSecondBackup = async () => {
   const oldRealmPath = realms[0].path;
   userData = JSON.parse(userData);
   if (versi > 10) {
-    const secondBackupPath = `${RNFS.DocumentDirectoryPath}/deyloul-backup${userData._id}`;
+    const secondBackupPath = `${RNFS.DocumentDirectoryPath}/ravel-backup${userData._id}`;
     const secondBackupExists = await RNFS.exists(secondBackupPath);
     if (secondBackupExists) {
       await RNFS.unlink(secondBackupPath);
@@ -84,7 +84,7 @@ const createSecondBackup = async () => {
       visibilityTime: 2000,
     });
   } else {
-    const secondBackupPath = `${RNFS.ExternalStorageDirectoryPath}/.deyloul-backup${userData._id}`;
+    const secondBackupPath = `${RNFS.ExternalStorageDirectoryPath}/.ravel-backup${userData._id}`;
     const secondBackupExists = await RNFS.exists(secondBackupPath);
     if (secondBackupExists) {
       await RNFS.unlink(secondBackupPath);
@@ -183,9 +183,9 @@ async function restoreRealms(userData) {
   const backupPath = `${realms[0].path}~`;
   let secondBackupPath;
   if (versi > 10) {
-    secondBackupPath = `${RNFS.DocumentDirectoryPath}/deyloul-backup${userData._id}`;
+    secondBackupPath = `${RNFS.DocumentDirectoryPath}/ravel-backup${userData._id}`;
   } else {
-    secondBackupPath = `${RNFS.ExternalStorageDirectoryPath}/.deyloul-backup${userData._id}`;
+    secondBackupPath = `${RNFS.ExternalStorageDirectoryPath}/.ravel-backup${userData._id}`;
   }
 
   console.log('secondBackupPath', secondBackupPath);

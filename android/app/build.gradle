@@ -140,7 +140,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.ibt.deyloul"
+        applicationId "com.ibt.ravel.insave"
         missingDimensionStrategy 'react-native-camera', 'mlkit' // <--- insert this line
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion

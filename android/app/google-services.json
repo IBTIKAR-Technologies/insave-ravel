@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:746962511098:android:aadf9a43a8a4d4351a1543",
         "android_client_info": {
-          "package_name": "com.ibt.deyloul"
+          "package_name": "com.ibt.ravel.insave"
         }
       },
       "oauth_client": [
@@ -17,7 +17,7 @@
           "client_id": "746962511098-jc1b48lc0frterd5s9trmf8val5660js.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.ibt.deyloul",
+            "package_name": "com.ibt.ravel.insave",
             "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
           }
         },

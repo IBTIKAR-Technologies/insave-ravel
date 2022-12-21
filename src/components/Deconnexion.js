@@ -23,9 +23,9 @@ const Deconnexion = function ({ synced }) {
     userData = JSON.parse(userData);
     let secondBackupPath;
     if (parseInt(versi, 10) > 10) {
-      secondBackupPath = `${RNFS.DocumentDirectoryPath}/deyloul-backup${userData._id}`;
+      secondBackupPath = `${RNFS.DocumentDirectoryPath}/ravel-backup${userData._id}`;
     } else {
-      secondBackupPath = `${RNFS.ExternalStorageDirectoryPath}/.deyloul-backup${userData._id}`;
+      secondBackupPath = `${RNFS.ExternalStorageDirectoryPath}/.ravel-backup${userData._id}`;
     }
     const secondBackupExists = await RNFS.exists(secondBackupPath);
     if (secondBackupExists) {
