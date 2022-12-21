@@ -8,9 +8,9 @@ import screenNames from './screenNames';
 import i18n from '../languages/i18n';
 
 export const startAppScreens = async () => {
-  const [traffic, list, ident, user] = await Promise.all([
-    FontAwesome5.getImageSource('traffic-light', 25),
-    FontAwesome5.getImageSource('list-alt', 25),
+  const [traffic, history, ident, user] = await Promise.all([
+    FontAwesome5.getImageSource('home', 25),
+    FontAwesome5.getImageSource('history', 25),
     Entypo.getImageSource('magnifying-glass', 25),
     Octicons.getImageSource('person', 25),
     AsyncStorage.getItem('userData'),
@@ -22,13 +22,13 @@ export const startAppScreens = async () => {
         children: [
           {
             stack: {
-              id: 'infrasc',
+              id: 'home',
               children: [
                 {
                   component: {
                     name: screenNames.Home,
                     options: {
-                      ...Common.header('infrasc'),
+                      ...Common.header('home'),
                     },
                   },
                 },
@@ -38,57 +38,35 @@ export const startAppScreens = async () => {
                   icon: traffic,
                   selectedIconColor: '#a4a832',
                   selectedTextColor: '#a4a832',
-                  text: i18n.t('infrasc'),
+                  text: i18n.t('home'),
                 },
               },
             },
           },
           {
             stack: {
-              id: 'red_list',
+              id: 'history',
               children: [
                 {
                   component: {
-                    name: screenNames.ListRouge,
+                    name: screenNames.HistoryCiblage,
                     options: {
-                      ...Common.header('red_list'),
+                      ...Common.header('history'),
                     },
                   },
                 },
               ],
               options: {
                 bottomTab: {
-                  icon: list,
-                  selectedTextColor: '#700',
-                  selectedIconColor: '#700',
-                  text: i18n.t('red_list'),
+                  icon: history,
+                  selectedIconColor: '#a4a832',
+                  selectedTextColor: '#a4a832',
+                  text: i18n.t('history'),
                 },
               },
             },
           },
-          {
-            stack: {
-              id: 'ident',
-              children: [
-                {
-                  component: {
-                    name: screenNames.Identifications,
-                    options: {
-                      ...Common.header('ident'),
-                    },
-                  },
-                },
-              ],
-              options: {
-                bottomTab: {
-                  icon: ident,
-                  selectedTextColor: '#438742',
-                  selectedIconColor: '#438742',
-                  text: i18n.t('ident'),
-                },
-              },
-            },
-          },
+
           {
             stack: {
               id: 'user',

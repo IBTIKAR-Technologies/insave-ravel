@@ -6,11 +6,11 @@ import { wp, hp } from 'src/lib/utilities';
 const { version } = config;
 
 export const Colors = {
-  primary: '#F2DEBA',
-  primaryDark: '#3A8891',
-  primaryLight: '#D6E4E5',
+  primary: '#CCD6A6',
+  primaryDark: '#F5EBE0',
+  primaryLight: '#DAE2B6',
   primaryGradientStart: '#ffffff',
-  primaryGradientEnd: '#fcf8f0',
+  primaryGradientEnd: '#3A8891',
   secondary: '#3A8891',
   grey: '#acacac',
   gray: '#5f5f5f',

@@ -6,28 +6,7 @@ import { PERMISSIONS, requestMultiple } from 'react-native-permissions';
 import { PermissionsAndroid, BackHandler } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { throttle } from 'lodash';
-import {
-  menageSchema,
-  concessionSchema,
-  concession_geoSchema,
-  zoneSchema,
-  userSchema,
-  localiteSchema,
-  paramSchema,
-  communeSchema,
-  formulairelocaliteSchema,
-  formulairelocalite_sagesSchema,
-  formulairelocalite_locationSchema,
-  quotaSchema,
-  menage_animalsSchema,
-  countrySchema,
-  enqueteSchema,
-  menagemembreSchema,
-  operationSchema,
-  closedcommuneSchema,
-  sageSchema,
-  verSchema,
-} from './schemas';
+import { personesSchema } from './schemas';
 import codePush from 'react-native-code-push';
 import SplashScreen from 'react-native-splash-screen';
 import DeviceInfo from 'react-native-device-info';
@@ -260,54 +239,22 @@ async function openRealm(user, userData, setProgress) {
   console.log('realm path', `${realmPath}/${userData._id}`);
 
   const realmConfig = {
-    schema: [
-      menageSchema,
-      concessionSchema,
-      concession_geoSchema,
-      zoneSchema,
-      userSchema,
-      localiteSchema,
-      communeSchema,
-      formulairelocaliteSchema,
-      formulairelocalite_locationSchema,
-      formulairelocalite_sagesSchema,
-      quotaSchema,
-      menage_animalsSchema,
-      enqueteSchema,
-      menagemembreSchema,
-      closedcommuneSchema,
-      sageSchema,
-    ],
+    schema: [personesSchema],
     schemaVersion: 1,
     path: `${realmPath}/${userData._id}`,
     sync: {
       user,
-      partitionValue: userData.moughataaId,
+      partitionValue: userData._id,
       newRealmFileBehavior: { type: 'openImmediately', timeOutBehavior: 'throwException' },
       existingRealmFileBehavior: { type: 'openImmediately', timeOutBehavior: 'openLocalRealm' },
       error: errorSync(userData._id),
     },
     readOnly: false,
   };
-  const realmAllConfig = {
-    schema: [paramSchema, countrySchema, operationSchema, verSchema],
-    schemaVersion: 1,
-    path: `${realmPath}/${userData._id}1`,
-    sync: {
-      user,
-      partitionValue: 'all',
-      newRealmFileBehavior: { type: 'openImmediately', timeOutBehavior: 'throwException' },
-      existingRealmFileBehavior: { type: 'openImmediately', timeOutBehavior: 'openLocalRealm' },
-      error: errorSync2,
-    },
-    readOnly: false,
-  };
 
-  const realmMenage = await Realm.open(realmConfig);
-  const realmAll = await Realm.open(realmAllConfig);
-
+  const realm = await Realm.open(realmConfig);
   // @ts-ignore
-  realms = [realmMenage, realmAll];
+  realms = [realm];
 
   global.realms = realms;
 
@@ -321,7 +268,7 @@ async function openRealm(user, userData, setProgress) {
     }
   });
 
-  const syncSession = realmMenage.syncSession;
+  const syncSession = realm.syncSession;
   syncSession.addProgressNotification(
     'download',
     'reportIndefinitely',

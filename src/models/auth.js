@@ -188,7 +188,7 @@ export const login = async data => {
         text1: i18n.t('login_success'),
         position: 'bottom',
       });
-      startAppScreens();
+      startDataLoaderScreens();
       return true;
     }
     throw new Error(i18n.t('login_error'));

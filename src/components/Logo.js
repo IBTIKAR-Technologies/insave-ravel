@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { CommonStyles } from 'src/styles';
 import { wp, hp } from 'src/lib/utilities';
 
-import logoImg from 'src/images/deyloul_logo.png';
+import logoImg from 'src/images/ravel_logo.png';
 
 const Logo = () => {
   const { t } = useTranslation();

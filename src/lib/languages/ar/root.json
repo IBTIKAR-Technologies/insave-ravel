@@ -902,5 +902,6 @@
   "assurance": "التأمين",
   "cart_identite": "بطاقة التعريف",
   "carte_professionnelle": "بطاقة مهنية",
-  "confirm_infraction_message": "هل أنت متأكد أنك تريد إضافة هذه المخالفة؟"
+  "confirm_infraction_message": "هل أنت متأكد أنك تريد إضافة هذه المخالفة؟",
+  "born_at": "تاريخ الميلاد"
 }

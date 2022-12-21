@@ -1,8 +1,9 @@
 import { View, Text } from 'react-native';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Colors, CommonStyles } from 'src/styles';
 import LinearGradient from 'react-native-linear-gradient';
 import i18n from 'src/lib/languages/i18n';
+import { ObjectId } from 'bson';
 import { wp } from 'src/lib/utilities';
 import screenNames from 'src/lib/navigation/screenNames';
 import Icons from 'react-native-vector-icons/FontAwesome5';
@@ -14,13 +15,16 @@ import { Navigation } from 'react-native-navigation';
 import SplashScreen from 'react-native-splash-screen';
 import Lottie from 'lottie-react-native';
 import ThrottledNavigateButton from './ThrottledNavigateButton';
+import Sample from './Blink';
 
 const Ciblage = function ({ componentId }) {
   const { t } = useTranslation();
   const isConnected = useIsConnected();
+  const [user, setUser] = useState({});
   const initialize = useCallback(async () => {
     let userData = await AsyncStorage.getItem('userData');
     userData = JSON.parse(userData);
+    setUser(userData);
     if (isConnected) {
       await checkForUserChange(userData);
     }
@@ -39,6 +43,28 @@ const Ciblage = function ({ componentId }) {
       unsubscribe.remove();
     };
   }, [componentId, initialize, isConnected]);
+
+  const savePerson = person => {
+    global.realms[0].write(() => {
+      global.realms[0].create('person', {
+        ...person,
+        _partition: user._id,
+        _id: new ObjectId(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        syncedAt: null,
+        createdById: new ObjectId(user._id),
+      });
+    });
+  };
+
+  return (
+    <LinearGradient
+      colors={[Colors.primaryGradientStart, Colors.primaryGradientEnd]}
+      style={CommonStyles.root}>
+      <Sample t={t} savePerson={savePerson} />
+    </LinearGradient>
+  );
 
   return (
     <LinearGradient

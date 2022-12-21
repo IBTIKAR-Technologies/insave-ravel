@@ -64,12 +64,12 @@ const History = function (props) {
   );
 
   const initialize = useCallback(() => {
-    const all = global.realm.objects('unisef').filtered('printedAt != null');
+    const all = global.realm.objects('person');
 
     console.log('all', all.length);
     setEverything(all.length);
     (async () => {
-      const recordsX = all.filtered('deliveredAt != null').sorted('deliveredAt', true);
+      const recordsX = all;
       const notSynced = recordsX.filtered('syncedAt == null');
       if (notSynced.length === 0) {
         setSynced(true);
@@ -97,7 +97,7 @@ const History = function (props) {
     return () => {
       unsubscribe.remove();
     };
-  }, [initialize, props.componentId]);
+  }, [initialize, liste, props.componentId]);
 
   return (
     <LinearGradient

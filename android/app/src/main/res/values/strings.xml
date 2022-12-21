@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ANRPTS Deyloul</string>
+    <string name="app_name">RAVEL Insave</string>
     <string name="appCenterCrashes_whenToSendCrashes" moduleConfig="true" translatable="false">DO_NOT_ASK_JAVASCRIPT</string>
     <string name="appCenterAnalytics_whenToEnableAnalytics" moduleConfig="true" translatable="false">ALWAYS_SEND</string>
     <string moduleConfig="true" name="CodePushDeploymentKey">jbLOBDRs1n-nXpTTiB9tVCSCfMJXrgjMFqX1a</string>

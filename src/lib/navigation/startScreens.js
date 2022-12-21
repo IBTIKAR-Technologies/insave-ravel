@@ -9,7 +9,7 @@ import RNFS from 'react-native-fs';
 import { PERMISSIONS } from 'react-native-permissions';
 import config from 'src/constants/config';
 import registerScreens from './registerScreens';
-import { startAuthScreens, startAppScreens } from './stateScreens';
+import { startAuthScreens, startAppScreens, startDataLoaderScreens } from './stateScreens';
 
 const { realmPath } = config;
 
@@ -34,7 +34,7 @@ const startScreens = () => {
         (async () => {
           await requestPermissions(() => {}, perms);
           await RNFS.mkdir(realmPath);
-          startAppScreens();
+          startDataLoaderScreens();
         })();
       } else {
         startAuthScreens();

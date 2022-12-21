@@ -999,5 +999,6 @@
   "assurance": "Assurance",
   "cart_identite": "Carte d’identité",
   "carte_professionnelle": "Carte professionnelle",
-  "confirm_infraction_message": "Vous êtes sûr de vouloir ajouter cette infraction?"
+  "confirm_infraction_message": "Vous êtes sûr de vouloir ajouter cette infraction?",
+  "born_at": "Date de naissance"
 }
