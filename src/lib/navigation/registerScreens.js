@@ -43,12 +43,15 @@ import AddSage from 'src/components/AddSage';
 import ResetSelectedZone from 'src/components/ResetZoneSelection';
 import CorrectMenages from 'src/components/CorrectMenages';
 import CorrectMenage from 'src/components/CorrectMenage';
-import EditMenageSuper from 'src/components/EditMenageSuper';
-import WrappedComponent from './WrappedComponent';
 import Identifications from 'src/components/Identifications';
+import EditMenageSuper from 'src/components/EditMenageSuper';
+import Users from 'src/components/Users';
+import WrappedComponent from './WrappedComponent';
+import AddUser from 'src/components/AddUser';
 
 export const screens = [
   { name: 'User', component: User },
+  { name: 'Users', component: Users },
   { name: 'Home', component: Home },
   { name: 'Ciblage', component: Ciblage },
   { name: 'HistoryCiblage', component: HistoryCiblage },
@@ -92,6 +95,7 @@ export const screens = [
   { name: 'AddInfraction', component: AddInfraction },
   { name: 'ListRouge', component: ListRouge },
   { name: 'Identifications', component: Identifications },
+  { name: 'AddUser', component: AddUser },
 ];
 
 const registerScreens = () => {

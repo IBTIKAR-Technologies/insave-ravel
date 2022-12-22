@@ -5,36 +5,20 @@ import LinearGradient from 'react-native-linear-gradient';
 import { wp, hp } from 'src/lib/utilities';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
-import i18next from 'i18next';
 import { Navigation } from 'react-native-navigation';
-import { useIsConnected } from 'react-native-offline';
-import { checkForUserChange } from 'src/models/auth';
 import Deconnexion from './Deconnexion';
 import Language from './Language';
-
-const enqueterRoleId = '62d562fda5fac5ffb48ef7e2';
-const controllerRoleId = '62d5635aa5fac5ffb48ef7e4';
 
 const User = function ({ componentId }) {
   const [user, setUser] = useState({});
   const [synced, setSynced] = useState(true);
-  const [selectedZone, setSelectedZone] = useState(null);
   const { t } = useTranslation();
-  const { language } = i18next;
-  const isConnected = useIsConnected();
 
   const initialize = useCallback(async () => {
     const userData = await AsyncStorage.getItem('userData');
     const parsed = JSON.parse(userData);
     setUser(parsed);
-    if (parsed.roleId === enqueterRoleId || parsed.roleId === controllerRoleId) {
-      const zn = await AsyncStorage.getItem('selectedZone');
-      if (zn) setSelectedZone(JSON.parse(zn));
-    }
-    if (isConnected && (parsed.roleId === enqueterRoleId || parsed.roleId === controllerRoleId)) {
-      await checkForUserChange(parsed);
-    }
-  }, [isConnected]);
+  }, []);
 
   useEffect(() => {
     initialize();
@@ -48,7 +32,8 @@ const User = function ({ componentId }) {
     return () => {
       unsubscribe.remove();
     };
-  }, [initialize, componentId, isConnected]);
+  }, [initialize, componentId]);
+
   return (
     <LinearGradient
       colors={[Colors.primaryGradientStart, Colors.primaryGradientEnd]}
@@ -63,23 +48,7 @@ const User = function ({ componentId }) {
             </Text>
             {user.role && (
               <Text style={styles.details}>
-                {t('role')}: {user.role[`title${language}`] || t('none')}
-              </Text>
-            )}
-            {user.commune && (
-              <Text style={styles.details}>
-                {t('commune')}:{' '}
-                {language === 'fr'
-                  ? user.commune.namefr_rs || user.commune.namefr_ons
-                  : user.commune.namear}
-              </Text>
-            )}
-            {selectedZone && (
-              <Text style={styles.details}>
-                {t('zone')}:{' '}
-                {language === 'fr'
-                  ? (selectedZone && selectedZone.namefr) || t('none')
-                  : selectedZone && (selectedZone.namear || selectedZone.namefr || t('none'))}
+                {t('role')}: {t(user.role)}
               </Text>
             )}
           </View>

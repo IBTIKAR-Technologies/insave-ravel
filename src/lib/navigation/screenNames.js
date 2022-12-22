@@ -4,6 +4,8 @@ const screenNames = {
   HistoryCiblage: 'HistoryCiblage',
   HistoryEnquete: 'HistoryEnquete',
   User: 'User',
+  AddUser: 'AddUser',
+  Users: 'Users',
   Home: 'Home',
   Scan: 'Scan',
   Ciblage: 'Ciblage',

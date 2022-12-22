@@ -1000,5 +1000,9 @@
   "cart_identite": "Carte d’identité",
   "carte_professionnelle": "Carte professionnelle",
   "confirm_infraction_message": "Vous êtes sûr de vouloir ajouter cette infraction?",
-  "born_at": "Date de naissance"
+  "born_at": "Date de naissance",
+  "users": "Les utilisateurs",
+  "add_user": "Ajouter un utilisateur",
+  "no_users": "Aucun utilisateur trouvé",
+  "scan_card": "Scanner la carte d'identité"
 }

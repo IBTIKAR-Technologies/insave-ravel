@@ -260,7 +260,7 @@ export default class Sample extends Component {
     console.log('resultImageFace', this.state.resultImageFace);
     return (
       <View style={styles.container}>
-        <Text style={styles.label}>{this.props.t('scan')}</Text>
+        <Text style={styles.label}>{this.props.text ? this.props.text : this.props.t('scan')}</Text>
         <View style={styles.buttonContainer}>
           <Button
             onPress={this.scan.bind(this)}
@@ -277,6 +277,7 @@ export default class Sample extends Component {
                 elevation: 10,
                 alignSelf: 'center',
                 padding: 10,
+                marginVertical: 20,
               }}>
               <View style={{ flexDirection: 'row' }}>
                 <View style={styles.imageContainer}>
@@ -322,7 +323,9 @@ export default class Sample extends Component {
                     showImageFace: false,
                   });
                 }}>
-                <Text>{this.props.t('save')}</Text>
+                <Text>
+                  {this.props.confirmText ? this.props.confirmText : this.props.t('save')}
+                </Text>
               </TouchableOpacity>
             </View>
           )}

@@ -5,12 +5,11 @@ import { app } from 'src/lib/realm';
 import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { startDataLoaderScreens } from 'src/lib/navigation/stateScreens';
-import CodePush from 'react-native-code-push';
 import { Alert } from 'react-native';
-import { isEqual, difference } from 'lodash';
+import { isEqual } from 'lodash';
 import SplashScreen from 'react-native-splash-screen';
 import startScreens from 'src/lib/navigation/startScreens';
-import { startAuthScreens, startAppScreens } from '../lib/navigation/stateScreens';
+import { startAuthScreens } from '../lib/navigation/stateScreens';
 
 function getObjectDiff(obj1, obj2) {
   const diff = Object.keys(obj1).reduce((result, key) => {
@@ -35,110 +34,12 @@ export const login = async data => {
   let userData;
   const body = JSON.stringify({
     collection: 'users',
-    database: 'ciblage',
+    database: 'ravelinsave',
     dataSource: 'taazour',
     pipeline: [
       {
         $match: {
           username,
-        },
-      },
-      {
-        $lookup: {
-          from: 'wilayas',
-          localField: 'wilayaId',
-          foreignField: '_id',
-          as: 'wilaya',
-        },
-      },
-      {
-        $lookup: {
-          from: 'moughataas',
-          localField: 'moughataaId',
-          foreignField: '_id',
-          as: 'moughataa',
-        },
-      },
-      {
-        $lookup: {
-          from: 'communes',
-          localField: 'communeId',
-          foreignField: '_id',
-          as: 'commune',
-        },
-      },
-      {
-        $lookup: {
-          from: 'localites',
-          localField: 'localiteId',
-          foreignField: '_id',
-          as: 'localite',
-        },
-      },
-      {
-        $lookup: {
-          from: 'zones',
-          localField: 'zoneId',
-          foreignField: '_id',
-          as: 'zone',
-        },
-      },
-      {
-        $lookup: {
-          from: 'roles',
-          localField: 'roleId',
-          foreignField: '_id',
-          as: 'role',
-        },
-      },
-      {
-        $lookup: {
-          from: 'users',
-          localField: 'controllerId',
-          foreignField: '_id',
-          as: 'controller',
-        },
-      },
-      {
-        $unwind: {
-          path: '$wilaya',
-          preserveNullAndEmptyArrays: true,
-        },
-      },
-      {
-        $unwind: {
-          path: '$moughataa',
-          preserveNullAndEmptyArrays: true,
-        },
-      },
-      {
-        $unwind: {
-          path: '$commune',
-          preserveNullAndEmptyArrays: true,
-        },
-      },
-      {
-        $unwind: {
-          path: '$localite',
-          preserveNullAndEmptyArrays: true,
-        },
-      },
-      {
-        $unwind: {
-          path: '$zone',
-          preserveNullAndEmptyArrays: true,
-        },
-      },
-      {
-        $unwind: {
-          path: '$role',
-          preserveNullAndEmptyArrays: true,
-        },
-      },
-      {
-        $unwind: {
-          path: '$controller',
-          preserveNullAndEmptyArrays: true,
         },
       },
     ],
@@ -215,110 +116,12 @@ export const logout = async () => {
 export const checkForUserChange = async userData => {
   const body = JSON.stringify({
     collection: 'users',
-    database: 'ciblage',
+    database: 'ravelinsave',
     dataSource: 'taazour',
     pipeline: [
       {
         $match: {
           username: userData.username,
-        },
-      },
-      {
-        $lookup: {
-          from: 'wilayas',
-          localField: 'wilayaId',
-          foreignField: '_id',
-          as: 'wilaya',
-        },
-      },
-      {
-        $lookup: {
-          from: 'moughataas',
-          localField: 'moughataaId',
-          foreignField: '_id',
-          as: 'moughataa',
-        },
-      },
-      {
-        $lookup: {
-          from: 'communes',
-          localField: 'communeId',
-          foreignField: '_id',
-          as: 'commune',
-        },
-      },
-      {
-        $lookup: {
-          from: 'localites',
-          localField: 'localiteId',
-          foreignField: '_id',
-          as: 'localite',
-        },
-      },
-      {
-        $lookup: {
-          from: 'zones',
-          localField: 'zoneId',
-          foreignField: '_id',
-          as: 'zone',
-        },
-      },
-      {
-        $lookup: {
-          from: 'roles',
-          localField: 'roleId',
-          foreignField: '_id',
-          as: 'role',
-        },
-      },
-      {
-        $lookup: {
-          from: 'users',
-          localField: 'controllerId',
-          foreignField: '_id',
-          as: 'controller',
-        },
-      },
-      {
-        $unwind: {
-          path: '$wilaya',
-          preserveNullAndEmptyArrays: true,
-        },
-      },
-      {
-        $unwind: {
-          path: '$moughataa',
-          preserveNullAndEmptyArrays: true,
-        },
-      },
-      {
-        $unwind: {
-          path: '$commune',
-          preserveNullAndEmptyArrays: true,
-        },
-      },
-      {
-        $unwind: {
-          path: '$localite',
-          preserveNullAndEmptyArrays: true,
-        },
-      },
-      {
-        $unwind: {
-          path: '$zone',
-          preserveNullAndEmptyArrays: true,
-        },
-      },
-      {
-        $unwind: {
-          path: '$role',
-          preserveNullAndEmptyArrays: true,
-        },
-      },
-      {
-        $unwind: {
-          path: '$controller',
-          preserveNullAndEmptyArrays: true,
         },
       },
     ],

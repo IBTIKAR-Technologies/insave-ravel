@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   textInput: {
-    backgroundColor: '#000',
+    backgroundColor: '#fff',
     height: 50,
     paddingHorizontal: 10,
     fontSize: 18,

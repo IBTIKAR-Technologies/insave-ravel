@@ -6,13 +6,13 @@ import { PERMISSIONS, requestMultiple } from 'react-native-permissions';
 import { PermissionsAndroid, BackHandler } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { throttle } from 'lodash';
-import { personesSchema } from './schemas';
 import codePush from 'react-native-code-push';
 import SplashScreen from 'react-native-splash-screen';
 import DeviceInfo from 'react-native-device-info';
 import NetInfo from '@react-native-community/netinfo';
 import Toast from 'react-native-toast-message';
 import { t } from 'i18next';
+import { personSchema, userSchema } from './schemas';
 
 const { realmPath, appConfig } = config;
 
@@ -239,7 +239,7 @@ async function openRealm(user, userData, setProgress) {
   console.log('realm path', `${realmPath}/${userData._id}`);
 
   const realmConfig = {
-    schema: [personesSchema],
+    schema: [personSchema],
     schemaVersion: 1,
     path: `${realmPath}/${userData._id}`,
     sync: {
@@ -251,10 +251,24 @@ async function openRealm(user, userData, setProgress) {
     },
     readOnly: false,
   };
+  const usersRealmConfig = {
+    schema: [userSchema],
+    schemaVersion: 1,
+    path: `${realmPath}/${userData._id}1`,
+    sync: {
+      user,
+      partitionValue: 'all',
+      newRealmFileBehavior: { type: 'openImmediately', timeOutBehavior: 'throwException' },
+      existingRealmFileBehavior: { type: 'openImmediately', timeOutBehavior: 'openLocalRealm' },
+      error: errorSync2(userData._id),
+    },
+    readOnly: false,
+  };
 
   const realm = await Realm.open(realmConfig);
+  const realm2 = await Realm.open(usersRealmConfig);
   // @ts-ignore
-  realms = [realm];
+  realms = [realm, realm2];
 
   global.realms = realms;
 
