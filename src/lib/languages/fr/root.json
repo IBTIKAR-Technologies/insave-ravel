@@ -1004,5 +1004,6 @@
   "users": "Les utilisateurs",
   "add_user": "Ajouter un utilisateur",
   "no_users": "Aucun utilisateur trouvé",
-  "scan_card": "Scanner la carte d'identité"
+  "scan_card": "Scanner la carte d'identité",
+  "t_added": "Total ajouter"
 }

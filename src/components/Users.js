@@ -46,6 +46,12 @@ const Users = function ({ componentId }) {
     <LinearGradient
       colors={[Colors.primaryGradientStart, Colors.primaryGradientEnd]}
       style={CommonStyles.root}>
+      <Text style={{ textAlign: 'center' }}>
+        {t('total')}: {users.length}
+      </Text>
+      <Text style={{ textAlign: 'center' }}>
+        {t('t_added')}: {users.map(u => u.user).reduce((a, b) => a + b.addedCount || 0, 0)}
+      </Text>
       <FlashList
         data={users}
         renderItem={({ item }) => (
