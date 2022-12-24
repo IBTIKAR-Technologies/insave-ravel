@@ -1,4 +1,4 @@
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, ScrollView } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Colors } from 'src/styles';
 import LinearGradient from 'react-native-linear-gradient';
@@ -38,7 +38,7 @@ const User = function ({ componentId }) {
     <LinearGradient
       colors={[Colors.primaryGradientStart, Colors.primaryGradientEnd]}
       style={styles.root}>
-      <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.container}>
         <Image source={require('../assets/images/avatar.png')} style={styles.image} />
         <Text style={styles.bigText}>{user?.fullName}</Text>
         <View style={styles.secondContainer}>
@@ -57,7 +57,7 @@ const User = function ({ componentId }) {
             {/* <Exit /> */}
           </View>
         </View>
-      </View>
+      </ScrollView>
       <Language />
     </LinearGradient>
   );

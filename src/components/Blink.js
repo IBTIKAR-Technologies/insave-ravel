@@ -82,7 +82,11 @@ export default class Sample extends Component {
       blinkIdCombinedRecognizer.returnFaceImage = true;
       blinkIdCombinedRecognizer.skipUnsupportedBack = true;
       const OverLaySetring = new BlinkIDReactNative.BlinkIdOverlaySettings();
-      OverLaySetring.firstSideInstructionsText = 'jjjj';
+      OverLaySetring.firstSideInstructionsText = this.props.t('scan_front');
+      OverLaySetring.backSideInstructionsText = this.props.t('scan_back');
+      OverLaySetring.errorDocumentTooCloseToEdge = this.props.t('error_document_too_close_to_edge');
+      OverLaySetring.retryButtonText = this.props.t('retry');
+      OverLaySetring.flipInstructions = this.props.t('flip');
       const scanningResults = await BlinkIDReactNative.BlinkID.scanWithCamera(
         OverLaySetring,
         new BlinkIDReactNative.RecognizerCollection([
@@ -166,9 +170,9 @@ export default class Sample extends Component {
 
     if (result instanceof BlinkIDReactNative.BlinkIdCombinedRecognizerResult) {
       let blinkIdResult = result;
-      this.state.person.birthDate = `${blinkIdResult.dateOfBirth.day < 10 && '0'}${
+      this.state.person.birthDate = `${blinkIdResult.dateOfBirth.day < 10 ? '0' : ''}${
         blinkIdResult.dateOfBirth.day
-      }/${blinkIdResult.dateOfBirth.month < 10 && '0'}${blinkIdResult.dateOfBirth.month}/${
+      }/${blinkIdResult.dateOfBirth.month < 10 ? '0' : ''}${blinkIdResult.dateOfBirth.month}/${
         blinkIdResult.dateOfBirth.year
       }`;
       console.log('blinkIdResult.dateOfBirth', blinkIdResult.dateOfBirth);
@@ -296,6 +300,7 @@ export default class Sample extends Component {
                   </Text>
                   <Text>{`${this.props.t('sex')}: ${this.props.t(this.state.person.sex)}`}</Text>
                   <Text>{`${this.props.t('born_at')}: ${this.state.person.birthDate}`}</Text>
+                  <Text>{`${this.props.t('nni')}: ${this.state.person.NNI}`}</Text>
                 </View>
               </View>
               <TouchableOpacity

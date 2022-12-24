@@ -1005,5 +1005,15 @@
   "add_user": "Ajouter un utilisateur",
   "no_users": "Aucun utilisateur trouvé",
   "scan_card": "Scanner la carte d'identité",
-  "t_added": "Total ajouter"
+  "t_added": "Total ajouter",
+  "added": "A ajouté",
+  "admin": "Admin",
+  "actniv1": "Acteur politique(niv 1)",
+  "actniv2": "Acteur politique(niv 2)",
+  "actniv3": "Acteur politique(niv 3)",
+  "scan_front": "Scannez le recto de la carte",
+  "scan_back": "Scannez le verso de la carte",
+  "error_edge": "La carte est trop proche du bord",
+  "retry": "Réessayez",
+  "flip": "Scannez l'autre côté de la carte"
 }

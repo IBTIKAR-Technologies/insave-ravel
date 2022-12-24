@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Text, StyleSheet, TouchableOpacity, View, Image } from 'react-native';
+import { Text, StyleSheet, View, Image, TouchableOpacity } from 'react-native';
 import { Colors, CommonStyles } from 'src/styles';
 import LinearGradient from 'react-native-linear-gradient';
 import { useTranslation } from 'react-i18next';
@@ -8,7 +8,6 @@ import { Navigation } from 'react-native-navigation';
 import SplashScreen from 'react-native-splash-screen';
 import { FlashList } from '@shopify/flash-list';
 import screenNames from 'src/lib/navigation/screenNames';
-import Sample from './Blink';
 import ThrottledNavigateButton from './ThrottledNavigateButton';
 
 const Users = function ({ componentId }) {
@@ -55,7 +54,7 @@ const Users = function ({ componentId }) {
       <FlashList
         data={users}
         renderItem={({ item }) => (
-          <View
+          <TouchableOpacity
             style={{
               backgroundColor: '#fff',
               borderRadius: 10,
@@ -64,6 +63,12 @@ const Users = function ({ componentId }) {
               padding: 10,
               marginTop: 10,
               marginVertical: 10,
+              width: '90%',
+            }}
+            onPress={() => {
+              if (item.user.role !== 'actniv3') {
+                console.log('hhh');
+              }
             }}>
             <View style={{ flexDirection: 'row' }}>
               <View>
@@ -76,15 +81,16 @@ const Users = function ({ componentId }) {
                 />
               </View>
               <View>
-                <Text>
+                <Text style={{ width: '100%' }}>
                   {t('name')}: {item.user.fullName}
                 </Text>
                 <Text>{`${t('sex')}: ${t(item.person.sex)}`}</Text>
                 <Text>{`${t('born_at')}: ${item.person.birthDate}`}</Text>
                 <Text>{`${t('nni')}: ${item.person.NNI}`}</Text>
+                <Text>{`${t('added')}: ${item.user.addedCount || 0}`}</Text>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
         )}
         keyExtractor={item => item.user._id}
         ListEmptyComponent={() => (

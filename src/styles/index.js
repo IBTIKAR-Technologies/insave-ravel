@@ -6,11 +6,11 @@ import { wp, hp } from 'src/lib/utilities';
 const { version } = config;
 
 export const Colors = {
-  primary: '#CCD6A6',
-  primaryDark: '#F5EBE0',
-  primaryLight: '#DAE2B6',
+  primary: '#4C6CC9',
+  primaryDark: '#2a3c70',
+  primaryLight: '#95aced',
   primaryGradientStart: '#ffffff',
-  primaryGradientEnd: '#F5EBE0',
+  primaryGradientEnd: '#ced8f2',
   secondary: '#DBA39A',
   grey: '#acacac',
   gray: '#5f5f5f',
@@ -111,14 +111,3 @@ export const Common = {
     },
   }),
 };
-
-const styles = StyleSheet.create({
-  button: {
-    paddingHorizontal: 5,
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    fontSize: 15,
-    color: 'white',
-  },
-});

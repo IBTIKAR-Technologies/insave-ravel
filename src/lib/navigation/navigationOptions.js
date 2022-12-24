@@ -5,7 +5,7 @@ import { I18nManager } from 'react-native';
 const setDefaultOptions = () =>
   Navigation.setDefaultOptions({
     layout: {
-      componentBackgroundColor: '#fff',
+      componentBackgroundColor: Colors.primary,
       orientation: ['portrait'],
       direction: I18nManager.isRTL ? 'rtl' : 'ltr',
     },
@@ -20,7 +20,7 @@ const setDefaultOptions = () =>
     },
     statusBar: {
       backgroundColor: Colors.primary,
-      style: 'dark',
+      style: 'light',
     },
     animations: {
       setRoot: {

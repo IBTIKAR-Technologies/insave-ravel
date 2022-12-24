@@ -49,7 +49,8 @@ const HistoryCiblage = function ({ componentId }) {
               elevation: 10,
               alignSelf: 'center',
               padding: 10,
-              marginTop: 10,
+              marginVertical: 10,
+              width: '90%',
             }}>
             <View style={{ flexDirection: 'row' }}>
               <View style={styles.imageContainer}>
@@ -62,7 +63,7 @@ const HistoryCiblage = function ({ componentId }) {
                 />
               </View>
               <View>
-                <Text>
+                <Text style={{ width: '100%' }}>
                   {t('name')}: {item.firstName} {item.lastName}
                 </Text>
                 <Text>{`${t('sex')}: ${t(item.sex)}`}</Text>

@@ -38,6 +38,7 @@ export const userSchema = {
     nni: 'string?',
     operationId: 'objectId?',
     password: 'string?',
+    personId: 'objectId?',
     phoneNumber: 'string?',
     role: 'string?',
     roleId: 'objectId?',
@@ -47,7 +48,6 @@ export const userSchema = {
     username: 'string?',
     wilayaId: 'objectId?',
     zonesIds: 'objectId[]',
-    personId: 'objectId?',
   },
   primaryKey: '_id',
 };
