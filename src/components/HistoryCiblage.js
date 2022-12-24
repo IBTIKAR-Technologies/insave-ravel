@@ -68,6 +68,7 @@ const HistoryCiblage = function ({ componentId }) {
                 </Text>
                 <Text>{`${t('sex')}: ${t(item.sex)}`}</Text>
                 <Text>{`${t('born_at')}: ${item.birthDate}`}</Text>
+                <Text>{`${t('nni')}: ${item.NNI}`}</Text>
               </View>
             </View>
           </View>

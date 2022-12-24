@@ -106,6 +106,7 @@ export const Common = {
         {
           text: version,
           fontSize: 12,
+          color: '#fff',
         },
       ],
     },

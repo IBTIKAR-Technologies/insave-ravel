@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Text, StyleSheet, View, Image } from 'react-native';
+import { Text, StyleSheet, View, Image, TouchableOpacity } from 'react-native';
 import { Colors, CommonStyles } from 'src/styles';
 import LinearGradient from 'react-native-linear-gradient';
 import { useTranslation } from 'react-i18next';
@@ -7,17 +7,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Navigation } from 'react-native-navigation';
 import SplashScreen from 'react-native-splash-screen';
 import { FlashList } from '@shopify/flash-list';
-import screenNames from 'src/lib/navigation/screenNames';
-import ThrottledNavigateButton from './ThrottledNavigateButton';
 
-const Users = function ({ componentId }) {
+const SubUsers = function ({ componentId, act }) {
   const { t } = useTranslation();
   const [user, setUser] = useState({});
   const [users, setUsers] = useState([]);
   const initialize = useCallback(async () => {
     let userData = await AsyncStorage.getItem('userData');
     userData = JSON.parse(userData);
-    const usrs = global.realms[1].objects('user').filtered(`createdById == oid(${userData._id})`);
+    const usrs = global.realms[1].objects('user').filtered(`createdById == oid(${act._id})`);
     const persn = global.realms[0].objects('person');
     setUsers(
       usrs.map(us => ({
@@ -26,7 +24,7 @@ const Users = function ({ componentId }) {
       })),
     );
     setUser(userData);
-  }, []);
+  }, [act]);
 
   useEffect(() => {
     const listener = {
@@ -54,8 +52,8 @@ const Users = function ({ componentId }) {
       <FlashList
         data={users}
         renderItem={({ item }) => (
-          <ThrottledNavigateButton
-            styles={{
+          <View
+            style={{
               backgroundColor: '#fff',
               borderRadius: 10,
               elevation: 10,
@@ -65,12 +63,11 @@ const Users = function ({ componentId }) {
               marginVertical: 10,
               width: '90%',
             }}
-            destination={screenNames.SubUsers}
-            componentId={componentId}
-            tobBarBackgroundColor={Colors.primary}
-            tobBarTitleColor="#fff"
-            tobBarTitleText={`${t('sub_users')}(${item.user.fullName}})`}
-            passProps={{ act: item.user }}>
+            onPress={() => {
+              if (item.user.role === 'actniv1') {
+                console.log('hhh');
+              }
+            }}>
             <View style={{ flexDirection: 'row' }}>
               <View>
                 <Image
@@ -91,7 +88,7 @@ const Users = function ({ componentId }) {
                 <Text>{`${t('added')}: ${item.user.addedCount || 0}`}</Text>
               </View>
             </View>
-          </ThrottledNavigateButton>
+          </View>
         )}
         keyExtractor={item => item.user._id}
         ListEmptyComponent={() => (
@@ -110,28 +107,11 @@ const Users = function ({ componentId }) {
           </View>
         )}
       />
-      <ThrottledNavigateButton
-        styles={{
-          backgroundColor: Colors.primary,
-          paddingVertical: 5,
-          paddingHorizontal: 20,
-          borderRadius: 20,
-          alignSelf: 'center',
-          marginVertical: 15,
-          elevation: 5,
-        }}
-        destination={screenNames.AddUser}
-        componentId={componentId}
-        tobBarTitleText={t('add_user')}
-        tobBarBackgroundColor={Colors.primary}
-        passProps={{ user }}>
-        <Text>{t('add_user')}</Text>
-      </ThrottledNavigateButton>
     </LinearGradient>
   );
 };
 
-export default Users;
+export default SubUsers;
 
 // react native styles
 const styles = StyleSheet.create({

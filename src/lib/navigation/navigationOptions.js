@@ -35,7 +35,10 @@ const setDefaultOptions = () =>
     },
     topBar: {
       backButton: {
-        color: '#000',
+        color: '#fff',
+      },
+      title: {
+        color: '#fff',
       },
     },
   });

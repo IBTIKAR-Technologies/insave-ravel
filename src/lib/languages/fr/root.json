@@ -1015,5 +1015,10 @@
   "scan_back": "Scannez le verso de la carte",
   "error_edge": "La carte est trop proche du bord",
   "retry": "Réessayez",
-  "flip": "Scannez l'autre côté de la carte"
+  "flip": "Scannez l'autre côté de la carte",
+  "error_move": "Déplacez la carte plus loin",
+  "error_close": "Rapprochez la carte",
+  "confirm_user": "Vous êtes sûr de vouloir ajouter cette personne",
+  "sub_users": "Les sous secteurs",
+  "user_exists": "Cet utilisateur est déjà ajouté"
 }

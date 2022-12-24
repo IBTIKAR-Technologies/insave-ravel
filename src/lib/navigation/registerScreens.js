@@ -48,6 +48,7 @@ import EditMenageSuper from 'src/components/EditMenageSuper';
 import Users from 'src/components/Users';
 import WrappedComponent from './WrappedComponent';
 import AddUser from 'src/components/AddUser';
+import SubUsers from 'src/components/SubActs';
 
 export const screens = [
   { name: 'User', component: User },
@@ -96,6 +97,7 @@ export const screens = [
   { name: 'ListRouge', component: ListRouge },
   { name: 'Identifications', component: Identifications },
   { name: 'AddUser', component: AddUser },
+  { name: 'SubUsers', component: SubUsers },
 ];
 
 const registerScreens = () => {

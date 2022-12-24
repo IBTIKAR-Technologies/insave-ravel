@@ -48,6 +48,7 @@ const screenNames = {
   AddInfraction: 'AddInfraction',
   ListRouge: 'ListRouge',
   Identifications: 'Identifications',
+  SubUsers: 'SubUsers',
 };
 
 export default screenNames;

@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from 'react';
-import { Text, StyleSheet, View, Image, Alert } from 'react-native';
+import React, { useState, useMemo, useEffect } from 'react';
+import { Text, StyleSheet, View, Image, Alert, Keyboard } from 'react-native';
 import { Colors, CommonStyles } from 'src/styles';
 import { Formik, getIn } from 'formik';
 import LinearGradient from 'react-native-linear-gradient';
@@ -19,6 +19,7 @@ const Form = withNextInputAutoFocusForm(View);
 const AddUser = function ({ componentId, user }) {
   const { t } = useTranslation();
   const [card, setCard] = useState({});
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   const formValidationSchema = useMemo(() => val(t), [t]);
 
@@ -35,6 +36,11 @@ const AddUser = function ({ componentId, user }) {
   console.log('card', card);
 
   const submitTheForm = async form => {
+    const exists = global.realms[0].objects('person').filtered(`NNI == "${card.NNI}"`);
+    if (exists.length > 0) {
+      Alert.alert(t('error'), t('user_exists'));
+      return;
+    }
     let added = true;
     const perId = new ObjectId();
     try {
@@ -108,6 +114,21 @@ const AddUser = function ({ componentId, user }) {
       { cancelable: false },
     );
   };
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+      setKeyboardVisible(true); // or some other action
+    });
+    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardVisible(false); // or some other action
+    });
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
+
   return (
     <LinearGradient
       colors={[Colors.primaryGradientStart, Colors.primaryGradientEnd]}
@@ -184,7 +205,7 @@ const AddUser = function ({ componentId, user }) {
                       <ErrorsComp dataChunk={[[]]} errors={realErrors} setIndex={() => {}} />
                     )}
                   </Form>
-                  <SubmitButton handleSubmit={handleSubmit} t={t} />
+                  {!isKeyboardVisible && <SubmitButton handleSubmit={handleSubmit} t={t} />}
                 </>
               );
             }}

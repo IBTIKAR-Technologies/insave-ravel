@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Colors, CommonStyles } from 'src/styles';
+import { useTranslation } from 'react-i18next';
 import LinearGradient from 'react-native-linear-gradient';
 import { ObjectId } from 'bson';
-import { useTranslation } from 'react-i18next';
+import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsConnected } from 'react-native-offline';
 import { Navigation } from 'react-native-navigation';
@@ -34,6 +35,11 @@ const Ciblage = function ({ componentId }) {
   }, [componentId, initialize, isConnected]);
 
   const savePerson = person => {
+    const exists = global.realms[0].objects('person').filtered(`NNI == "${person.NNI}"`);
+    if (exists.length > 0 || person.NNI === user.nni) {
+      Alert.alert(t('error'), t('user_exists'));
+      return;
+    }
     global.realms[0].write(() => {
       global.realms[0].create('person', {
         ...person,
@@ -51,7 +57,7 @@ const Ciblage = function ({ componentId }) {
     <LinearGradient
       colors={[Colors.primaryGradientStart, Colors.primaryGradientEnd]}
       style={CommonStyles.root}>
-      <Sample t={t} savePerson={savePerson} />
+      <Sample text={t('scan_card')} t={t} savePerson={savePerson} />
     </LinearGradient>
   );
 };

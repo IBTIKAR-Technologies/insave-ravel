@@ -84,7 +84,9 @@ export default class Sample extends Component {
       const OverLaySetring = new BlinkIDReactNative.BlinkIdOverlaySettings();
       OverLaySetring.firstSideInstructionsText = this.props.t('scan_front');
       OverLaySetring.backSideInstructionsText = this.props.t('scan_back');
-      OverLaySetring.errorDocumentTooCloseToEdge = this.props.t('error_document_too_close_to_edge');
+      OverLaySetring.errorDocumentTooCloseToEdge = this.props.t('error_edge');
+      OverLaySetring.errorMoveFarther = this.props.t('error_move');
+      OverLaySetring.errorMoveCloser = this.props.t('error_close');
       OverLaySetring.retryButtonText = this.props.t('retry');
       OverLaySetring.flipInstructions = this.props.t('flip');
       const scanningResults = await BlinkIDReactNative.BlinkID.scanWithCamera(

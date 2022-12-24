@@ -63,14 +63,14 @@ export function navigate(id, name, title, passProps = {}) {
         topBar: {
           title: {
             text: title,
-            color: '#000',
+            color: '#fff',
             fontSize: wp(4),
           },
           background: {
             color: Colors.primary,
           },
           backButton: {
-            color: '#000',
+            color: '#fff',
             fontSize: wp(4),
           },
         },
