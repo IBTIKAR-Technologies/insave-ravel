@@ -1023,5 +1023,6 @@
   "user_exists": "Cet utilisateur est déjà ajouté",
   "person_exists": "Cet personne est déjà ajouté",
   "user_added": "L'utilisateur a été ajouté avec succès",
-  "user_not_added": "L'utilisateur ne peut pas être ajouté"
+  "user_not_added": "L'utilisateur ne peut pas être ajouté",
+  "no_sub_act": "Aucun sous secteur"
 }

@@ -103,7 +103,7 @@ const SubUsers = function ({ componentId, act }) {
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-            <Text style={{ color: 'red' }}>{t('no_users')}</Text>
+            <Text style={{ color: 'red' }}>{t('no_sub_act')}</Text>
           </View>
         )}
       />

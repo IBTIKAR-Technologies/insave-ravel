@@ -12,7 +12,7 @@ import DeviceInfo from 'react-native-device-info';
 import NetInfo from '@react-native-community/netinfo';
 import Toast from 'react-native-toast-message';
 import { t } from 'i18next';
-import { personSchema, userSchema } from './schemas';
+import { personSchema, userSchema, user_personSchema } from './schemas';
 
 const { realmPath, appConfig } = config;
 
@@ -252,7 +252,7 @@ async function openRealm(user, userData, setProgress) {
     readOnly: false,
   };
   const usersRealmConfig = {
-    schema: [userSchema],
+    schema: [userSchema, user_personSchema],
     schemaVersion: 1,
     path: `${realmPath}/${userData._id}1`,
     sync: {

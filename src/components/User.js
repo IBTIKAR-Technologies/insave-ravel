@@ -6,6 +6,7 @@ import { wp, hp } from 'src/lib/utilities';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
 import { Navigation } from 'react-native-navigation';
+import UpdateStatus from 'src/lib/getUpdateStatus';
 import Deconnexion from './Deconnexion';
 import Language from './Language';
 
@@ -38,6 +39,7 @@ const User = function ({ componentId }) {
     <LinearGradient
       colors={[Colors.primaryGradientStart, Colors.primaryGradientEnd]}
       style={styles.root}>
+      <UpdateStatus />
       <ScrollView contentContainerStyle={styles.container}>
         <Image source={require('../assets/images/avatar.png')} style={styles.image} />
         <Text style={styles.bigText}>{user?.fullName}</Text>

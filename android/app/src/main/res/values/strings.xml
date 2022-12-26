@@ -2,5 +2,5 @@
     <string name="app_name">Recensement El-Insaf</string>
     <string name="appCenterCrashes_whenToSendCrashes" moduleConfig="true" translatable="false">DO_NOT_ASK_JAVASCRIPT</string>
     <string name="appCenterAnalytics_whenToEnableAnalytics" moduleConfig="true" translatable="false">ALWAYS_SEND</string>
-    <string moduleConfig="true" name="CodePushDeploymentKey">jbLOBDRs1n-nXpTTiB9tVCSCfMJXrgjMFqX1a</string>
+    <string moduleConfig="true" name="CodePushDeploymentKey">YZWJZ1M_uz2lhAUTXjhfekvwdl8wKFB4wxY1k</string>
 </resources>
