@@ -38,6 +38,7 @@ export const userSchema = {
     nni: 'string?',
     operationId: 'objectId?',
     password: 'string?',
+    person: 'user_person',
     personId: 'objectId?',
     phoneNumber: 'string?',
     role: 'string?',
@@ -50,4 +51,18 @@ export const userSchema = {
     zonesIds: 'objectId[]',
   },
   primaryKey: '_id',
+};
+
+export const user_personSchema = {
+  name: 'user_person',
+  embedded: true,
+  properties: {
+    NNI: 'string?',
+    birthDate: 'string?',
+    firstName: 'string?',
+    image: 'string?',
+    lastName: 'string?',
+    sex: 'string?',
+    updatedAt: 'date?',
+  },
 };

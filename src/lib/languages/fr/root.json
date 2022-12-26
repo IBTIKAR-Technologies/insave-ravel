@@ -1020,5 +1020,8 @@
   "error_close": "Rapprochez la carte",
   "confirm_user": "Vous êtes sûr de vouloir ajouter cette personne",
   "sub_users": "Les sous secteurs",
-  "user_exists": "Cet utilisateur est déjà ajouté"
+  "user_exists": "Cet utilisateur est déjà ajouté",
+  "person_exists": "Cet personne est déjà ajouté",
+  "user_added": "L'utilisateur a été ajouté avec succès",
+  "user_not_added": "L'utilisateur ne peut pas être ajouté"
 }

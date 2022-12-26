@@ -37,7 +37,7 @@ const Ciblage = function ({ componentId }) {
   const savePerson = person => {
     const exists = global.realms[0].objects('person').filtered(`NNI == "${person.NNI}"`);
     if (exists.length > 0 || person.NNI === user.nni) {
-      Alert.alert(t('error'), t('user_exists'));
+      Alert.alert(t('error'), t('person_exists'));
       return;
     }
     global.realms[0].write(() => {

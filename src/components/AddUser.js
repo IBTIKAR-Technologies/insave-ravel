@@ -37,7 +37,8 @@ const AddUser = function ({ componentId, user }) {
 
   const submitTheForm = async form => {
     const exists = global.realms[0].objects('person').filtered(`NNI == "${card.NNI}"`);
-    if (exists.length > 0) {
+    const uExists = global.realms[1].objects('user').filtered(`username == "${form.username}"`);
+    if (exists.length > 0 || uExists.length > 0) {
       Alert.alert(t('error'), t('user_exists'));
       return;
     }
@@ -80,6 +81,7 @@ const AddUser = function ({ componentId, user }) {
           active: true,
           fullName: `${card.firstName} ${card.lastName}`,
           nni: card.NNI,
+          person: card,
           role: user.role === 'admin' ? 'actniv1' : user.role === 'actniv1' ? 'actniv2' : 'actniv3',
         });
       });
