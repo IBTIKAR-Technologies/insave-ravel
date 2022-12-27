@@ -1001,10 +1001,12 @@
   "carte_professionnelle": "Carte professionnelle",
   "confirm_infraction_message": "Vous êtes sûr de vouloir ajouter cette infraction?",
   "born_at": "Date de naissance",
-  "users": "Les utilisateurs",
-  "add_user": "Ajouter un utilisateur",
-  "no_users": "Aucun utilisateur trouvé",
+  "users": "Les acteurs",
+  "add_user": "Ajouter un acteur",
+  "no_users": "Aucun acteur trouvé",
   "scan_card": "Scanner la carte d'identité",
+  "categorie_details": "Détails de la catégorie",
+  "categorie": "Catégorie",
   "t_added": "Total ajouter",
   "added": "A ajouté",
   "admin": "Admin",
@@ -1024,5 +1026,10 @@
   "person_exists": "Cet personne est déjà ajouté",
   "user_added": "L'utilisateur a été ajouté avec succès",
   "user_not_added": "L'utilisateur ne peut pas être ajouté",
-  "no_sub_act": "Aucun sous secteur"
+  "no_sub_act": "Aucun sous secteur",
+  "parti": "Parti",
+  "initiative": "Initiative",
+  "mouvement": "Mouvement",
+  "societecivile": "Société civile",
+  "orgprofessionnel": "Organisation professionnelle"
 }

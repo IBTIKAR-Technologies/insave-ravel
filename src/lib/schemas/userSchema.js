@@ -23,6 +23,42 @@ export default function schema(t) {
       placeholder: t('phone_number'),
       order: 3,
     },
+    {
+      title: t('categorie'),
+      name: 'categorie',
+      type: 'select',
+      label: t('select_one'),
+      order: 4,
+      options: [
+        {
+          label: t('parti'),
+          value: 'parti',
+        },
+        {
+          label: t('initiative'),
+          value: 'initiative',
+        },
+        {
+          label: t('mouvement'),
+          value: 'mouvement',
+        },
+        {
+          label: t('societecivile'),
+          value: 'societecivile',
+        },
+        {
+          label: t('orgprofessionnel'),
+          value: 'orgprofessionnel',
+        },
+      ],
+    },
+    {
+      title: t('categorie_details'),
+      name: 'categorieDetails',
+      type: 'text',
+      placeholder: t('categorie_details'),
+      order: 5,
+    },
   ];
 }
 
@@ -31,10 +67,12 @@ export const formValidationSchema = t =>
     username: yup.string().required(`1) ${t('user_name')}`),
     password: yup.string().required(`2) ${t('password')}`),
     phoneNumber: yup.string().required(`2) ${t('phone_number')}`),
+    categorie: yup.string().required(`2) ${t('categorie')}`),
   });
 
 export const initialValues = {
   username: '',
   password: '',
   phoneNumber: '',
+  categorie: '',
 };

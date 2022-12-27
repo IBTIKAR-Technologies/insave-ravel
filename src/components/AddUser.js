@@ -1,5 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Text, StyleSheet, View, Image, Alert, Keyboard } from 'react-native';
+import {
+  Text, StyleSheet, View, Image, Alert, Keyboard,
+} from 'react-native';
 import { Colors, CommonStyles } from 'src/styles';
 import { Formik, getIn } from 'formik';
 import LinearGradient from 'react-native-linear-gradient';
@@ -9,6 +11,7 @@ import { wp } from 'src/lib/utilities';
 import { withNextInputAutoFocusForm } from 'react-native-formik';
 import { ObjectId } from 'bson';
 import Toast from 'react-native-toast-message';
+import { ScrollView } from 'react-native-gesture-handler';
 import Sample from './Blink';
 import SubmitButton from './SubmitButton';
 import ErrorsComp from './ErrorsComp';
@@ -134,86 +137,98 @@ const AddUser = function ({ componentId, user }) {
   return (
     <LinearGradient
       colors={[Colors.primaryGradientStart, Colors.primaryGradientEnd]}
-      style={CommonStyles.root}>
-      {!card.firstName && (
-        <Sample savePerson={savePerson} t={t} text={t('scan_card')} confirmText={t('continue')} />
-      )}
-      {card.firstName && (
-        <>
-          <View
-            style={{
-              backgroundColor: '#fff',
-              borderRadius: 10,
-              elevation: 10,
-              alignSelf: 'center',
-              padding: 10,
-              marginVertical: 20,
-            }}>
-            <View style={{ flexDirection: 'row' }}>
-              <View style={styles.imageContainer}>
-                <Image
-                  resizeMode="contain"
-                  source={{
-                    uri: card.image,
-                  }}
-                  style={styles.imageResult}
-                />
-              </View>
-              <View>
-                <Text>
-                  {t('name')}: {card.firstName} {card.lastName}
-                </Text>
-                <Text>{`${t('sex')}: ${t(card.sex)}`}</Text>
-                <Text>{`${t('born_at')}: ${card.birthDate}`}</Text>
-                <Text>{`${t('nni')}: ${card.NNI}`}</Text>
+      style={CommonStyles.root}
+    >
+      <ScrollView
+        keyboardShouldPersistTaps="always"
+        nestedScrollEnabled
+      >
+        {!card.firstName && (
+          <Sample savePerson={savePerson} t={t} text={t('scan_card')} confirmText={t('continue')} />
+        )}
+        {card.firstName && (
+          <>
+            <View
+              style={{
+                backgroundColor: '#fff',
+                borderRadius: 10,
+                elevation: 10,
+                alignSelf: 'center',
+                padding: 10,
+                marginVertical: 20,
+              }}
+            >
+              <View style={{ flexDirection: 'row' }}>
+                <View style={styles.imageContainer}>
+                  <Image
+                    resizeMode="contain"
+                    source={{
+                      uri: card.image,
+                    }}
+                    style={styles.imageResult}
+                  />
+                </View>
+                <View>
+                  <Text>
+                    {t('name')}: {card.firstName} {card.lastName}
+                  </Text>
+                  <Text>{`${t('sex')}: ${t(card.sex)}`}</Text>
+                  <Text>{`${t('born_at')}: ${card.birthDate}`}</Text>
+                  <Text>{`${t('nni')}: ${card.NNI}`}</Text>
+                </View>
               </View>
             </View>
-          </View>
-          <Formik
-            initialValues={initialValues}
-            onSubmit={confrimAddUser}
-            validationSchema={formValidationSchema}
-            validateOnMount={false}>
-            {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => {
-              const realErrors = [];
-              Object.keys(errors).map(name => {
-                let error = getIn(errors, name);
-                const touch = getIn(touched, name);
-                if (touch && error) {
-                  if (typeof error === 'object') {
-                    error = error && error[0] ? Object.values(error[0]).join(', ') : 'Erreur';
+            <Formik
+              initialValues={initialValues}
+              onSubmit={confrimAddUser}
+              validationSchema={formValidationSchema}
+              validateOnMount={false}
+            >
+              {({
+                handleChange, handleBlur, handleSubmit, values, errors, touched,
+              }) => {
+                const realErrors = [];
+                Object.keys(errors).map(name => {
+                  let error = getIn(errors, name);
+                  const touch = getIn(touched, name);
+                  if (touch && error) {
+                    if (typeof error === 'object') {
+                      error = error && error[0] ? Object.values(error[0]).join(', ') : 'Erreur';
+                    }
+                    realErrors.push(error);
                   }
-                  realErrors.push(error);
-                }
-              });
-              return (
-                <>
-                  <Form
-                    style={{
-                      justifyContent: 'space-evenly',
-                      minHeight: '50%',
-                    }}>
-                    <View
-                      style={{ flex: 1, width: wp(90) > 400 ? 400 : wp(90), alignSelf: 'center' }}>
-                      {thedata.map((item, i) => (
-                        <ItemRenderer
-                          item={item}
-                          values={values}
-                          key={`${item.name}_${String(i)}`}
-                        />
-                      ))}
-                    </View>
-                    {realErrors.length > 0 && (
-                      <ErrorsComp dataChunk={[[]]} errors={realErrors} setIndex={() => {}} />
-                    )}
-                  </Form>
-                  {!isKeyboardVisible && <SubmitButton handleSubmit={handleSubmit} t={t} />}
-                </>
-              );
-            }}
-          </Formik>
-        </>
-      )}
+                });
+                return (
+                  <>
+                    <Form
+                      style={{
+                        justifyContent: 'space-evenly',
+                        minHeight: '50%',
+                      }}
+                    >
+                      <View
+                        style={{ flex: 1, width: wp(90) > 400 ? 400 : wp(90), alignSelf: 'center' }}
+                      >
+                        {thedata.map((item, i) => (
+                          <ItemRenderer
+                            item={item}
+                            values={values}
+                            key={`${item.name}_${String(i)}`}
+                          />
+                        ))}
+                      </View>
+                      {realErrors.length > 0 && (
+                        <ErrorsComp dataChunk={[[]]} errors={realErrors} setIndex={() => { }} />
+                      )}
+                    </Form>
+                    <SubmitButton handleSubmit={handleSubmit} t={t} />
+                  </>
+                );
+              }}
+            </Formik>
+          </>
+        )}
+      </ScrollView>
     </LinearGradient>
   );
 };
@@ -231,6 +246,12 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     textAlign: 'center',
+  },
+  scrollView: {
+    flex: 1,
+    paddingVertical: 10,
+    width: '100%',
+    marginBottom: 10,
   },
   label: {
     fontSize: 30,

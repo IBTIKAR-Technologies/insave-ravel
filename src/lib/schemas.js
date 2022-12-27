@@ -41,6 +41,8 @@ export const userSchema = {
     person: 'user_person',
     personId: 'objectId?',
     phoneNumber: 'string?',
+    categorie: 'string?',
+    categorie_details: 'string?',
     role: 'string?',
     roleId: 'objectId?',
     syncedAt: 'date?',

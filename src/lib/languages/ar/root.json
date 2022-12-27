@@ -904,10 +904,12 @@
   "carte_professionnelle": "بطاقة مهنية",
   "confirm_infraction_message": "هل أنت متأكد أنك تريد إضافة هذه المخالفة؟",
   "born_at": "تاريخ الميلاد",
-  "users": "المستخدمين",
-  "add_user": "إضافة مستخدم",
-  "no_users": "لم يتم العثور على مستخدمين",
+  "users": "الفاعلين",
+  "add_user": "إضافة فاعل",
+  "no_users": "لم يتم العثور على فاعلين",
+  "categorie": "الفئة",
   "scan_card": "مسح بطاقة الهوية",
+  "categorie_details": "تفاصيل الفئة",
   "t_added": "إجمالي المضاف",
   "added": "أضاف",
   "admin": "مشرف",
@@ -926,5 +928,10 @@
   "user_exists": "تمت إضافة هذا المستخدم سابقا",
   "person_exists": "تمت إضافة هذا الشخص بالفعل",
   "user_added": "تمت إضافة المستخدم بنجاح",
-  "user_not_added": "لا يمكن إضافة المستخدم"
+  "user_not_added": "لا يمكن إضافة المستخدم",
+  "parti": "الحزب",
+  "initiative": "مبادرة",
+  "mouvement": "تيار",
+  "societecivile": "المجتمع المدني",
+  "orgprofessionnel": "منظمة مهنية"
 }

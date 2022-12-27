@@ -3,7 +3,7 @@ import { Dirs } from 'react-native-file-access';
 const isDevEnv = __DEV__;
 
 export default {
-  appName: 'Recensement El-Insaf',
+  appName: 'PSE',
   isDevEnv,
   realmPath: Dirs.DatabaseDir,
   appConfig: {

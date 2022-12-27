@@ -1,4 +1,6 @@
-import { View, Text, Image, ScrollView } from 'react-native';
+import {
+  View, Text, Image, ScrollView,
+} from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Colors } from 'src/styles';
 import LinearGradient from 'react-native-linear-gradient';
@@ -38,7 +40,8 @@ const User = function ({ componentId }) {
   return (
     <LinearGradient
       colors={[Colors.primaryGradientStart, Colors.primaryGradientEnd]}
-      style={styles.root}>
+      style={styles.root}
+    >
       <UpdateStatus />
       <ScrollView contentContainerStyle={styles.container}>
         <Image source={require('../assets/images/avatar.png')} style={styles.image} />
@@ -69,7 +72,6 @@ export default User;
 const styles = {
   container: {
     flex: 1,
-    marginTop: '15%',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     alignItems: 'center',
@@ -80,7 +82,6 @@ const styles = {
     width: wp(90) > 400 ? 400 : wp(90),
     height: hp(40),
     alignItems: 'center',
-    justifyContent: 'space-between',
   },
   root: {
     width: '100%',
@@ -112,6 +113,7 @@ const styles = {
     paddingBottom: 5,
   },
   buttons: {
+    marginTop: 20,
     alignItems: 'center',
     width: wp(100),
   },
