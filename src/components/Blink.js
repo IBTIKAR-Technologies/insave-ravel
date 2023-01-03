@@ -9,7 +9,9 @@ import {
   ScrollView,
   Button,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
+import i18next from 'i18next';
 import { Colors } from 'src/styles';
 
 const licenseKey = Platform.select({
@@ -20,7 +22,7 @@ const licenseKey = Platform.select({
     'sRwAAAAUY29tLmlidC5yYXZlbC5pbnNhdmVPbdVYuJeAHMeHyBCkSnMeQZZC/u6ti32CI43SzEpkzXslgZCKJyGwiEuMAYIi/HIU7DRx8oPR7WKZ2XyY3kzfSXdQV1nCnU3CwJYzc5Qv042ChPwu+267bgBoB7LaQlaCt9mJcL2OBKccTSlfYXrVPaudkg9bSe1O9JMUe2Iu53MunsIR+aXGpcUaLapTcpz/W/ugN2YPW5qp1LAsethcpY72oXHbNvuYJsKLzw==',
 });
 
-var renderIf = function (condition, content) {
+const renderIf = function (condition, content) {
   if (condition) {
     return content;
   }
@@ -29,16 +31,17 @@ var renderIf = function (condition, content) {
 
 function buildResult(result, key) {
   if (result && result != -1) {
-    return key + ': ' + result + '\n';
+    return `${key}: ${result}\n`;
   }
-  return '';
+  return "";
 }
 
 function buildDateResult(result, key) {
   if (result) {
-    return key + ': ' + result.day + '.' + result.month + '.' + result.year + '.' + '\n';
+    return `${key}: ${result.day}.${result.month}.${result.year}.`
+      + `\n`;
   }
-  return '';
+  return "";
 }
 
 export default class Sample extends Component {
@@ -67,6 +70,7 @@ export default class Sample extends Component {
   }
 
   async scan() {
+    console.log('this.state', this.state);
     try {
       // to scan any machine readable travel document (passports, visas and IDs with
       // machine readable zone), use MrtdRecognizer
@@ -77,10 +81,11 @@ export default class Sample extends Component {
 
       // BlinkIDCombinedRecognizer automatically classifies different document types and scans the data from
       // the supported document
-      var blinkIdCombinedRecognizer = new BlinkIDReactNative.BlinkIdCombinedRecognizer();
+      const blinkIdCombinedRecognizer = new BlinkIDReactNative.BlinkIdCombinedRecognizer();
       blinkIdCombinedRecognizer.returnFullDocumentImage = false;
       blinkIdCombinedRecognizer.returnFaceImage = true;
-      blinkIdCombinedRecognizer.skipUnsupportedBack = true;
+
+      const { language } = i18next;
       const OverLaySetring = new BlinkIDReactNative.BlinkIdOverlaySettings();
       OverLaySetring.firstSideInstructionsText = this.props.t('scan_front');
       OverLaySetring.backSideInstructionsText = this.props.t('scan_back');
@@ -89,17 +94,17 @@ export default class Sample extends Component {
       OverLaySetring.errorMoveCloser = this.props.t('error_close');
       OverLaySetring.retryButtonText = this.props.t('retry');
       OverLaySetring.flipInstructions = this.props.t('flip');
+      OverLaySetring.language = language;
+      OverLaySetring.country = "MR";
+
       const scanningResults = await BlinkIDReactNative.BlinkID.scanWithCamera(
         OverLaySetring,
-        new BlinkIDReactNative.RecognizerCollection([
-          blinkIdCombinedRecognizer /*, mrtdSuccessFrameGrabber*/,
-        ]),
+        new BlinkIDReactNative.RecognizerCollection([blinkIdCombinedRecognizer]),
         licenseKey,
       );
 
       if (scanningResults) {
-        console.log('scanningResults', scanningResults);
-        let newState = {
+        const newState = {
           showFrontImageDocument: false,
           resultFrontImageDocument: '',
           showBackImageDocument: false,
@@ -111,36 +116,35 @@ export default class Sample extends Component {
           successFrame: '',
         };
 
-        for (let i = 0; i < scanningResults.length; ++i) {
-          if (scanningResults[i].mrzResult?.sanitizedOpt1) {
-            this.state.person.NNI = scanningResults[i].mrzResult.sanitizedOpt1;
-            this.state.person.firstName = scanningResults[i].mrzResult.secondaryId;
-            this.state.person.lastName = scanningResults[i].mrzResult.primaryId;
-            this.state.person.sex = scanningResults[i].mrzResult.gender === 'M' ? 'male' : 'female';
-          }
-          let localState = this.handleResult(scanningResults[i]);
-          newState.showFrontImageDocument =
-            newState.showFrontImageDocument || localState.showFrontImageDocument;
-          if (localState.showFrontImageDocument) {
-            newState.resultFrontImageDocument = localState.resultFrontImageDocument;
-          }
-          newState.showBackImageDocument =
-            newState.showBackImageDocument || localState.showBackImageDocument;
-          if (localState.showBackImageDocument) {
-            newState.resultBackImageDocument = localState.resultBackImageDocument;
-          }
-          newState.showImageFace = newState.showImageFace || localState.showImageFace;
-          if (localState.resultImageFace) {
-            newState.resultImageFace = localState.resultImageFace;
-          }
-          newState.results += localState.results;
-          newState.showSuccessFrame = newState.showSuccessFrame || localState.showSuccessFrame;
-          if (localState.successFrame) {
-            newState.successFrame = localState.successFrame;
-          }
+        console.log('scanningResults.length', scanningResults.length);
+        let result;
+
+        if (scanningResults.length > 0) {
+          result = scanningResults[0];
         }
-        newState.results += '\n';
-        this.setState(newState);
+
+        if (result?.mrzResult?.sanitizedOpt1) {
+          this.state.person.NNI = result.mrzResult.sanitizedOpt1;
+          this.state.person.firstName = result.mrzResult.secondaryId;
+          this.state.person.lastName = result.mrzResult.primaryId;
+          this.state.person.documentNumber = result.mrzResult.documentNumber;
+          this.state.person.nationality = result.mrzResult.nationality;
+          this.state.person.image = `data:image/jpg;base64,${result.faceImage}`;
+          this.state.person.birthDate = `${result.dateOfBirth.day < 10 ? '0' : ''}${result.dateOfBirth.day
+            }/${result.dateOfBirth.month < 10 ? '0' : ''}${result.dateOfBirth.month}/${result.dateOfBirth.year
+            }`;
+          this.state.person.sex = result.mrzResult.gender === 'M' ? 'male' : 'female';
+        }
+        if (result.faceImage) {
+          newState.showImageFace = true;
+          newState.resultImageFace = `data:image/jpg;base64,${result.faceImage}`;
+        }
+
+        if (!this.state.person.firstName || Number(this.state.person.NNI) % 97 !== 1) {
+          Alert.alert(this.props.t('error'), this.props.t('scan_error'));
+        } else {
+          this.setState(newState);
+        }
       }
     } catch (error) {
       console.log(error);
@@ -158,112 +162,8 @@ export default class Sample extends Component {
     }
   }
 
-  handleResult(result) {
-    var localState = {
-      showFrontImageDocument: false,
-      resultFrontImageDocument: '',
-      showBackImageDocument: false,
-      resultBackImageDocument: '',
-      resultImageFace: '',
-      results: '',
-      showSuccessFrame: false,
-      successFrame: '',
-    };
-
-    if (result instanceof BlinkIDReactNative.BlinkIdCombinedRecognizerResult) {
-      let blinkIdResult = result;
-      this.state.person.birthDate = `${blinkIdResult.dateOfBirth.day < 10 ? '0' : ''}${
-        blinkIdResult.dateOfBirth.day
-      }/${blinkIdResult.dateOfBirth.month < 10 ? '0' : ''}${blinkIdResult.dateOfBirth.month}/${
-        blinkIdResult.dateOfBirth.year
-      }`;
-      console.log('blinkIdResult.dateOfBirth', blinkIdResult.dateOfBirth);
-
-      let resultString =
-        buildResult(blinkIdResult.firstName, this.props.t('first_name')) +
-        buildResult(blinkIdResult.lastName, 'Last name') +
-        buildResult(blinkIdResult.fullName, 'Full name') +
-        buildResult(blinkIdResult.localizedName, 'Localized name') +
-        buildResult(blinkIdResult.additionalNameInformation, 'Additional name info') +
-        buildResult(blinkIdResult.address, 'Address') +
-        buildResult(blinkIdResult.additionalAddressInformation, 'Additional address info') +
-        buildResult(blinkIdResult.documentNumber, 'Document number') +
-        buildResult(blinkIdResult.documentAdditionalNumber, 'Additional document number') +
-        buildResult(blinkIdResult.sex, 'Sex') +
-        buildResult(blinkIdResult.issuingAuthority, 'Issuing authority') +
-        buildResult(blinkIdResult.nationality, 'Nationality') +
-        buildDateResult(blinkIdResult.dateOfBirth, 'Date of birth') +
-        buildResult(blinkIdResult.age, 'Age') +
-        buildDateResult(blinkIdResult.dateOfIssue, 'Date of issue') +
-        buildDateResult(blinkIdResult.dateOfExpiry, 'Date of expiry') +
-        buildResult(blinkIdResult.dateOfExpiryPermanent, 'Date of expiry permanent') +
-        buildResult(blinkIdResult.expired, 'Expired') +
-        buildResult(blinkIdResult.maritalStatus, 'Martial status') +
-        buildResult(blinkIdResult.personalIdNumber, 'Personal id number') +
-        buildResult(blinkIdResult.profession, 'Profession') +
-        buildResult(blinkIdResult.race, 'Race') +
-        buildResult(blinkIdResult.religion, 'Religion') +
-        buildResult(blinkIdResult.residentialStatus, 'Residential status') +
-        buildResult(blinkIdResult.processingStatus, 'Processing status') +
-        buildResult(blinkIdResult.recognitionMode, 'Recognition mode');
-      let dataMatchDetailedInfo = blinkIdResult.dataMatchDetailedInfo;
-      resultString +=
-        buildResult(dataMatchDetailedInfo.dataMatchResult, 'Data match result') +
-        buildResult(dataMatchDetailedInfo.dateOfExpiry, 'dateOfExpiry') +
-        buildResult(dataMatchDetailedInfo.dateOfBirth, 'dateOfBirth') +
-        buildResult(dataMatchDetailedInfo.documentNumber, 'documentNumber');
-
-      let licenceInfo = blinkIdResult.driverLicenseDetailedInfo;
-      if (licenceInfo) {
-        var vehicleClassesInfoString = '';
-        if (licenceInfo.vehicleClassesInfo) {
-          for (let i = 0; i < licenceInfo.vehicleClassesInfo.length; i++) {
-            vehicleClassesInfoString +=
-              buildResult(licenceInfo.vehicleClassesInfo[i].vehicleClass, 'Vehicle class') +
-              buildResult(licenceInfo.vehicleClassesInfo[i].licenceType, 'License type') +
-              buildDateResult(licenceInfo.vehicleClassesInfo[i].effectiveDate, 'Effective date') +
-              buildDateResult(licenceInfo.vehicleClassesInfo[i].expiryDate, 'Expiry date');
-          }
-        }
-        resultString +=
-          buildResult(licenceInfo.restrictions, 'Restrictions') +
-          buildResult(licenceInfo.endorsements, 'Endorsements') +
-          buildResult(licenceInfo.vehicleClass, 'Vehicle class') +
-          buildResult(licenceInfo.conditions, 'Conditions') +
-          vehicleClassesInfoString;
-      }
-
-      // there are other fields to extract
-      localState.results += resultString;
-
-      // Document image is returned as Base64 encoded JPEG
-      if (blinkIdResult.fullDocumentFrontImage) {
-        localState.showFrontImageDocument = true;
-        localState.resultFrontImageDocument =
-          'data:image/jpg;base64,' + blinkIdResult.fullDocumentFrontImage;
-      }
-      if (blinkIdResult.fullDocumentBackImage) {
-        localState.showBackImageDocument = true;
-        localState.resultBackImageDocument =
-          'data:image/jpg;base64,' + blinkIdResult.fullDocumentBackImage;
-      }
-      // Face image is returned as Base64 encoded JPEG
-      if (blinkIdResult.faceImage) {
-        localState.showImageFace = true;
-        localState.resultImageFace = 'data:image/jpg;base64,' + blinkIdResult.faceImage;
-        this.state.person.faceImage = 'data:image/jpg;base64,' + blinkIdResult.faceImage;
-      }
-    }
-    return localState;
-  }
-
   render() {
-    let displayFrontImageDocument = this.state.resultFrontImageDocument;
-    let displayBackImageDocument = this.state.resultBackImageDocument;
-    let displayImageFace = this.state.resultImageFace;
-    let displaySuccessFrame = this.state.successFrame;
-    let displayFields = this.state.results;
-    console.log('resultImageFace', this.state.resultImageFace);
+    console.log('state', this.state);
     return (
       <View style={styles.container}>
         <Text style={styles.label}>{this.props.text ? this.props.text : this.props.t('scan')}</Text>
@@ -284,7 +184,8 @@ export default class Sample extends Component {
                 alignSelf: 'center',
                 padding: 10,
                 marginVertical: 20,
-              }}>
+              }}
+            >
               <View style={{ flexDirection: 'row' }}>
                 <View style={styles.imageContainer}>
                   <Image
@@ -329,7 +230,8 @@ export default class Sample extends Component {
                     },
                     showImageFace: false,
                   });
-                }}>
+                }}
+              >
                 <Text>
                   {this.props.confirmText ? this.props.confirmText : this.props.t('save')}
                 </Text>

@@ -13,5 +13,5 @@ export default {
   LOG_TO_FILE: isDevEnv,
   TRACE_LOG: isDevEnv,
   schemaNames: [],
-  version: 'v0.7.4',
+  version: 'v0.9.0',
 };

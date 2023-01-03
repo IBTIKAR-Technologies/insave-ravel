@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Text, StyleSheet, View, Image } from 'react-native';
+import {
+  Text, StyleSheet, View, Image,
+} from 'react-native';
 import { Colors, CommonStyles } from 'src/styles';
 import LinearGradient from 'react-native-linear-gradient';
 import { useTranslation } from 'react-i18next';
@@ -44,7 +46,8 @@ const Users = function ({ componentId }) {
   return (
     <LinearGradient
       colors={[Colors.primaryGradientStart, Colors.primaryGradientEnd]}
-      style={CommonStyles.root}>
+      style={CommonStyles.root}
+    >
       <Text style={{ textAlign: 'center' }}>
         {t('total')}: {users.length}
       </Text>
@@ -70,7 +73,8 @@ const Users = function ({ componentId }) {
             tobBarBackgroundColor={Colors.primary}
             tobBarTitleColor="#fff"
             tobBarTitleText={`${t('sub_users')}(${item.user.fullName}})`}
-            passProps={{ act: item.user }}>
+            passProps={{ act: item.user }}
+          >
             <View style={{ flexDirection: 'row' }}>
               <View>
                 <Image
@@ -85,7 +89,6 @@ const Users = function ({ componentId }) {
                 <Text style={{ width: '100%' }}>
                   {t('name')}: {item.user.fullName}
                 </Text>
-                <Text>{`${t('sex')}: ${t(item.person.sex)}`}</Text>
                 <Text>{`${t('born_at')}: ${item.person.birthDate}`}</Text>
                 <Text>{`${t('nni')}: ${item.person.NNI}`}</Text>
                 <Text>{`${t('added')}: ${item.user.addedCount || 0}`}</Text>
@@ -105,7 +108,8 @@ const Users = function ({ componentId }) {
               margin: 10,
               alignItems: 'center',
               justifyContent: 'center',
-            }}>
+            }}
+          >
             <Text style={{ color: 'red' }}>{t('no_users')}</Text>
           </View>
         )}
@@ -124,7 +128,8 @@ const Users = function ({ componentId }) {
         componentId={componentId}
         tobBarTitleText={t('add_user')}
         tobBarBackgroundColor={Colors.primary}
-        passProps={{ user }}>
+        passProps={{ user }}
+      >
         <Text>{t('add_user')}</Text>
       </ThrottledNavigateButton>
     </LinearGradient>
@@ -146,9 +151,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   imageResult: {
-    height: 100,
-    width: 130,
+    height: 75,
+    width: 55,
     alignItems: 'center',
     justifyContent: 'center',
+    marginHorizontal: 3,
   },
 });

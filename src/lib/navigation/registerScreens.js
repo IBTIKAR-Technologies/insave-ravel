@@ -46,9 +46,9 @@ import CorrectMenage from 'src/components/CorrectMenage';
 import Identifications from 'src/components/Identifications';
 import EditMenageSuper from 'src/components/EditMenageSuper';
 import Users from 'src/components/Users';
-import WrappedComponent from './WrappedComponent';
 import AddUser from 'src/components/AddUser';
 import SubUsers from 'src/components/SubActs';
+import WrappedComponent from './WrappedComponent';
 
 export const screens = [
   { name: 'User', component: User },

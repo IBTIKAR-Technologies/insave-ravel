@@ -31,6 +31,7 @@
   "phone": "Nom d'utilisateur",
   "password": "Mot de passe",
   "error": "Erreur",
+  "scan_error": "Données incomplètes. Veuillez réessayer!",
   "menage_no_cnam": "Ce numéro de téléphone est inconnu!",
   "cam_permission_problem": "Merci d'autoriser l'application à démarrer la caméra",
   "start_scan": "Commencer le scan",

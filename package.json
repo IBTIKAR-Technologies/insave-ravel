@@ -24,7 +24,7 @@
     "appcenter": "4.4.5",
     "appcenter-analytics": "4.4.5",
     "appcenter-crashes": "4.4.5",
-    "blinkid-react-native": "^5.17.0",
+    "blinkid-react-native": "5.7.2",
     "date-fns": "^2.28.0",
     "formik": "^2.2.9",
     "i18next": "^21.6.14",

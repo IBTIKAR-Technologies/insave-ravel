@@ -61,6 +61,8 @@ export const user_personSchema = {
   properties: {
     NNI: 'string?',
     birthDate: 'string?',
+    nationality: 'string?',
+    documentNumber: 'string?',
     firstName: 'string?',
     image: 'string?',
     lastName: 'string?',

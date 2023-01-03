@@ -27,21 +27,37 @@ const AddUser = function ({ componentId, user }) {
   const formValidationSchema = useMemo(() => val(t), [t]);
 
   const thedata = useMemo(() => {
-    const data = schema(t);
+    const data = schema(t, user?.role, user?.categorie);
     return data;
-  }, [t]);
+  }, [t, user]);
 
   const savePerson = info => {
     setCard(info);
   };
 
+  const actualInitialValues = useMemo(() => {
+    const data = { ...initialValues };
+    if (user?.categorie) {
+      data.categorie = user.categorie;
+    }
+    if (user?.communeId) {
+      data.communeId = user.communeId;
+      data.moughataaId = user.moughataaId;
+      data.wilayaId = user.wilayaId;
+    }
+    return data;
+  }, [user]);
+
   console.log('user', user);
   console.log('card', card);
 
   const submitTheForm = async form => {
-    const exists = global.realms[0].objects('person').filtered(`NNI == "${card.NNI}"`);
-    const uExists = global.realms[1].objects('user').filtered(`username == "${form.username}"`);
-    if (exists.length > 0 || uExists.length > 0) {
+    const personExists = global.realms[0].objects('person').filtered(`NNI == "${card.NNI}"`);
+    let uExists;
+    if (personExists.length > 0) {
+      uExists = global.realms[1].objects('user').filtered(`personId == oid(${personExists[0]._id.toString()})`);
+    }
+    if (uExists && uExists.length > 0) {
       Alert.alert(t('error'), t('user_exists'));
       return;
     }
@@ -57,12 +73,7 @@ const AddUser = function ({ componentId, user }) {
           syncedAt: null,
           createdById: new ObjectId(user._id),
           userId: user._id,
-          image: card.faceImage,
-          firstName: card.firstName,
-          lastName: card.lastName,
-          sex: card.sex,
-          NNI: card.NNI,
-          birthDate: card.birthDate,
+          ...card,
         });
       });
     } catch (er) {
@@ -70,6 +81,11 @@ const AddUser = function ({ componentId, user }) {
       console.log('error1', er);
     }
     try {
+      if (form.communeId) {
+        form.communeId = new ObjectId(form.communeId);
+        form.moughataaId = new ObjectId(form.moughataaId);
+        form.wilayaId = new ObjectId(form.wilayaId);
+      }
       global.realms[1].write(() => {
         global.realms[1].create('user', {
           ...form,
@@ -179,7 +195,7 @@ const AddUser = function ({ componentId, user }) {
               </View>
             </View>
             <Formik
-              initialValues={initialValues}
+              initialValues={actualInitialValues}
               onSubmit={confrimAddUser}
               validationSchema={formValidationSchema}
               validateOnMount={false}

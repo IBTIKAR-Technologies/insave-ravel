@@ -1,4 +1,6 @@
-import { View, Text, StyleSheet, Image } from 'react-native';
+import {
+  View, Text, StyleSheet, Image,
+} from 'react-native';
 import React, { useEffect, useState, useCallback } from 'react';
 import { Colors } from 'src/styles';
 import { wp, hp } from 'src/lib/utilities';
@@ -34,8 +36,12 @@ const HistoryCiblage = function ({ componentId }) {
     <View
       style={{
         width: '100%',
-        flex: 5,
-      }}>
+        flex: 1,
+      }}
+    >
+      <Text style={{ textAlign: 'center' }}>
+        {t('total')}: {menages.length}
+      </Text>
       <FlashList
         data={menages}
         showsVerticalScrollIndicator={false}
@@ -46,13 +52,14 @@ const HistoryCiblage = function ({ componentId }) {
             style={{
               backgroundColor: '#fff',
               borderRadius: 10,
-              elevation: 10,
+              elevation: 5,
               alignSelf: 'center',
               padding: 10,
-              marginVertical: 10,
-              width: '90%',
-            }}>
-            <View style={{ flexDirection: 'row' }}>
+              marginVertical: 5,
+              width: '95%',
+            }}
+          >
+            <View style={{ flexDirection: 'row', justifyContent: "flex-start" }}>
               <View style={styles.imageContainer}>
                 <Image
                   resizeMode="contain"
@@ -88,6 +95,8 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 10,
     marginHorizontal: 20,
     padding: 5,
+  },
+  imageContainer: {
   },
   title: {
     fontSize: 18,
@@ -226,9 +235,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   imageResult: {
-    height: 100,
-    width: 130,
+    height: 75,
+    width: 55,
     alignItems: 'center',
     justifyContent: 'center',
+    marginHorizontal: 3,
   },
 });

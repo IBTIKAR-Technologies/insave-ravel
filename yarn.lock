@@ -3095,10 +3095,10 @@ bl@^4.0.3, bl@^4.1.0:
     inherits "^2.0.4"
     readable-stream "^3.4.0"
 
-blinkid-react-native@^5.17.0:
-  version "5.17.0"
-  resolved "https://registry.yarnpkg.com/blinkid-react-native/-/blinkid-react-native-5.17.0.tgz#5de49df7b4c68d542a02ab46e57b4864e6555a9d"
-  integrity sha512-BKxXWTGhBvx98pvTlSFHUz0ZiqmrJIPEA/0TMGHMISGJyFydFxXvKD6dnQxhmJt/SSjDZl8K3BJcMvHwezWadQ==
+blinkid-react-native@5.7.2:
+  version "5.7.2"
+  resolved "https://registry.yarnpkg.com/blinkid-react-native/-/blinkid-react-native-5.7.2.tgz#b33fdf867f9d0161c309375824edda08c8b2f629"
+  integrity sha512-sG5gxd7RsI0VfectYj37bBzdgCDtM6boN46W+Pc5cZ7p3gW7+BEEv2stWu85Y62+QQY2a0z8ojHYVCCkkDuE2A==
 
 boolbase@^1.0.0, boolbase@~1.0.0:
   version "1.0.0"
