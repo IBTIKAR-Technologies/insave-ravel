@@ -65,15 +65,15 @@ const GeneralInfoModal = ({ user }) => {
     let mgs = [];
     let cocs = [];
     let zns = [];
-    if (user.roleId === controllerRoleId) {
-      const cmngs = global.realms[0].objects('menage').filtered(`enqueterId == oid(${user._id})`);
+    if (user?.roleId === controllerRoleId) {
+      const cmngs = global.realms[0].objects('menage').filtered(`enqueterId == oid(${user?._id})`);
       setContMenages(cmngs);
     }
-    if (user.roleId === supervisorRoleId || user.roleId === controllerRoleId) {
+    if (user?.roleId === supervisorRoleId || user?.roleId === controllerRoleId) {
       mgs = await fetchMenagesForSupervisor(user);
       cocs = await fetchConcessionsForSupervisor(user);
       zns = await fetchZones(user);
-    } else if (user.roleId === enqueterRoleId) {
+    } else if (user?.roleId === enqueterRoleId) {
       mgs = await fetchMenages(user);
       cocs = await fetchConcessionsAdded(user);
     }
@@ -94,14 +94,16 @@ const GeneralInfoModal = ({ user }) => {
           alignItems: 'center',
           borderRadius: 50,
           overflow: 'hidden',
-        }}>
+        }}
+      >
         <TouchableNativeFeedback
           onPress={() => {
             setRippleOverflow(!rippleOverflow);
             setOpen(true);
             fadeInAnimation();
           }}
-          background={TouchableNativeFeedback.Ripple('rgba(00000007)', rippleOverflow)}>
+          background={TouchableNativeFeedback.Ripple('rgba(00000007)', rippleOverflow)}
+        >
           <View style={{ flex: 1, padding: 10 }}>
             <Feather name="info" size={20} color="white" />
           </View>
@@ -112,7 +114,8 @@ const GeneralInfoModal = ({ user }) => {
         transparent
         visible={open}
         style={{ zIndex: 1100 }}
-        onRequestClose={() => {}}>
+        onRequestClose={() => { }}
+      >
         <Animated.View style={[styles.closeButton1, { opacity: fadeAnim }]}>
           <TouchableOpacity
             style={{ width: '100%', height: '100%' }}
@@ -132,13 +135,13 @@ const GeneralInfoModal = ({ user }) => {
               <ActivityIndicator />
             ) : (
               <>
-                {user.roleId === enqueterRoleId && (
+                {user?.roleId === enqueterRoleId && (
                   <View style={[styles.container, { width: wp(80) }]}>
                     <Text>
                       {t('commune')}:{' '}
                       {language === 'fr'
-                        ? user.commune.namefr_rs || user.commune.namefr_ons
-                        : user.commune.namear}
+                        ? user?.commune.namefr_rs || user?.commune.namefr_ons
+                        : user?.commune.namear}
                     </Text>
                     <Text>
                       {t('zone')}:{' '}
@@ -152,25 +155,24 @@ const GeneralInfoModal = ({ user }) => {
                     </View>
                   </View>
                 )}
-                {(user.roleId === controllerRoleId || user.roleId === supervisorRoleId) && (
+                {(user?.roleId === controllerRoleId || user?.roleId === supervisorRoleId) && (
                   <View style={[styles.container, { width: wp(80) }]}>
                     <Text>
                       {t('moughataa')}:{' '}
                       {language === 'fr'
-                        ? user.moughataa.namefr_rs || user.moughataa.namefr_ons
-                        : user.moughataa.namear}
+                        ? user?.moughataa.namefr_rs || user?.moughataa.namefr_ons
+                        : user?.moughataa.namear}
                     </Text>
                     <View style={styles.flexRow}>
                       <Text>{`${t('total_targeted')}: ${menages.length}`}</Text>
-                      {user.roleId === controllerRoleId && (
+                      {user?.roleId === controllerRoleId && (
                         <Text>{`${t('your_total')}: ${contMenages.length}`}</Text>
                       )}
                       <Text>{`${t('total_concessions')}: ${concessions.length}`}</Text>
                     </View>
                     <View style={styles.flexRow}>
-                      <Text>{`${t('zone_closed')}: ${
-                        zones.filter(z => z.status === 'closed').length
-                      } / ${zones.length}`}</Text>
+                      <Text>{`${t('zone_closed')}: ${zones.filter(z => z.status === 'closed').length
+                        } / ${zones.length}`}</Text>
                     </View>
                   </View>
                 )}

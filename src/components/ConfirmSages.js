@@ -1,4 +1,6 @@
-import { View, Text, BackHandler, Alert, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  View, Text, BackHandler, Alert, StyleSheet, TouchableOpacity,
+} from 'react-native';
 import React from 'react';
 import { Navigation } from 'react-native-navigation';
 import LinearGradient from 'react-native-linear-gradient';
@@ -27,7 +29,9 @@ const perms = [
 
 const ReanimatedCamera = Reanimated.createAnimatedComponent(Camera);
 
-const ConfirmSages = ({ user, componentId, localiteListComponentId, localite }) => {
+const ConfirmSages = ({
+  user, componentId, localiteListComponentId, localite,
+}) => {
   const [sages, setSages] = React.useState(localite.sages);
   const { t } = useTranslation();
   const [granted, setGranted] = React.useState(false);
@@ -40,7 +44,7 @@ const ConfirmSages = ({ user, componentId, localiteListComponentId, localite }) 
   const fetchSages = React.useCallback(async () => {
     const param = global.realms[1]
       .objects('param')
-      .filtered(`operationId == oid(${user.operationId})`);
+      .filtered(`operationId == oid(${user?.operationId})`);
     if (param.length > 0) {
       setParams(param[0]);
     }
@@ -92,8 +96,7 @@ const ConfirmSages = ({ user, componentId, localiteListComponentId, localite }) 
             listConfirmed: true,
           },
           'modified',
-        ),
-      );
+        ));
       setLoading(true);
     } catch (error) {
       console.log('eerrr', error);
@@ -138,8 +141,7 @@ const ConfirmSages = ({ user, componentId, localiteListComponentId, localite }) 
                         sagesValidated: localite.sagesValidated ? localite.sagesValidated + 1 : 1,
                       },
                       'modified',
-                    ),
-                  );
+                    ));
                   Toast.show({
                     type: 'success',
                     text1: t('success'),
@@ -178,6 +180,7 @@ const ConfirmSages = ({ user, componentId, localiteListComponentId, localite }) 
   const frameProcessor = useFrameProcessor(
     frame => {
       'worklet';
+
       const objectOcr = scanOCR(frame);
       if (scanning) {
         runOnJS(onTextRecognized)(objectOcr);
@@ -232,10 +235,10 @@ const ConfirmSages = ({ user, componentId, localiteListComponentId, localite }) 
   return (
     <LinearGradient
       colors={[Colors.primaryGradientStart, Colors.primaryGradientEnd]}
-      style={styles.root}>
-      <Text style={{ marginTop: 10 }}>{`${t('min_to_confirm')} ${localite.sagesValidated || 0} / ${
-        (params.commitePercentage * localite.sages.length) / 100
-      }`}</Text>
+      style={styles.root}
+    >
+      <Text style={{ marginTop: 10 }}>{`${t('min_to_confirm')} ${localite.sagesValidated || 0} / ${(params.commitePercentage * localite.sages.length) / 100
+        }`}</Text>
       <View style={styles.list}>
         <FlashList
           data={sages}
@@ -274,8 +277,9 @@ const ConfirmSages = ({ user, componentId, localiteListComponentId, localite }) 
                   setSelectedSage({ sage: item, index });
                 }}
                 disabled={item.validated}
-                style={item.validated ? styles.buttonDisabled : styles.button}>
-                <AntDesign name="camera" size={15} color={'#000'} />
+                style={item.validated ? styles.buttonDisabled : styles.button}
+              >
+                <AntDesign name="camera" size={15} color="#000" />
                 <Text style={{ margin: 5 }}>{t('validate')}</Text>
               </TouchableOpacity>
             </View>
@@ -283,7 +287,7 @@ const ConfirmSages = ({ user, componentId, localiteListComponentId, localite }) 
         />
       </View>
       <TouchableOpacity style={styles.closeZoneButton} onPress={() => setOpen(true)}>
-        <AntDesign name="checkcircleo" size={20} color={'#000'} />
+        <AntDesign name="checkcircleo" size={20} color="#000" />
         <Text style={styles.text}>{t('validate')}</Text>
       </TouchableOpacity>
       <>
@@ -317,7 +321,8 @@ const ConfirmSages = ({ user, componentId, localiteListComponentId, localite }) 
                   }}
                   onPress={() => {
                     setScanning(false);
-                  }}>
+                  }}
+                >
                   <AntDesign name="closecircleo" size={40} color={Colors.error} />
                 </TouchableOpacity>
                 <LottieView

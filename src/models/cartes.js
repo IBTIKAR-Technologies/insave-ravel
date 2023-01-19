@@ -121,16 +121,16 @@ export const addMenage = async (menage, user, concession, edit, oldmenage) => {
   if (!edit) {
     rest = {
       ...rest,
-      _partition: user.moughataaId.toString(),
-      wilayaId: new ObjectId(user.wilayaId),
+      _partition: user?.moughataaId.toString(),
+      wilayaId: new ObjectId(user?.wilayaId),
       moughataaId: new ObjectId(nzn.moughataaId),
       communeId: new ObjectId(nzn.communeId),
       localiteId: new ObjectId(nzn.localiteId),
       zoneId: new ObjectId(nzn._id),
       concessionId: edit ? new ObjectId(oldmenage.concessionId) : new ObjectId(concession._id),
-      enqueterId: new ObjectId(user._id),
-      operationId: new ObjectId(user.operationId),
-      controllerId: new ObjectId(user.controllerId || user._id),
+      enqueterId: new ObjectId(user?._id),
+      operationId: new ObjectId(user?.operationId),
+      controllerId: new ObjectId(user?.controllerId || user?._id),
       createdAt: date,
     };
   }
@@ -430,13 +430,13 @@ export const addLocalite = async (localite, user, edit, theOld) => {
     global.realms[0].write(() => {
       global.realms[0].create('localite', {
         _id: new ObjectId(),
-        _partition: user.moughataaId,
+        _partition: user?.moughataaId,
         createdAt: date,
         updatedAt: date,
         syncedAt: null,
         active: true,
-        wilayaId: new ObjectId(user.wilayaId),
-        moughataaId: new ObjectId(user.moughataaId),
+        wilayaId: new ObjectId(user?.wilayaId),
+        moughataaId: new ObjectId(user?.moughataaId),
         communeId: new ObjectId(localite.communeId),
         namefr_rs: localite.namefr_rs.trim(),
         namear: localite.namear.trim(),
@@ -474,17 +474,17 @@ export const addZone = async (zone, user, localite, edit, oldzone) => {
       global.realms[0].write(() => {
         global.realms[0].create('zone', {
           _id: new ObjectId(),
-          _partition: user.moughataaId,
+          _partition: user?.moughataaId,
           createdAt: date,
           updatedAt: date,
           syncedAt: null,
-          wilayaId: new ObjectId(user.wilayaId),
-          moughataaId: new ObjectId(user.moughataaId),
+          wilayaId: new ObjectId(user?.wilayaId),
+          moughataaId: new ObjectId(user?.moughataaId),
           communeId: new ObjectId(localite.communeId),
           localiteId: new ObjectId(localite._id),
           namefr: zone.namefr.trim(),
           namear: zone.namear.trim(),
-          operationId: new ObjectId(user.operationId),
+          operationId: new ObjectId(user?.operationId),
           status: 'open',
           type: 'free',
           active: true,
@@ -512,14 +512,14 @@ export const fetchMenages = async user => {
 export const fetchMenagesForSupervisor = user => {
   const menages = global.realms[0]
     .objects('menage')
-    .filtered(`operationId == oid(${user.operationId}) && moughataaId == oid(${user.moughataaId})`)
+    .filtered(`operationId == oid(${user?.operationId}) && moughataaId == oid(${user?.moughataaId})`)
     .sorted(`zoneId`, true);
   return menages;
 };
 export const fetchMenagesForController = user => {
   const menages = global.realms[0]
     .objects('menage')
-    .filtered(`controllerId == oid(${user._id})`)
+    .filtered(`controllerId == oid(${user?._id})`)
     .sorted(`zoneId`, true);
   return menages;
 };
@@ -561,7 +561,7 @@ export const fetchConcessionsAdded = async user => {
 export const fetchConcessionsForSupervisor = async user => {
   const concessions = global.realms[0]
     .objects('concession')
-    .filtered(`operationId == oid(${user.operationId}) && moughataaId == oid(${user.moughataaId})`);
+    .filtered(`operationId == oid(${user?.operationId}) && moughataaId == oid(${user?.moughataaId})`);
   return concessions;
 };
 
@@ -612,15 +612,15 @@ export const addConcession = async (concession, user, location) => {
     global.realms[0].write(() =>
       global.realms[0].create('concession', {
         _id: concessionId,
-        _partition: user.moughataaId.toString(),
+        _partition: user?.moughataaId.toString(),
         wilayaId: new ObjectId(nzn.wilayaId),
         moughataaId: new ObjectId(nzn.moughataaId),
         communeId: new ObjectId(nzn.communeId),
         localiteId: new ObjectId(nzn.localiteId),
         zoneId: new ObjectId(nzn._id),
-        enqueterId: new ObjectId(user._id),
-        operationId: new ObjectId(user.operationId),
-        controllerId: new ObjectId(user.controllerId),
+        enqueterId: new ObjectId(user?._id),
+        operationId: new ObjectId(user?.operationId),
+        controllerId: new ObjectId(user?.controllerId),
         createdAt: date,
         updatedAt: date,
         syncedAt: null,
@@ -680,7 +680,7 @@ export const fetchEnquetersForSupervisor = async user => {
   const users = global.realms[0]
     .objects('user')
     .filtered(
-      `operationId == oid(${user.operationId}) && moughataaId == oid(${user.moughataaId}) && (roleId == oid(62d562fda5fac5ffb48ef7e2) OR roleId == oid(${controllerRoleId}))`,
+      `operationId == oid(${user?.operationId}) && moughataaId == oid(${user?.moughataaId}) && (roleId == oid(62d562fda5fac5ffb48ef7e2) OR roleId == oid(${controllerRoleId}))`,
     )
     .sorted('createdAt', true);
   return users;
@@ -689,7 +689,7 @@ export const fetchEnquetersForSupervisor = async user => {
 export const fetchEnquetersForController = async user => {
   const users = global.realms[0]
     .objects('user')
-    .filtered(`controllerId == oid(${user._id}) OR _id == oid(${user._id})`)
+    .filtered(`controllerId == oid(${user?._id}) OR _id == oid(${user?._id})`)
     .sorted('createdAt', true);
   return users;
 };
@@ -697,7 +697,7 @@ export const fetchEnquetersForController = async user => {
 export const fetchZones = async user => {
   const zones = global.realms[0]
     .objects('zone')
-    .filtered(`operationId == oid(${user.operationId}) && moughataaId == oid(${user.moughataaId})`)
+    .filtered(`operationId == oid(${user?.operationId}) && moughataaId == oid(${user?.moughataaId})`)
     .sorted('namefr', true)
     .sorted('status', true);
   return zones;
@@ -707,7 +707,7 @@ export const fetchControlers = async user => {
   const controlers = global.realms[0]
     .objects('user')
     .filtered(
-      `operationId == oid(${user.operationId}) && moughataaId == oid(${user.moughataaId}) && roleId == oid(62d5635aa5fac5ffb48ef7e4)`,
+      `operationId == oid(${user?.operationId}) && moughataaId == oid(${user?.moughataaId}) && roleId == oid(62d5635aa5fac5ffb48ef7e4)`,
     )
     .sorted('createdAt', true);
   return controlers;
@@ -742,7 +742,7 @@ export const changeZoneEnqueter = async (localite, enqueterId, user, enqueters) 
     global.realms[0].write(() =>
       global.realms[0].create('zone', {
         _id: zoneid,
-        _partition: user._partition,
+        _partition: user?._partition,
         createdAt: date,
         updatedAt: date,
         syncedAt: null,
@@ -752,7 +752,7 @@ export const changeZoneEnqueter = async (localite, enqueterId, user, enqueters) 
         localiteId: new ObjectId(localite._id),
         namefr: localite.namefr_rs,
         namear: localite.namear,
-        operationId: new ObjectId(user.operationId),
+        operationId: new ObjectId(user?.operationId),
         status: 'open',
         type: 'free',
         active: true,
@@ -929,7 +929,7 @@ export const closeCommune = (supervisor, communeId) => {
 export const getQuetionaiLocalite = (user = {}) => {
   const quetionaiLocalite = global.realms[0]
     .objects('formulairelocalite')
-    .filtered(`localiteId == oid(${user.localiteId}) && operationId == oid(${user.operationId})`);
+    .filtered(`localiteId == oid(${user?.localiteId}) && operationId == oid(${user?.operationId})`);
   return quetionaiLocalite;
 };
 
@@ -943,12 +943,12 @@ export const submitLocaliteIndent = async (form, oldForm) => {
   const date = new Date();
   const rest = {
     _id: oldForm ? new ObjectId(oldForm._id) : new ObjectId(),
-    _partition: user.moughataaId,
-    wilayaId: new ObjectId(user.wilayaId),
-    moughataaId: new ObjectId(user.moughataaId),
+    _partition: user?.moughataaId,
+    wilayaId: new ObjectId(user?.wilayaId),
+    moughataaId: new ObjectId(user?.moughataaId),
     communeId: new ObjectId(zone?.communeId || loct.communeId),
     localiteId: new ObjectId(zone?.localiteId || loct._id),
-    operationId: new ObjectId(user.operationId),
+    operationId: new ObjectId(user?.operationId),
     updatedAt: date,
     syncedAt: null,
     localeName: form.localeName.trim(),
@@ -1068,7 +1068,7 @@ export const submitLocaliteSage = async (form, localite, zone = {}) => {
     sex: form.sex,
     NNI: form.NNI,
     Tel: form.Tel,
-    operationId: new ObjectId(user.operationId),
+    operationId: new ObjectId(user?.operationId),
     wilayaId: new ObjectId(localite.wilayaId),
     moughataaId: new ObjectId(localite.moughataaId),
     communeId: new ObjectId(localite.communeId),
@@ -1105,12 +1105,12 @@ export const addQuetionaireLocalite = (questionaire, user, location) => {
   const rest = {
     ...questionaire,
     _id: new ObjectId(),
-    _partition: user.moughataaId,
-    wilayaId: new ObjectId(user.wilayaId),
-    moughataaId: new ObjectId(user.moughataaId),
-    communeId: new ObjectId(user.communeId),
-    localiteId: new ObjectId(user.localiteId),
-    operationId: new ObjectId(user.operationId),
+    _partition: user?.moughataaId,
+    wilayaId: new ObjectId(user?.wilayaId),
+    moughataaId: new ObjectId(user?.moughataaId),
+    communeId: new ObjectId(user?.communeId),
+    localiteId: new ObjectId(user?.localiteId),
+    operationId: new ObjectId(user?.operationId),
     sages,
     updatedAt: date,
     createdAt: date,
@@ -1168,18 +1168,18 @@ export const addQuetionaireLocalite = (questionaire, user, location) => {
 };
 
 export const getParams = (user = {}) => {
-  console.log(user.operationId);
+  console.log(user?.operationId);
   const params = global.realms[1]
     .objects('param')
-    .filtered(`operationId == oid(${user.operationId})`);
+    .filtered(`operationId == oid(${user?.operationId})`);
   return params;
 };
 
 export const getQuota = (user = {}, commune = {}) => {
-  console.log(user.operationId);
+  console.log(user?.operationId);
   const quota = global.realms[0]
     .objects('quota')
-    .filtered(`operationId == oid(${user.operationId}) &&communeId == oid(${commune._id})`);
+    .filtered(`operationId == oid(${user?.operationId}) &&communeId == oid(${commune._id})`);
   return quota;
 };
 
@@ -1187,7 +1187,7 @@ export const fetchSelectedMenages = (user = {}) => {
   const menages = global.realms[0]
     .objects('menage')
     .filtered(
-      `localiteId == oid(${user.localiteId}) && operationId == oid(${user.operationId}) && Eligible == true && listValidated == true`,
+      `localiteId == oid(${user?.localiteId}) && operationId == oid(${user?.operationId}) && Eligible == true && listValidated == true`,
     )
     .sorted('Score', false);
   return menages;
@@ -1196,7 +1196,7 @@ export const fetchAllSelectedMenages = (user = {}) => {
   console.log('user', user);
   const menages = global.realms[0]
     .objects('menage')
-    .filtered(`operationId == oid(${user.operationId}) && Eligible == true`)
+    .filtered(`operationId == oid(${user?.operationId}) && Eligible == true`)
     .sorted('Score', false);
   return menages;
 };
@@ -1204,7 +1204,7 @@ export const fetchNonSelectedMenages = (user = {}, localiteId) => {
   console.log('user', user);
   const menages = global.realms[0]
     .objects('menage')
-    .filtered(`operationId == oid(${user.operationId}) && Eligible != true && localiteId == oid(${localiteId})`)
+    .filtered(`operationId == oid(${user?.operationId}) && Eligible != true && localiteId == oid(${localiteId})`)
     .sorted('Score', false);
   return menages;
 };
@@ -1212,7 +1212,7 @@ export const fetchNonSelectedMenages = (user = {}, localiteId) => {
 export const getAllCommuneMenages = (user, communeId) => {
   const menages = global.realms[0]
     .objects('menage')
-    .filtered(`operationId == oid(${user.operationId}) && communeId == oid(${communeId})`)
+    .filtered(`operationId == oid(${user?.operationId}) && communeId == oid(${communeId})`)
     .sorted('Score', false);
   return menages;
 };
@@ -1226,7 +1226,7 @@ export const getCommuneEnquters = (user, communeId) => {
   const enquters = global.realms[0]
     .objects('user')
     .filtered(
-      `operationId == oid(${user.operationId}) && communeId == oid(${communeId}) && roleId == oid(62d562fda5fac5ffb48ef7e2)`,
+      `operationId == oid(${user?.operationId}) && communeId == oid(${communeId}) && roleId == oid(62d562fda5fac5ffb48ef7e2)`,
     );
   return enquters;
 };

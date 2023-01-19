@@ -1,4 +1,6 @@
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import {
+  View, Text, FlatList, StyleSheet,
+} from 'react-native';
 import React, { useCallback, useState, useEffect } from 'react';
 import { Colors } from 'src/styles';
 import { wp } from 'src/lib/utilities';
@@ -38,13 +40,13 @@ const MenagesSelected = ({ user, componentId }) => {
       mngs = global.realms[0]
         .objects('menage')
         .filtered(
-          `operationId == oid(${user.operationId}) && localiteId == oid(${selectedLoc._id}) && Eligible == true && validated != true`,
+          `operationId == oid(${user?.operationId}) && localiteId == oid(${selectedLoc._id}) && Eligible == true && validated != true`,
         )
         .sorted('concessionId', false);
       cnss = global.realms[0]
         .objects('concession')
         .filtered(
-          `operationId == oid(${user.operationId}) && localiteId == oid(${selectedLoc._id})`,
+          `operationId == oid(${user?.operationId}) && localiteId == oid(${selectedLoc._id})`,
         );
     }
     setMenages(
@@ -77,7 +79,8 @@ const MenagesSelected = ({ user, componentId }) => {
   return (
     <LinearGradient
       colors={[Colors.primaryGradientStart, Colors.primaryGradientEnd]}
-      style={styles.root}>
+      style={styles.root}
+    >
       {loading ? (
         <SkeletonLoad width={wp(90) > 400 ? 400 : wp(90)} height={120} />
       ) : (
@@ -121,10 +124,9 @@ const MenagesSelected = ({ user, componentId }) => {
                   <ThrottledNavigateButton
                     componentId={componentId}
                     destination={screenNames.AddEnquete}
-                    tobBarTitleText={`${t('add_enquete')}(${
-                      language === 'ar' ? item.menage.familyNameAr : item.menage.familyNameFr
-                    })`}
-                    tobBarTitleColor={'#000'}
+                    tobBarTitleText={`${t('add_enquete')}(${language === 'ar' ? item.menage.familyNameAr : item.menage.familyNameFr
+                      })`}
+                    tobBarTitleColor="#000"
                     tobBarBackgroundColor={Colors.primary}
                     noBackButton
                     passProps={{
@@ -133,12 +135,13 @@ const MenagesSelected = ({ user, componentId }) => {
                       menagesComponentId: componentId,
                     }}
                     disabled={item.menage.surveyed}
-                    styles={item.menage.surveyed ? styles.bSurveyDisable : styles.bSurvey}>
+                    styles={item.menage.surveyed ? styles.bSurveyDisable : styles.bSurvey}
+                  >
                     <FontIncons
                       style={{ margin: 5 }}
                       name="clipboard-check"
                       size={10}
-                      color={'#000'}
+                      color="#000"
                     />
                     <Text style={{}}>{t('survey_v')}</Text>
                   </ThrottledNavigateButton>

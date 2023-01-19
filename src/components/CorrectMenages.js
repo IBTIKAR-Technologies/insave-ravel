@@ -1,4 +1,6 @@
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import {
+  View, Text, FlatList, StyleSheet,
+} from 'react-native';
 import React, { useCallback, useState, useEffect } from 'react';
 import { Colors } from 'src/styles';
 import { wp } from 'src/lib/utilities';
@@ -21,12 +23,12 @@ const CorrectMenages = ({ user, componentId }) => {
   const getData = useCallback(async () => {
     const mng = global.realms[0]
       .objects('menage')
-      .filtered(`reCible == true && enqueterId == oid(${user._id})`);
+      .filtered(`reCible == true && enqueterId == oid(${user?._id})`);
     console.log('menages', mng.length);
     setMenagesToCorrect(mng);
     const cnss = global.realms[0]
       .objects('concession')
-      .filtered(`operationId == oid(${user.operationId})`);
+      .filtered(`operationId == oid(${user?.operationId})`);
     setConcessions(cnss);
     setLoading(false);
   }, [user]);
@@ -47,14 +49,14 @@ const CorrectMenages = ({ user, componentId }) => {
   return (
     <LinearGradient
       colors={[Colors.primaryGradientStart, Colors.primaryGradientEnd]}
-      style={styles.root}>
+      style={styles.root}
+    >
       {loading ? (
         <SkeletonLoad width={wp(90) > 400 ? 400 : wp(90)} height={120} />
       ) : (
         <>
-          <Text style={{ margin: 10 }}>{`${t('menages_to_survey')}: ${
-            menagesToCorrect.length
-          }`}</Text>
+          <Text style={{ margin: 10 }}>{`${t('menages_to_survey')}: ${menagesToCorrect.length
+            }`}</Text>
           <FlatList
             data={menagesToCorrect.slice(0, 10)}
             style={styles.list}
@@ -62,9 +64,7 @@ const CorrectMenages = ({ user, componentId }) => {
             showsHorizontalScrollIndicator={false}
             keyExtractor={d => d._id}
             renderItem={({ item }) => {
-              const menageConcession = concessions.find(c => {
-                return String(c._id) === String(item.concessionId);
-              });
+              const menageConcession = concessions.find(c => String(c._id) === String(item.concessionId));
 
               return (
                 <View style={styles.concession}>
@@ -98,10 +98,9 @@ const CorrectMenages = ({ user, componentId }) => {
                     <ThrottledNavigateButton
                       componentId={componentId}
                       destination={screenNames.CorrectMenage}
-                      tobBarTitleText={`${t('mcorrect')}(${
-                        language === 'ar' ? item.familyNameAr : item.familyNameFr
-                      })`}
-                      tobBarTitleColor={'#000'}
+                      tobBarTitleText={`${t('mcorrect')}(${language === 'ar' ? item.familyNameAr : item.familyNameFr
+                        })`}
+                      tobBarTitleColor="#000"
                       tobBarBackgroundColor={Colors.primary}
                       noBackButton
                       passProps={{
@@ -111,12 +110,13 @@ const CorrectMenages = ({ user, componentId }) => {
                         concession: menageConcession,
                       }}
                       disabled={item.surveyed}
-                      styles={item.surveyed ? styles.bSurveyDisable : styles.bSurvey}>
+                      styles={item.surveyed ? styles.bSurveyDisable : styles.bSurvey}
+                    >
                       <Icons
                         style={{ margin: 5 }}
                         name="clipboard-pencil"
                         size={12}
-                        color={'#000'}
+                        color="#000"
                       />
                       <Text style={{}}>{t('mcorrect')}</Text>
                     </ThrottledNavigateButton>

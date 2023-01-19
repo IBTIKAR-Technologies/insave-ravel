@@ -17,7 +17,7 @@ const QuestionaireLocalite = function ({ user, componentId, selectedLocalite }) 
   const [localite, setLocalite] = useState(null);
 
   const initialize = useCallback(async () => {
-    if (user.roleId === enqueterRoleId || user.roleId === controllerRoleId) {
+    if (user?.roleId === enqueterRoleId || user?.roleId === controllerRoleId) {
       let zone = await AsyncStorage.getItem('selectedZone');
       zone = JSON.parse(zone);
       const lcal = global.realms[0]
@@ -27,7 +27,7 @@ const QuestionaireLocalite = function ({ user, componentId, selectedLocalite }) 
         setLocalite(lcal[0]);
       }
     }
-    if (user.roleId === supervisorRoleId) {
+    if (user?.roleId === supervisorRoleId) {
       let suplocalite = await AsyncStorage.getItem('selectLocaliteSuper');
       suplocalite = JSON.parse(suplocalite);
       const lcal = global.realms[0]
@@ -55,7 +55,8 @@ const QuestionaireLocalite = function ({ user, componentId, selectedLocalite }) 
   return (
     <LinearGradient
       colors={[Colors.primaryGradientStart, Colors.primaryGradientEnd]}
-      style={styles.root}>
+      style={styles.root}
+    >
       <View style={{ marginTop: 100 }}>
         <Text style={styles.title}>{t('formulaire_localite')}</Text>
         {!localite && (
@@ -66,7 +67,8 @@ const QuestionaireLocalite = function ({ user, componentId, selectedLocalite }) 
             tobBarBackgroundColor={Colors.primary}
             passProps={{ localite, selectedLocalite }}
             tobBarTitleColor="#fff"
-            tobBarTitleText={t('identify')}>
+            tobBarTitleText={t('identify')}
+          >
             <Text style={{}}>{t('identify')}</Text>
           </ThrottledNavigateButton>
         )}
@@ -80,7 +82,8 @@ const QuestionaireLocalite = function ({ user, componentId, selectedLocalite }) 
               tobBarBackgroundColor={Colors.primary}
               passProps={{ localite, selectedLocalite }}
               tobBarTitleColor="#fff"
-              tobBarTitleText={t('identify')}>
+              tobBarTitleText={t('identify')}
+            >
               <Text style={{}}>{t('identify')}</Text>
             </ThrottledNavigateButton>
             <ThrottledNavigateButton
@@ -90,7 +93,8 @@ const QuestionaireLocalite = function ({ user, componentId, selectedLocalite }) 
               tobBarBackgroundColor={Colors.primary}
               passProps={{ localite }}
               tobBarTitleColor="#fff"
-              tobBarTitleText={t('infras')}>
+              tobBarTitleText={t('infras')}
+            >
               <Text style={{}}>{t('infras')}</Text>
             </ThrottledNavigateButton>
             <ThrottledNavigateButton
@@ -100,7 +104,8 @@ const QuestionaireLocalite = function ({ user, componentId, selectedLocalite }) 
               tobBarBackgroundColor={Colors.primary}
               passProps={{ localite, user }}
               tobBarTitleColor="#fff"
-              tobBarTitleText={t('sages')}>
+              tobBarTitleText={t('sages')}
+            >
               <Text style={{}}>{t('sages')}</Text>
             </ThrottledNavigateButton>
           </>

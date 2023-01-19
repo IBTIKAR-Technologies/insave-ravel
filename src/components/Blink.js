@@ -16,10 +16,10 @@ import { Colors } from 'src/styles';
 
 const licenseKey = Platform.select({
   // iOS license key for applicationID: com.microblink.sample
-  ios: 'sRwAAAEVY29tLm1pY3JvYmxpbmsuc2FtcGxl1BIcP4FpSuS/38KlOx6IMzWbmaGEGiaL7eNSyKVwZjeUMW3Ax8aKh+quw2aZ4K4wKk+HtsAqjaGiGJSKWfeqZ/hXXpX3Kd7PRq/86AF3lpVWOZPN6FzUB6FVm7jYfVBUag4hYYxvq70616zMDQyaAItml02PvEL8OKbKbBxEYmVzBVpq3ew4JoHyRAaOJQfc9WEKrP4HYd8q4s15+HB/KO24IUVBabZggHMj2hOyAEM7p9dWpA/Q+n6C49w35xLfmcJrjSP0qE25bdTUMMEwhu6xiYmYdtMrqJkwCEIjzEQ04bEB3XWskZl3+AD5kUQH8qyhuEELR/mvbmvwxMBpwpM=',
+  ios: 'sRwAAAELUkFWRUxJTlNBVkU8h2CKaU91oU7gbVtU+ejVL6MXAhdKNqEYwVu/T8AKSjaZNyrTVenGUuYH0YAJPB8XJpi+r/PeNWpCKVj2UJyFWZIvpJNyLXi+F+aXe4JfGkG/bMcwuOrNs4HWuMSlZrRgQlftx74tuobP6GjCE/oEAvvTksqsl+VZRJT9qHEgZkKSvFq16ka7OR24FPLoE9lscnGR44mrmW/kehu30z+NFHpXsgjJZCTLT3zQ01E=',
   // android license key for applicationID: com.microblink.sample
   android:
-    'sRwAAAAUY29tLmlidC5yYXZlbC5pbnNhdmVPbdVYuJeAHMeHyBCkSnMeQZZC/u6ti32CI43SzEpkzXslgZCKJyGwiEuMAYIi/HIU7DRx8oPR7WKZ2XyY3kzfSXdQV1nCnU3CwJYzc5Qv042ChPwu+267bgBoB7LaQlaCt9mJcL2OBKccTSlfYXrVPaudkg9bSe1O9JMUe2Iu53MunsIR+aXGpcUaLapTcpz/W/ugN2YPW5qp1LAsethcpY72oXHbNvuYJsKLzw==',
+    'sRwAAAAUY29tLmlidC5yYXZlbC5pbnNhdmVPbdVYuJeAHMeHyBCkel+11lpsolUiU9yCM9tXJl7/TzLXOei6S74SLjBpuBiHluIX34TXe3ntqV/ZUlBaRzZtpb1PIoLMKLuBnDkMAeE8nhfMtHxopmzlKISiT2tA/swyp6GZ3RzODMyGNNz/KVXWrS/ZZO3H1rKSrXInfOmUg+W8IteR1blycGkRZSstDh5VS+b0LEQSbpIz7XOCe/YRbY3edlNdQ59Ve+z7aJQ=',
 });
 
 const renderIf = function (condition, content) {
@@ -166,14 +166,20 @@ export default class Sample extends Component {
     console.log('state', this.state);
     return (
       <View style={styles.container}>
-        <Text style={styles.label}>{this.props.text ? this.props.text : this.props.t('scan')}</Text>
-        <View style={styles.buttonContainer}>
-          <Button
-            onPress={this.scan.bind(this)}
-            title={this.props.t('scan')}
-            color={Colors.secondary}
-          />
-        </View>
+        {
+          !this.state.showImageFace && (
+            <>
+              <Text style={styles.label}>{this.props.text ? this.props.text : this.props.t('scan')}</Text>
+              <View style={styles.buttonContainer}>
+                <Button
+                  onPress={this.scan.bind(this)}
+                  title={this.props.t('scan')}
+                  color={Colors.secondary}
+                />
+              </View>
+            </>
+          )
+        }
         <ScrollView automaticallyAdjustContentInsets={false} scrollEventThrottle={200}>
           {this.state.showImageFace && (
             <View
@@ -229,6 +235,7 @@ export default class Sample extends Component {
                       sex: '',
                     },
                     showImageFace: false,
+                    resultImageFace: '',
                   });
                 }}
               >

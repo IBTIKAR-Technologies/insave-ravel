@@ -40,16 +40,17 @@ const SeeQuotasLocalites = ({ commune }) => {
   return (
     <LinearGradient
       colors={[Colors.primaryGradientStart, Colors.primaryGradientEnd]}
-      style={styles.root}>
+      style={styles.root}
+    >
       <View style={styles.list}>
         <FlashList
           data={localites}
           renderItem={({ item }) => {
             const locQuota = menages.filtered(
-              `localiteId == oid(${item._id}) && operationId == oid(${user.operationId})`,
+              `localiteId == oid(${item._id}) && operationId == oid(${user?.operationId})`,
             );
             const locQuotaLeft = questionaire.filtered(
-              `localiteId == oid(${item._id}) && operationId == oid(${user.operationId})`,
+              `localiteId == oid(${item._id}) && operationId == oid(${user?.operationId})`,
             )[0];
             return (
               <View style={styles.localite}>

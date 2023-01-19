@@ -37,11 +37,11 @@ const FinalSelection = ({ componentId, localiteListComponentId, localite, user }
   console.log('nonSelectedMenages.length <= leftForSelection.length,', nonSelectedMenages.length);
   console.log('nonSelectedMenages.length <= leftForSelection.length,', leftForSelection.length);
   const getAllData = React.useCallback(async () => {
-    if (!user._id) return;
+    if (!user?._id) return;
     const slctdMngs = global.realms[0]
       .objects('menage')
       .filtered(
-        `localiteId == oid(${localite.localiteId}) && operationId == oid(${user.operationId}) && Eligible == true`,
+        `localiteId == oid(${localite.localiteId}) && operationId == oid(${user?.operationId}) && Eligible == true`,
       )
       .sorted('zoneId', true);
     const mngsSys = slctdMngs.filtered(`selectedBySys == true`);
@@ -194,7 +194,7 @@ const FinalSelection = ({ componentId, localiteListComponentId, localite, user }
                 size={40}
                 color={
                   (currentExclutions >= maxExclutions && item.selectedBySys) ||
-                  nonSelectedMenages.length <= leftForSelection.length
+                    nonSelectedMenages.length <= leftForSelection.length
                     ? '#C6475650'
                     : Colors.error
                 }

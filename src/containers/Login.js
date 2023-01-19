@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Keyboard, StyleSheet, View, Text } from 'react-native';
+import {
+  Keyboard, StyleSheet, View, Text,
+} from 'react-native';
 import Logo from 'src/components/Logo';
 import FormLogin from 'src/components/FormLogin';
 import { Colors } from 'src/styles';
@@ -7,6 +9,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import Language from 'src/components/Language';
 import SplashScreen from 'react-native-splash-screen';
 import { Navigation } from 'react-native-navigation';
+import UpdateStatus from 'src/lib/getUpdateStatus';
 
 const Login = function ({ componentId }) {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
@@ -44,7 +47,9 @@ const Login = function ({ componentId }) {
   return (
     <LinearGradient
       colors={[Colors.primaryGradientStart, Colors.primaryGradientEnd]}
-      style={styles.root}>
+      style={styles.root}
+    >
+      <UpdateStatus />
       <Logo />
       <FormLogin />
       {!isKeyboardVisible && <Language />}

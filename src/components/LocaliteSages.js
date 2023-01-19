@@ -1,4 +1,6 @@
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import {
+  View, Text, FlatList, StyleSheet,
+} from 'react-native';
 import React, { useState, useEffect, useCallback } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Navigation } from 'react-native-navigation';
@@ -26,7 +28,7 @@ const LocaliteSages = ({ componentId, localite, user }) => {
       const sg = global.realms[0]
         .objects('sage')
         .filtered(
-          `localiteId == oid(${localite.localiteId}) && operationId == oid(${user.operationId})`,
+          `localiteId == oid(${localite.localiteId}) && operationId == oid(${user?.operationId})`,
         );
       setSages(sg);
     }
@@ -34,7 +36,7 @@ const LocaliteSages = ({ componentId, localite, user }) => {
       const zn = global.realms[0]
         .objects('zone')
         .filtered(
-          `localiteId == oid(${localite.localiteId}) && operationId == oid(${user.operationId})`,
+          `localiteId == oid(${localite.localiteId}) && operationId == oid(${user?.operationId})`,
         );
       const sg = global.realms[0].objects('sage').filtered(`zoneId == oid(${zn[0]._id})`);
       console.log(zn[0]._id);
@@ -77,7 +79,8 @@ const LocaliteSages = ({ componentId, localite, user }) => {
   return (
     <LinearGradient
       colors={[Colors.primaryGradientStart, Colors.primaryGradientEnd]}
-      style={styles.root}>
+      style={styles.root}
+    >
       {zones.length > 0 && (
         <View style={[styles.flexRow, { width: wp(80) > 400 ? 400 : wp(80) }]}>
           <Text style={{ fontSize: 18, alignSelf: 'center' }}>{t('zone')}: </Text>
@@ -86,7 +89,7 @@ const LocaliteSages = ({ componentId, localite, user }) => {
               placeholder={{}}
               onValueChange={updateZone}
               value={selectedZone}
-              items={zones.map(z => ({ label: `${z['name' + language]}`, value: String(z._id) }))}
+              items={zones.map(z => ({ label: `${z[`name${language}`]}`, value: String(z._id) }))}
               style={pickerSelectStyles}
             />
           </View>
@@ -102,7 +105,8 @@ const LocaliteSages = ({ componentId, localite, user }) => {
             tobBarTitleColor="#fff"
             tobBarTitleText={t('add_membre')}
             passProps={{ zone: selectedZone, localite }}
-            noBackButton>
+            noBackButton
+          >
             <Text style={styles.buttonText}>{t('add_membre')}</Text>
           </ThrottledNavigateButton>
         </View>
@@ -145,7 +149,8 @@ const LocaliteSages = ({ componentId, localite, user }) => {
             tobBarTitleText={t('add_membre')}
             styles={styles.secondButton}
             passProps={{ zone: selectedZone, localite }}
-            noBackButton>
+            noBackButton
+          >
             <Text style={styles.buttonText}>{t('add_membre')}</Text>
           </ThrottledNavigateButton>
         </>

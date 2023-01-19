@@ -32,7 +32,7 @@ const startScreens = () => {
       registerScreens();
       if (isLoggedIn) {
         (async () => {
-          await requestPermissions(() => {}, perms);
+          await requestPermissions(() => { }, perms);
           await RNFS.mkdir(realmPath);
           startDataLoaderScreens();
         })();

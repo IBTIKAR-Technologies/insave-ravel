@@ -10,6 +10,7 @@ const screenNames = {
   Scan: 'Scan',
   Ciblage: 'Ciblage',
   History: 'History',
+  UnitesLiees: 'UnitesLiees',
   Listes: 'Listes',
   ViewListe: 'ViewListe',
   Details: 'Details',

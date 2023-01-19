@@ -1,22 +1,28 @@
 import {
-  View, Text, StyleSheet, Image,
+  View, Text, StyleSheet, Image, Alert,
 } from 'react-native';
 import React, { useEffect, useState, useCallback } from 'react';
 import { Colors } from 'src/styles';
 import { wp, hp } from 'src/lib/utilities';
+import { ObjectId } from 'bson';
 import { useTranslation } from 'react-i18next';
 import { Navigation } from 'react-native-navigation';
 import { FlashList } from '@shopify/flash-list';
 import i18next from 'i18next';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const HistoryCiblage = function ({ componentId }) {
   const { t } = useTranslation();
   const { language } = i18next;
+  const [user, setUser] = useState({});
   const [menages, setMnages] = useState([]);
 
   const initialize = useCallback(async () => {
-    const mngs = global.realms[0].objects('person');
+    let userData = await AsyncStorage.getItem('userData');
+    userData = JSON.parse(userData);
+    const mngs = userData?.role !== "actniv3" && userData?.categorie === "parti" ? [] : global.realms[0].objects('person').sorted('createdAt', true);
     setMnages(mngs);
+    setUser(userData);
   }, []);
 
   useEffect(() => {
@@ -27,6 +33,7 @@ const HistoryCiblage = function ({ componentId }) {
       },
     };
     const unsubscribe = Navigation.events().registerComponentListener(listener, componentId);
+    initialize();
     return () => {
       unsubscribe.remove();
     };
@@ -66,14 +73,14 @@ const HistoryCiblage = function ({ componentId }) {
                   source={{
                     uri: item.image,
                   }}
-                  style={styles.imageResult}
+                  style={[styles.imageResult, item.syncedAt ? {} : styles.nosync]}
                 />
               </View>
               <View>
                 <Text style={{ width: '100%' }}>
                   {t('name')}: {item.firstName} {item.lastName}
                 </Text>
-                <Text>{`${t('sex')}: ${t(item.sex)}`}</Text>
+                {user?.categorie === "initiative" ? <Text>{`${t('commune')}: ${item?.communeId ? global.realms[1].objectForPrimaryKey("commune", item?.communeId)?.namefr_rs : t("undefined")}`}</Text> : <Text>{`${t('sex')}: ${t(item.sex)}`}</Text>}
                 <Text>{`${t('born_at')}: ${item.birthDate}`}</Text>
                 <Text>{`${t('nni')}: ${item.NNI}`}</Text>
               </View>
@@ -240,5 +247,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginHorizontal: 3,
+  },
+  nosync: {
+    borderWidth: 1,
+    borderColor: "red",
   },
 });

@@ -1,4 +1,6 @@
-import { View, Text, StyleSheet, Alert, TouchableOpacity } from 'react-native';
+import {
+  View, Text, StyleSheet, Alert, TouchableOpacity,
+} from 'react-native';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -50,8 +52,8 @@ const Ciblage = function ({ componentId }) {
       setAllLocalites(['', ...JSON.parse(JSON.stringify(localites))]);
     }
     if (
-      (parsed.roleId === enqueterRoleId || parsed.roleId === controllerRoleId) &&
-      !parsed.zonesIds
+      (parsed.roleId === enqueterRoleId || parsed.roleId === controllerRoleId)
+      && !parsed.zonesIds
     ) {
       return;
     }
@@ -252,7 +254,8 @@ const Ciblage = function ({ componentId }) {
   return (
     <LinearGradient
       colors={[Colors.primaryGradientStart, Colors.primaryGradientEnd]}
-      style={styles.root}>
+      style={styles.root}
+    >
       {(user?.roleId === enqueterRoleId || user?.roleId === controllerRoleId) && (
         <View>
           {selectedZone && (
@@ -276,8 +279,8 @@ const Ciblage = function ({ componentId }) {
             {t('zone_not_active')}
           </Text>
         ) : null}
-        {(user?.roleId === enqueterRoleId || user?.roleId === controllerRoleId) &&
-          (selectZone || allZonesClosed) && (
+        {(user?.roleId === enqueterRoleId || user?.roleId === controllerRoleId)
+          && (selectZone || allZonesClosed) && (
             <>
               <Text style={{ marginTop: 20 }}>{t('select_zone')}</Text>
               <View style={styles.container2}>
@@ -287,28 +290,28 @@ const Ciblage = function ({ componentId }) {
                   items={
                     allZonesClosed
                       ? [
-                          ...zones.map(z => ({
-                            label: language === 'fr' ? z.namefr : z.namear,
-                            value: z._id,
-                          })),
-                        ]
+                        ...zones.map(z => ({
+                          label: language === 'fr' ? z.namefr : z.namear,
+                          value: z._id,
+                        })),
+                      ]
                       : [
-                          { label: '', value: '' },
-                          ...zones.map(z => ({
-                            label: language === 'fr' ? z.namefr : z.namear,
-                            value: z._id,
-                          })),
-                        ]
+                        { label: '', value: '' },
+                        ...zones.map(z => ({
+                          label: language === 'fr' ? z.namefr : z.namear,
+                          value: z._id,
+                        })),
+                      ]
                   }
                   style={pickerSelectStyles}
                 />
               </View>
             </>
           )}
-        {(user?.roleId === enqueterRoleId || user?.roleId === controllerRoleId) &&
-          selectedZone &&
-          selectedZone.active &&
-          selectedZone.status === 'open' && (
+        {(user?.roleId === enqueterRoleId || user?.roleId === controllerRoleId)
+          && selectedZone
+          && selectedZone.active
+          && selectedZone.status === 'open' && (
             <ThrottledNavigateButton
               componentId={componentId}
               destination={screenNames.Concessions}
@@ -321,8 +324,9 @@ const Ciblage = function ({ componentId }) {
               passProps={{ user, selectedLocalite }}
               tobBarTitleColor="#fff"
               tobBarTitleText={t('add_family')}
-              disabled={ciblageEnded || !canCible || (selectedZone && !selectedZone.active)}>
-              <Entypo style={{ margin: 5 }} name="new-message" size={20} color={'#000'} />
+              disabled={ciblageEnded || !canCible || (selectedZone && !selectedZone.active)}
+            >
+              <Entypo style={{ margin: 5 }} name="new-message" size={20} color="#000" />
               <Text style={styles.normalText}>{t('add_family')}</Text>
             </ThrottledNavigateButton>
           )}
@@ -345,8 +349,9 @@ const Ciblage = function ({ componentId }) {
                   },
                 },
               },
-            ]}>
-            <Octicons style={{ margin: 5 }} name="location" size={20} color={'#000'} />
+            ]}
+          >
+            <Octicons style={{ margin: 5 }} name="location" size={20} color="#000" />
             <Text style={styles.normalText}>{t('t_localites')}</Text>
           </ThrottledNavigateButton>
         )}
@@ -368,36 +373,38 @@ const Ciblage = function ({ componentId }) {
                   },
                 },
               },
-            ]}>
-            <Octicons style={{ margin: 5 }} name="location" size={20} color={'#000'} />
+            ]}
+          >
+            <Octicons style={{ margin: 5 }} name="location" size={20} color="#000" />
             <Text style={styles.normalText}>{t('affectation')}</Text>
           </ThrottledNavigateButton>
         )}
-        {((user.roleId === enqueterRoleId && selectedZone) ||
-          user.roleId === controllerRoleId ||
-          user.roleId === supervisorRoleId) && (
-          <ThrottledNavigateButton
-            componentId={componentId}
-            destination={screenNames.HistoryCiblage}
-            passProps={{ user, setCiblageEnded, setUser }}
-            tobBarBackgroundColor={Colors.primary}
-            tobBarTitleColor="#fff"
-            tobBarTitleText={t('targeting_history')}
-            styles={styles.historyButton}
-            rightButtons={[
-              {
-                component: {
-                  name: 'GeneralInfoModal',
-                  passProps: {
-                    user,
+        {((user?.roleId === enqueterRoleId && selectedZone)
+          || user?.roleId === controllerRoleId
+          || user?.roleId === supervisorRoleId) && (
+            <ThrottledNavigateButton
+              componentId={componentId}
+              destination={screenNames.HistoryCiblage}
+              passProps={{ user, setCiblageEnded, setUser }}
+              tobBarBackgroundColor={Colors.primary}
+              tobBarTitleColor="#fff"
+              tobBarTitleText={t('targeting_history')}
+              styles={styles.historyButton}
+              rightButtons={[
+                {
+                  component: {
+                    name: 'GeneralInfoModal',
+                    passProps: {
+                      user,
+                    },
                   },
                 },
-              },
-            ]}>
-            <Octicons style={{ margin: 5 }} name="history" size={20} color={'#000'} />
-            <Text style={styles.normalText}>{t('history')}</Text>
-          </ThrottledNavigateButton>
-        )}
+              ]}
+            >
+              <Octicons style={{ margin: 5 }} name="history" size={20} color="#000" />
+              <Text style={styles.normalText}>{t('history')}</Text>
+            </ThrottledNavigateButton>
+          )}
         {user?.roleId === controllerRoleId && selectedZone && (
           <ThrottledNavigateButton
             disabled={!canCible || (selectedZone && !selectedZone.active)}
@@ -409,10 +416,11 @@ const Ciblage = function ({ componentId }) {
             componentId={componentId}
             destination={screenNames.QuestionaireLocalite}
             tobBarBackgroundColor={Colors.primary}
-            tobBarTitleColor={'#fff'}
+            tobBarTitleColor="#fff"
             tobBarTitleText={t('formulaire_localite')}
-            passProps={{ user, questionaireLocalite, selectedLocalite }}>
-            <Octicons style={{ margin: 5 }} name="location" size={20} color={'#000'} />
+            passProps={{ user, questionaireLocalite, selectedLocalite }}
+          >
+            <Octicons style={{ margin: 5 }} name="location" size={20} color="#000" />
             <Text style={styles.normalText}>{t('formulaire_localite')}</Text>
           </ThrottledNavigateButton>
         )}
@@ -447,10 +455,11 @@ const Ciblage = function ({ componentId }) {
             componentId={componentId}
             destination={screenNames.QuestionaireLocalite}
             tobBarBackgroundColor={Colors.primary}
-            tobBarTitleColor={'#fff'}
+            tobBarTitleColor="#fff"
             tobBarTitleText={t('formulaire_localite')}
-            passProps={{ user, questionaireLocalite, selectedLocalite }}>
-            <Octicons style={{ margin: 5 }} name="location" size={20} color={'#000'} />
+            passProps={{ user, questionaireLocalite, selectedLocalite }}
+          >
+            <Octicons style={{ margin: 5 }} name="location" size={20} color="#000" />
             <Text style={styles.normalText}>{t('formulaire_localite')}</Text>
           </ThrottledNavigateButton>
         ) : null}

@@ -27,79 +27,39 @@ function getObjectDiff(obj1, obj2) {
 
 export const login = async data => {
   console.log('LOGGIN IN');
-  const { phone, password } = data;
-  const username = phone.toLowerCase().trim();
   if (app.currentUser) app.currentUser.logOut();
-  const credentials = Realm.Credentials.function({ username, password });
-  let userData;
-  const body = JSON.stringify({
-    collection: 'users',
-    database: 'ravelinsave',
-    dataSource: 'taazour',
-    pipeline: [
-      {
-        $match: {
-          username,
-        },
-      },
-    ],
-  });
+  console.log('data._id', data._id);
+  const credentials = Realm.Credentials.function({ username: data._id, _id: data._id });
 
-  try {
-    const response = await fetch(
-      'https://data.mongodb-api.com/app/data-cmshj/endpoint/data/beta/action/aggregate',
-      {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          'api-key': 'Z1mK2dmkPYWTKe9tlTYAhtHvul905kqMFk01GStuwZ4u9U0vms0uf8YGg58FOITH',
-        },
-        body,
-      },
-    );
-    let json;
-    if (response.ok) {
-      json = await response.json();
-    } else {
-      console.log('error', await response.text());
-      throw new Error(i18n.t('login_error'));
-    }
-    console.log('json', json);
-    [userData] = json.documents;
-    /* if (!userData || !userData.centre) {
+  const userData = data;
+  delete userData.commune;
+  delete userData.createdBy;
+  /* if (!userData || !userData.centre) {
       console.log('YESSSS');
       throw new Error(i18n.t('user_not_pointv'));
     } */
-    console.log('NOOOOOOOOOOOOOOOO');
-    let user;
-    try {
-      user = await app.logIn(credentials);
-    } catch (error) {
-      console.log('error login', error);
-      if (error.message === 'Network request failed') {
-        throw new Error(i18n.t('login_error_internet'));
-      }
-      throw new Error(i18n.t('login_error'));
-    }
-    if (user) {
-      AsyncStorage.setItem('userData', JSON.stringify({ ...userData }));
-      Toast.show({
-        type: 'success',
-        text1: i18n.t('login_success'),
-        position: 'bottom',
-      });
-      startDataLoaderScreens();
-      return true;
-    }
-    throw new Error(i18n.t('login_error'));
+  console.log('NOOOOOOOOOOOOOOOO');
+  let user;
+  try {
+    user = await app.logIn(credentials);
   } catch (error) {
-    console.error('error mongo', error);
+    console.log('error login', error);
     if (error.message === 'Network request failed') {
       throw new Error(i18n.t('login_error_internet'));
     }
-    throw new Error(i18n.t('login_error'));
+    throw new Error(`${i18n.t('login_error')} realm error`);
   }
+  if (user) {
+    AsyncStorage.setItem('userData', JSON.stringify({ ...userData }));
+    Toast.show({
+      type: 'success',
+      text1: i18n.t('login_success'),
+      position: 'bottom',
+    });
+    startDataLoaderScreens();
+    return true;
+  }
+  throw new Error(`${i18n.t('login_error')} error final`);
 };
 
 export const logout = async () => {

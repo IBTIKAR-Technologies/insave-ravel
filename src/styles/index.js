@@ -93,7 +93,7 @@ export const Common = {
   header: title => ({
     topBar: {
       title: {
-        text: i18n.t(title),
+        text: title,
         fontSize: 18,
       },
       background: {

@@ -10,6 +10,7 @@ const ThrottledNavigateButton = ({
   componentId,
   destination,
   tobBarTitleText,
+  tobBarSubtitleText,
   tobBarTitleColor,
   tobBarBackgroundColor,
   passProps = {},
@@ -42,6 +43,9 @@ const ThrottledNavigateButton = ({
           topBar: {
             title: {
               text: tobBarTitleText,
+            },
+            subtitle: {
+              text: tobBarSubtitleText,
             },
             background: {
               color: tobBarBackgroundColor,

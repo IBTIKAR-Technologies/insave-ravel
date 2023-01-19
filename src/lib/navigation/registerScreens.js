@@ -6,6 +6,7 @@ import Login from 'src/containers/Login';
 import DataLoader from 'src/containers/DataLoader';
 import Ciblage from 'src/components/Ciblage';
 import Home from 'src/components/Home';
+import UnitesLiees from 'src/components/UnitesLiees';
 import HistoryCiblage from 'src/containers/HistoryCiblage';
 import AddConcession from 'src/components/AddConcession';
 import MenagesSelected from 'src/components/MenagesSelected';
@@ -52,6 +53,7 @@ import WrappedComponent from './WrappedComponent';
 
 export const screens = [
   { name: 'User', component: User },
+  { name: 'UnitesLiees', component: UnitesLiees },
   { name: 'Users', component: Users },
   { name: 'Home', component: Home },
   { name: 'Ciblage', component: Ciblage },

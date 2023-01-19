@@ -27,12 +27,12 @@ const Enquete = ({ user, componentId }) => {
 
   const getMenages = useCallback(async () => {
     if (selectedLocalite) return;
-    if ((user.roleId === enqueterRoleId || user.roleId === controllerRoleId) && user.zonesIds) {
+    if ((user?.roleId === enqueterRoleId || user?.roleId === controllerRoleId) && user?.zonesIds) {
       // to fetch the zone by its id
       const zns = global.realms[0]
         .objects('zone')
         .filtered(
-          `enqueterId == oid(${user._id}) && communeId == oid(${user.communeId}) && operationId == oid(${user.operationId})`,
+          `enqueterId == oid(${user?._id}) && communeId == oid(${user?.communeId}) && operationId == oid(${user?.operationId})`,
         );
       // to fetch localites forms by zone.localiteId
       const nZns = zns.map(z => `localiteId = oid(${z.localiteId})`).join(' OR ');
@@ -102,18 +102,18 @@ const Enquete = ({ user, componentId }) => {
       );
       const locFor = global.realms[0]
         .objects('formulairelocalite')
-        .filtered(`localiteId == oid(${loc}) && operationId == oid(${user.operationId})`);
+        .filtered(`localiteId == oid(${loc}) && operationId == oid(${user?.operationId})`);
       setSelectedLocalite(localites.find(l => String(l._id) === String(loc)));
       setQuestionaire(locFor[0]);
       const mngs = global.realms[0]
         .objects('menage')
         .filtered(
-          `localiteId == oid(${loc}) && operationId == oid(${user.operationId}) && Eligible == true`,
+          `localiteId == oid(${loc}) && operationId == oid(${user?.operationId}) && Eligible == true`,
         );
       const zns = global.realms[0]
         .objects('zone')
-        .filtered(`localiteId == oid(${loc}) && operationId == oid(${user.operationId})`)
-        .filtered(`enqueterId == oid(${user._id})`);
+        .filtered(`localiteId == oid(${loc}) && operationId == oid(${user?.operationId})`)
+        .filtered(`enqueterId == oid(${user?._id})`);
       AsyncStorage.setItem('selectedZonEnq', JSON.stringify(zns[0]));
       setMenages(mngs);
       setZones(zns);
@@ -149,13 +149,14 @@ const Enquete = ({ user, componentId }) => {
   return (
     <LinearGradient
       colors={[Colors.primaryGradientStart, Colors.primaryGradientEnd]}
-      style={styles.root}>
+      style={styles.root}
+    >
       <View style={styles.container}>
         <View style={styles.image}>
           <Lottie source={require('../assets/lottie/clipboardAnimation.json')} autoPlay loop />
         </View>
-        {(user.roleId === enqueterRoleId || user.roleId === controllerRoleId) &&
-          localites.length > 0 && (
+        {(user?.roleId === enqueterRoleId || user?.roleId === controllerRoleId)
+          && localites.length > 0 && (
             <>
               <Text style={{ marginTop: 20 }}>{t('select_localite')}</Text>
               <View style={styles.container2}>
@@ -172,9 +173,9 @@ const Enquete = ({ user, componentId }) => {
               </View>
             </>
           )}
-        {(user.roleId === enqueterRoleId || user.roleId === controllerRoleId) &&
-          selectedLocalite &&
-          selectedLocalite?.type === 'Urbain' && (
+        {(user?.roleId === enqueterRoleId || user?.roleId === controllerRoleId)
+          && selectedLocalite
+          && selectedLocalite?.type === 'Urbain' && (
             <>
               <Text style={{ marginTop: 5 }}>{t('select_zone')}</Text>
               <View style={styles.container2}>
@@ -191,11 +192,11 @@ const Enquete = ({ user, componentId }) => {
               </View>
             </>
           )}
-        {(user.roleId === enqueterRoleId || user.roleId === controllerRoleId) &&
-        menages.length > 0 &&
-        selectedLocalite &&
-        selectedLocalite.type === 'Rural' &&
-        !questionaire.listConfirmed ? (
+        {(user?.roleId === enqueterRoleId || user?.roleId === controllerRoleId)
+          && menages.length > 0
+          && selectedLocalite
+          && selectedLocalite.type === 'Rural'
+          && !questionaire.listConfirmed ? (
           <ThrottledNavigateButton
             componentId={componentId}
             destination={screenNames.FinalSelection}
@@ -207,18 +208,19 @@ const Enquete = ({ user, componentId }) => {
             tobBarBackgroundColor={Colors.primary}
             tobBarTitleColor="#fff"
             tobBarTitleText={t('validate_List')}
-            styles={styles.validateButton}>
-            <Octicons style={{ margin: 5 }} name="codescan-checkmark" size={20} color={'#000'} />
+            styles={styles.validateButton}
+          >
+            <Octicons style={{ margin: 5 }} name="codescan-checkmark" size={20} color="#000" />
             <Text style={styles.normalText}>{t('validate_List')}</Text>
           </ThrottledNavigateButton>
         ) : null}
-        {(user.roleId === enqueterRoleId || user.roleId === controllerRoleId) &&
-          menages.length === 0 && <Text style={styles.errorText}>{t('no_list')}</Text>}
-        {(selectedLocalite && selectedLocalite.type === 'Rural' && questionaire.listConfirmed) ||
-        (selectedLocalite &&
-          selectedLocalite.type === 'Urbain' &&
-          selectedZone &&
-          questionaire.listConfirmed) ? (
+        {(user?.roleId === enqueterRoleId || user?.roleId === controllerRoleId)
+          && menages.length === 0 && <Text style={styles.errorText}>{t('no_list')}</Text>}
+        {(selectedLocalite && selectedLocalite.type === 'Rural' && questionaire.listConfirmed)
+          || (selectedLocalite
+            && selectedLocalite.type === 'Urbain'
+            && selectedZone
+            && questionaire.listConfirmed) ? (
           <ThrottledNavigateButton
             componentId={componentId}
             destination={screenNames.MenagesSelected}
@@ -226,8 +228,9 @@ const Enquete = ({ user, componentId }) => {
             tobBarBackgroundColor={Colors.primary}
             tobBarTitleColor="#fff"
             tobBarTitleText={t('menages')}
-            styles={styles.menagesButton}>
-            <Fontisto style={{ margin: 5 }} name="persons" size={20} color={'#000'} />
+            styles={styles.menagesButton}
+          >
+            <Fontisto style={{ margin: 5 }} name="persons" size={20} color="#000" />
             <Text style={styles.normalText}>{t('menage_to_enquete')}</Text>
           </ThrottledNavigateButton>
         ) : null}
@@ -238,8 +241,9 @@ const Enquete = ({ user, componentId }) => {
           tobBarBackgroundColor={Colors.primary}
           tobBarTitleColor="#fff"
           tobBarTitleText={t('menages')}
-          styles={styles.historyButton}>
-          <Fontisto style={{ margin: 5 }} name="history" size={20} color={'#000'} />
+          styles={styles.historyButton}
+        >
+          <Fontisto style={{ margin: 5 }} name="history" size={20} color="#000" />
           <Text style={styles.normalText}>{t('history')}</Text>
         </ThrottledNavigateButton>
       </View>

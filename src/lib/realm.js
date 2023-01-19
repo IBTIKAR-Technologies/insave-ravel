@@ -12,7 +12,9 @@ import DeviceInfo from 'react-native-device-info';
 import NetInfo from '@react-native-community/netinfo';
 import Toast from 'react-native-toast-message';
 import { t } from 'i18next';
-import { personSchema, userSchema, user_personSchema } from './schemas';
+import {
+  personSchema, userSchema, user_personSchema, wilayaSchema, moughataaSchema, communeSchema,
+} from './schemas';
 
 const { realmPath, appConfig } = config;
 
@@ -86,8 +88,8 @@ const errorSync = communeId => async (session, error) => {
   if (realms[0] !== undefined) {
     console.log('error.name', error.name);
     if (
-      error.category === 'realm.util.network.resolve' ||
-      error.message === 'Network is unreachable'
+      error.category === 'realm.util.network.resolve'
+      || error.message === 'Network is unreachable'
     ) {
       console.log('error', error);
       throttleConnectionError();
@@ -116,7 +118,7 @@ const errorSync = communeId => async (session, error) => {
   }
 };
 const errorSync2 = async (session, error) => {
-  if (realms[0] !== undefined) {
+  if (realms[1] !== undefined) {
     if (error.name === 'ClientReset') {
       const oldRealmPath = `${realms[1].path}`;
       realms[1].close();
@@ -149,10 +151,9 @@ async function restoreRealms(userData) {
       PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
       PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
     ]).then(result => {
-      granted =
-        result[PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE] === 'granted' &&
-        result[PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE] === 'granted' &&
-        result[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION] === 'granted';
+      granted = result[PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE] === 'granted'
+        && result[PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE] === 'granted'
+        && result[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION] === 'granted';
       if (!granted) {
         BackHandler.exitApp();
       }
@@ -175,13 +176,7 @@ async function restoreRealms(userData) {
   console.log('secondBackupExists', secondBackupExists);
   // copy the backup file to the current realm
   const realmsToCopy = [
-    'menage',
-    'concession',
-    'user',
-    'formulairelocalite',
-    'enquete',
-    'menagemembre',
-    'localite',
+    'person',
   ];
   if (secondBackupExists && !backupExists) {
     // @ts-ignore
@@ -234,7 +229,7 @@ async function restoreRealms(userData) {
 
 async function openRealm(user, userData, setProgress) {
   console.log('appuser', user);
-  console.log('user.id', user.id);
+  console.log('user?.id', user?.id);
   console.log('communeId openRealm', userData);
   console.log('realm path', `${realmPath}/${userData._id}`);
 
@@ -242,27 +237,40 @@ async function openRealm(user, userData, setProgress) {
     schema: [personSchema],
     schemaVersion: 1,
     path: `${realmPath}/${userData._id}`,
+    LogLevel: 'debug',
     sync: {
       user,
       partitionValue: userData._id,
-      newRealmFileBehavior: { type: 'openImmediately', timeOutBehavior: 'throwException' },
-      existingRealmFileBehavior: { type: 'openImmediately', timeOutBehavior: 'openLocalRealm' },
-      error: errorSync(userData._id),
+      clientReset: {
+        mode: "recoverUnsyncedChanges",
+      },
+      error: (_session, error) => {
+        console.log(error.name, error.message);
+        (error) => {
+          console.log(error.name, error.message);
+        };
+      },
+
     },
-    readOnly: false,
   };
   const usersRealmConfig = {
-    schema: [userSchema, user_personSchema],
+    schema: [userSchema, user_personSchema, wilayaSchema, communeSchema, moughataaSchema],
     schemaVersion: 1,
+    LogLevel: 'debug',
     path: `${realmPath}/${userData._id}1`,
     sync: {
       user,
       partitionValue: 'all',
-      newRealmFileBehavior: { type: 'openImmediately', timeOutBehavior: 'throwException' },
-      existingRealmFileBehavior: { type: 'openImmediately', timeOutBehavior: 'openLocalRealm' },
-      error: errorSync2(userData._id),
+      clientReset: {
+        mode: "recoverUnsyncedChanges",
+      },
+      error: (_session, error) => {
+        console.log(error.name, error.message);
+        (error) => {
+          console.log(error.name, error.message);
+        };
+      },
     },
-    readOnly: false,
   };
 
   const realm = await Realm.open(realmConfig);
@@ -282,10 +290,10 @@ async function openRealm(user, userData, setProgress) {
     }
   });
 
-  const syncSession = realm.syncSession;
+  const { syncSession } = realm;
   syncSession.addProgressNotification(
     'download',
-    'reportIndefinitely',
+    'forCurrentlyOutstandingWork',
     (transferred, transferable) => {
       console.log(`${transferred} bytes has been transferred`);
       console.log(
@@ -300,9 +308,6 @@ async function openRealm(user, userData, setProgress) {
   console.log('Opened realm DARI');
 
   console.log('realms', realms);
-
-  // If a backup file exists, restore to the current realm, and delete file afterwards
-  await restoreRealms(userData);
 }
 
 export default openRealm;

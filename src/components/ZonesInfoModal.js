@@ -50,7 +50,7 @@ const ZonesInfoModal = ({ user }) => {
   const getAllData = useCallback(async () => {
     let zns = [];
     let lcts = [];
-    if (user.roleId === supervisorRoleId || user.roleId === controllerRoleId) {
+    if (user?.roleId === supervisorRoleId || user?.roleId === controllerRoleId) {
       zns = await fetchZones(user);
       lcts = await fetchLocalites(user);
     }
@@ -70,14 +70,16 @@ const ZonesInfoModal = ({ user }) => {
           alignItems: 'center',
           borderRadius: 50,
           overflow: 'hidden',
-        }}>
+        }}
+      >
         <TouchableNativeFeedback
           onPress={() => {
             setRippleOverflow(!rippleOverflow);
             setOpen(true);
             fadeInAnimation();
           }}
-          background={TouchableNativeFeedback.Ripple('rgba(00000002)', rippleOverflow)}>
+          background={TouchableNativeFeedback.Ripple('rgba(00000002)', rippleOverflow)}
+        >
           <View style={{ flex: 1, padding: 10 }}>
             <Feather name="info" size={20} color="white" />
           </View>
@@ -88,7 +90,8 @@ const ZonesInfoModal = ({ user }) => {
         transparent
         visible={open}
         style={{ zIndex: 1100 }}
-        onRequestClose={() => {}}>
+        onRequestClose={() => { }}
+      >
         <Animated.View style={[styles.closeButton1, { opacity: fadeAnim }]}>
           <TouchableOpacity
             style={{ width: '100%', height: '100%' }}
@@ -111,8 +114,8 @@ const ZonesInfoModal = ({ user }) => {
                 <Text>
                   {t('moughataa')}:{' '}
                   {language === 'fr'
-                    ? user.moughataa.namefr_rs || user.moughataa.namefr_ons
-                    : user.moughataa.namear}
+                    ? user?.moughataa.namefr_rs || user?.moughataa.namefr_ons
+                    : user?.moughataa.namear}
                 </Text>
                 <Text>
                   {t('localites_n')}: {localites.length}

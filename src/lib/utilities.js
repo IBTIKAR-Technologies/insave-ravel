@@ -94,29 +94,24 @@ export const getKeyboardFromType = type => {
 export const dissmissKeyboard = () => Keyboard.dismiss();
 
 export const getDate = (date, hours = true) => {
-  let str =
-    date.getDate().toString().padStart(2, '0') +
-    '/' +
-    parseInt(date.getMonth() + 1)
+  let str = `${date.getDate().toString().padStart(2, '0')
+    }/${parseInt(date.getMonth() + 1)
       .toString()
-      .padStart(2, '0') +
-    '/' +
-    date.getFullYear();
+      .padStart(2, '0')
+    }/${date.getFullYear()}`;
   if (hours) {
-    str +=
-      ' ' +
-      date.getHours().toString().padStart(2, '0') +
-      ':' +
-      date.getMinutes().toString().padStart(2, '0');
+    str
+      += ` ${date.getHours().toString().padStart(2, '0')
+      }:${date.getMinutes().toString().padStart(2, '0')}`;
   }
   return str;
 };
 
-const asin = Math.asin;
-const cos = Math.cos;
-const sin = Math.sin;
-const sqrt = Math.sqrt;
-const PI = Math.PI;
+const { asin } = Math;
+const { cos } = Math;
+const { sin } = Math;
+const { sqrt } = Math;
+const { PI } = Math;
 
 // equatorial mean radius of Earth (in meters)
 const R = 6378137;
@@ -140,3 +135,10 @@ export function getDistance(a, b) {
   const ht = hav(bLat - aLat) + cos(aLat) * cos(bLat) * hav(bLng - aLng);
   return 2 * R * asin(sqrt(ht));
 }
+
+export const nextlevels = {
+  admin: "actniv1",
+  actniv1: "actniv2",
+  actniv2: "actniv3",
+  actniv3: null,
+};

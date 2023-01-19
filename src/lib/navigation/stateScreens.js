@@ -6,6 +6,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import screenNames from './screenNames';
 import i18n from '../languages/i18n';
+import { nextlevels } from '../utilities';
 
 export const startAppScreens = async () => {
   const [traffic, history, user, userData, addusergroup] = await Promise.all([
@@ -18,7 +19,7 @@ export const startAppScreens = async () => {
   const userD = JSON.parse(userData);
   console.log('userData', userData);
   if (userD.role === 'admin') {
-    console.log('user.role', userD.role);
+    console.log('user?.role', userD.role);
     Navigation.setRoot({
       root: {
         bottomTabs: {
@@ -32,7 +33,7 @@ export const startAppScreens = async () => {
                     component: {
                       name: screenNames.Users,
                       options: {
-                        ...Common.header('users'),
+                        ...Common.header(`${i18n.t('users')} ${nextlevels[userD.role]}`),
                       },
                     },
                   },
@@ -55,7 +56,7 @@ export const startAppScreens = async () => {
                     component: {
                       name: screenNames.User,
                       options: {
-                        ...Common.header('user'),
+                        ...Common.header(i18n.t('user')),
                       },
                     },
                   },
@@ -88,7 +89,7 @@ export const startAppScreens = async () => {
                     component: {
                       name: screenNames.Home,
                       options: {
-                        ...Common.header('home'),
+                        ...Common.header(i18n.t('home')),
                       },
                     },
                   },
@@ -111,7 +112,7 @@ export const startAppScreens = async () => {
                     component: {
                       name: screenNames.HistoryCiblage,
                       options: {
-                        ...Common.header('history'),
+                        ...Common.header(i18n.t('history')),
                       },
                     },
                   },
@@ -135,7 +136,7 @@ export const startAppScreens = async () => {
                     component: {
                       name: screenNames.User,
                       options: {
-                        ...Common.header('user'),
+                        ...Common.header(i18n.t('user')),
                       },
                     },
                   },
@@ -168,7 +169,7 @@ export const startAppScreens = async () => {
                     component: {
                       name: screenNames.Home,
                       options: {
-                        ...Common.header('home'),
+                        ...Common.header(i18n.t('home')),
                       },
                     },
                   },
@@ -191,7 +192,7 @@ export const startAppScreens = async () => {
                     component: {
                       name: screenNames.HistoryCiblage,
                       options: {
-                        ...Common.header('history'),
+                        ...Common.header(i18n.t('history')),
                       },
                     },
                   },
@@ -214,7 +215,7 @@ export const startAppScreens = async () => {
                     component: {
                       name: screenNames.Users,
                       options: {
-                        ...Common.header('users'),
+                        ...Common.header(`${i18n.t('users')} ${nextlevels[userD.role]}`),
                       },
                     },
                   },
@@ -237,7 +238,7 @@ export const startAppScreens = async () => {
                     component: {
                       name: screenNames.User,
                       options: {
-                        ...Common.header('user'),
+                        ...Common.header(i18n.t('user')),
                       },
                     },
                   },
@@ -269,7 +270,7 @@ export const startAuthScreens = () =>
             component: {
               name: screenNames.Login,
               options: {
-                ...Common.header('login'),
+                ...Common.header(i18n.t('login')),
               },
             },
           },
@@ -288,7 +289,7 @@ export const startDataLoaderScreens = () =>
             component: {
               name: screenNames.DataLoader,
               options: {
-                ...Common.header('loading_data'),
+                ...Common.header(i18n.t('loading_data')),
               },
             },
           },

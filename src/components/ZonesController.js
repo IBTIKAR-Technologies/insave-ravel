@@ -1,4 +1,6 @@
-import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
+import {
+  View, Text, ActivityIndicator, StyleSheet,
+} from 'react-native';
 import React, { useEffect, useState, useCallback } from 'react';
 import { fetchZones, fetchLocalites, fetchEnquetersForSupervisor } from 'src/models/cartes';
 import { Navigation } from 'react-native-navigation';
@@ -22,14 +24,14 @@ const ZonesSupervisor = ({ user, componentId }) => {
   }
   const initialize = useCallback(async () => {
     let localites = await fetchLocalites();
-    localites = localites.filtered(`communeId == oid(${user.communeId})`);
+    localites = localites.filtered(`communeId == oid(${user?.communeId})`);
     let zns = await fetchZones(user);
-    zns = zns.filtered(`communeId == oid(${user.communeId})`);
-    const cmn = global.realms[0].objects('commune').filtered(`_id == oid(${user.communeId})`)[0];
+    zns = zns.filtered(`communeId == oid(${user?.communeId})`);
+    const cmn = global.realms[0].objects('commune').filtered(`_id == oid(${user?.communeId})`)[0];
     setCommune(cmn);
     zns = JSON.parse(JSON.stringify(zns));
     let eqtrs = await fetchEnquetersForSupervisor(user);
-    eqtrs = eqtrs.filtered(`controllerId == oid(${user._id}) OR _id == oid(${user._id})`);
+    eqtrs = eqtrs.filtered(`controllerId == oid(${user?._id}) OR _id == oid(${user?._id})`);
     const newLocalites = JSON.parse(JSON.stringify(localites)).filter(
       l => !zns.find(z => String(z.localiteId) === String(l._id)),
     );
@@ -89,8 +91,9 @@ const ZonesSupervisor = ({ user, componentId }) => {
                     setZones,
                   }}
                   tobBarBackgroundColor={Colors.primary}
-                  tobBarTitleColor={'#fff'}
-                  tobBarTitleText={t('edit_zone')}>
+                  tobBarTitleColor="#fff"
+                  tobBarTitleText={t('edit_zone')}
+                >
                   <View style={styles.flexRow}>
                     <Text>{`${t('zone_name')}:`}</Text>
                     <Text>{language === 'fr' ? item.namefr || item.namefr_rs : item.namear}</Text>

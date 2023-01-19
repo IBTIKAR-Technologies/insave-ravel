@@ -38,12 +38,12 @@ const AddUser = function ({ componentId, user }) {
   const actualInitialValues = useMemo(() => {
     const data = { ...initialValues };
     if (user?.categorie) {
-      data.categorie = user.categorie;
+      data.categorie = user?.categorie;
     }
     if (user?.communeId) {
-      data.communeId = user.communeId;
-      data.moughataaId = user.moughataaId;
-      data.wilayaId = user.wilayaId;
+      data.communeId = user?.communeId;
+      data.moughataaId = user?.moughataaId;
+      data.wilayaId = user?.wilayaId;
     }
     return data;
   }, [user]);
@@ -52,34 +52,30 @@ const AddUser = function ({ componentId, user }) {
   console.log('card', card);
 
   const submitTheForm = async form => {
-    const personExists = global.realms[0].objects('person').filtered(`NNI == "${card.NNI}"`);
-    let uExists;
-    if (personExists.length > 0) {
-      uExists = global.realms[1].objects('user').filtered(`personId == oid(${personExists[0]._id.toString()})`);
-    }
-    if (uExists && uExists.length > 0) {
-      Alert.alert(t('error'), t('user_exists'));
-      return;
-    }
+    const uExists = global.realms[1].objects('user').filtered(`username == '${card.NNI}'`);
+    const uExistsLength = uExists.length;
+
     let added = true;
     const perId = new ObjectId();
-    try {
-      global.realms[0].write(() => {
-        global.realms[0].create('person', {
-          _id: perId,
-          _partition: user._id,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          syncedAt: null,
-          createdById: new ObjectId(user._id),
-          userId: user._id,
-          ...card,
-        });
-      });
-    } catch (er) {
-      added = false;
-      console.log('error1', er);
-    }
+    // if (user?.role !== "parti") {
+    //   try {
+    //     global.realms[0].write(() => {
+    //       global.realms[0].create('person', {
+    //         _id: perId,
+    //         _partition: user?._id,
+    //         createdAt: new Date(),
+    //         updatedAt: new Date(),
+    //         syncedAt: null,
+    //         createdById: new ObjectId(user?._id),
+    //         userId: user?._id,
+    //         ...card,
+    //       });
+    //     });
+    //   } catch (er) {
+    //     added = false;
+    //     console.log('error1', er);
+    //   }
+    // }
     try {
       if (form.communeId) {
         form.communeId = new ObjectId(form.communeId);
@@ -88,21 +84,23 @@ const AddUser = function ({ componentId, user }) {
       }
       global.realms[1].write(() => {
         global.realms[1].create('user', {
+          codeInitiativeParent: user?.codeInitiative,
           ...form,
-          username: form.username.toLowerCase(),
+          username: card.NNI,
+          password: card.NNI,
           _id: new ObjectId(),
           _partition: 'all',
           personId: perId,
           createdAt: new Date(),
           updatedAt: new Date(),
           syncedAt: null,
-          createdById: new ObjectId(user._id),
+          createdById: new ObjectId(user?._id),
           active: true,
           fullName: `${card.firstName} ${card.lastName}`,
           nni: card.NNI,
           person: card,
-          role: user.role === 'admin' ? 'actniv1' : user.role === 'actniv1' ? 'actniv2' : 'actniv3',
-        });
+          role: user?.role === 'admin' ? 'actniv1' : user?.role === 'actniv1' ? 'actniv2' : 'actniv3',
+        }, 'modified');
       });
     } catch (er) {
       added = false;
@@ -114,6 +112,9 @@ const AddUser = function ({ componentId, user }) {
         text1: t('success'),
         text2: t('user_added'),
       });
+      if (uExistsLength > 0) {
+        Alert.alert(t('warning'), t('user_exists'));
+      }
       setCard({});
     } else {
       Toast.show({
@@ -160,7 +161,7 @@ const AddUser = function ({ componentId, user }) {
         nestedScrollEnabled
       >
         {!card.firstName && (
-          <Sample savePerson={savePerson} t={t} text={t('scan_card')} confirmText={t('continue')} />
+          <Sample savePerson={savePerson} t={t} text={t('scan_card_acteur')} confirmText={t('continue')} />
         )}
         {card.firstName && (
           <>
@@ -219,7 +220,6 @@ const AddUser = function ({ componentId, user }) {
                     <Form
                       style={{
                         justifyContent: 'space-evenly',
-                        minHeight: '50%',
                       }}
                     >
                       <View

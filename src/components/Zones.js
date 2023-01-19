@@ -13,9 +13,9 @@ const Zones = ({ user, componentId }) => (
     colors={[Colors.primaryGradientStart, Colors.primaryGradientEnd]}
     style={styles.root}
   >
-    {user.roleId === supervisorRoleId ? (
+    {user?.roleId === supervisorRoleId ? (
       <ZonesSupervisor user={user} componentId={componentId} />
-    ) : user.roleId === controllerRoleId ? (
+    ) : user?.roleId === controllerRoleId ? (
       <ZonesController user={user} componentId={componentId} />
     ) : null}
   </LinearGradient>

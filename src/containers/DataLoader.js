@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Text, StyleSheet } from 'react-native';
+import Realm from 'realm';
+import { Text, StyleSheet, Alert } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { startAppScreens } from 'src/lib/navigation/stateScreens';
 import openRealm, { app } from 'src/lib/realm';
@@ -23,13 +24,47 @@ const DataLoader = function () {
       const user = JSON.parse(userData);
       console.log('CONNECTING TO REALM');
       await RNFS.mkdir(realmPath);
-      await openRealm(app.currentUser, user, setProgress);
-      if (progress === 100) {
-        startAppScreens();
+      try {
+        await openRealm(app.currentUser, user, setProgress);
+      } catch (error) {
+        Alert.alert(t('error'), error.message);
       }
+      Realm.App.Sync.reconnect(app);
+      const { syncSession } = global.realms[0];
+      const { syncSession: syncSession1 } = global.realms[1];
+      syncSession.resume();
+      syncSession1.resume();
+      syncSession.uploadAllLocalChanges();
+      syncSession1.uploadAllLocalChanges();
+
+      RNFS.getFSInfo()
+        .then((info) => {
+          console.log('info', info);
+          const mbs = info.freeSpace / 1024 / 1024;
+          if (mbs < 500) {
+            Alert.alert(t('error'), t('free_space'));
+          }
+        });
     })();
+  }, [t]);
+
+  useEffect(() => {
+    if (progress === 100 || Number.isNaN(progress)) {
+      startAppScreens();
+    }
   }, [progress]);
 
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setProgress(100);
+    }, 30000);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, []);
+
+  console.log('progress', progress);
   useEffect(() => {
     SplashScreen.hide();
   }, []);
@@ -39,7 +74,7 @@ const DataLoader = function () {
       colors={[Colors.primaryGradientStart, Colors.primaryGradientEnd]}
       style={styles.root}
     >
-      <Progress.Circle size={150} progress={progress / 100} formatText={() => `${progress}%`} color={Colors.primary} showsText animated />
+      <Progress.Circle size={150} progress={(progress || 0) / 100} formatText={() => `${progress || 0}%`} color={Colors.primary} showsText animated />
       <Text style={{ marginTop: 10, fontSize: 20 }}>{t('loading_data')}</Text>
     </LinearGradient>
   );

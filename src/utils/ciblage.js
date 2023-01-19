@@ -621,7 +621,7 @@ export const selectedMenagesForSurvery = async (user, communeId, quota, amenages
     const localQuest = global.realms[0]
       .objects('formulairelocalite')
       .filtered(
-        `operationId == oid(${user.operationId}) && localiteId == oid(${localites[i]._id})`,
+        `operationId == oid(${user?.operationId}) && localiteId == oid(${localites[i]._id})`,
       );
     if (localites[i].type === 'Urbain') {
       const localiteSelectedMngs = selectedMenages.filter(
@@ -650,7 +650,7 @@ export const selectedMenagesForSurvery = async (user, communeId, quota, amenages
               'formulairelocalite',
               {
                 _id: new ObjectId(localQuest[0]._id),
-                _partition: user._partition,
+                _partition: user?._partition,
                 syncedAt: null,
                 updatedAt: date,
                 leftForSelection: 0,
@@ -663,7 +663,7 @@ export const selectedMenagesForSurvery = async (user, communeId, quota, amenages
           } else {
             global.realms[0].create('formulairelocalite', {
               _id: new ObjectId(),
-              _partition: user._partition,
+              _partition: user?._partition,
               syncedAt: null,
               updatedAt: date,
               leftForSelection: 0,
@@ -675,7 +675,7 @@ export const selectedMenagesForSurvery = async (user, communeId, quota, amenages
               moughataaId: new ObjectId(localites[i].moughataaId),
               communeId: new ObjectId(localites[i].communeId),
               localiteId: new ObjectId(localites[i]._id),
-              operationId: new ObjectId(user.operationId),
+              operationId: new ObjectId(user?.operationId),
               localeName: localites[i].namefr_rs,
               otherName: localites[i].namear,
             });
@@ -724,7 +724,7 @@ export const selectedMenagesForSurvery = async (user, communeId, quota, amenages
                   'formulairelocalite',
                   {
                     _id: new ObjectId(localQuest[0]._id),
-                    _partition: user._partition,
+                    _partition: user?._partition,
                     communeId: new ObjectId(communeId),
                     localiteId: new ObjectId(localites[i]._id),
                     syncedAt: null,
@@ -739,7 +739,7 @@ export const selectedMenagesForSurvery = async (user, communeId, quota, amenages
               } else {
                 global.realms[0].create('formulairelocalite', {
                   _id: new ObjectId(),
-                  _partition: user._partition,
+                  _partition: user?._partition,
                   syncedAt: null,
                   updatedAt: date,
                   leftForSelection: left,
@@ -751,7 +751,7 @@ export const selectedMenagesForSurvery = async (user, communeId, quota, amenages
                   moughataaId: new ObjectId(localites[i].moughataaId),
                   communeId: new ObjectId(localites[i].communeId),
                   localiteId: new ObjectId(localites[i]._id),
-                  operationId: new ObjectId(user.operationId),
+                  operationId: new ObjectId(user?.operationId),
                   localeName: localites[i].namefr_rs,
                   otherName: localites[i].namear,
                 });
@@ -791,7 +791,7 @@ export const selectedMenagesForSurvery = async (user, communeId, quota, amenages
                     'formulairelocalite',
                     {
                       _id: new ObjectId(localQuest[0]._id),
-                      _partition: user._partition,
+                      _partition: user?._partition,
                       syncedAt: null,
                       updatedAt: date,
                       leftForSelection: 0,
@@ -806,7 +806,7 @@ export const selectedMenagesForSurvery = async (user, communeId, quota, amenages
                 global.realms[0].write(() => {
                   global.realms[0].create('formulairelocalite', {
                     _id: new ObjectId(),
-                    _partition: user._partition,
+                    _partition: user?._partition,
                     syncedAt: null,
                     updatedAt: date,
                     leftForSelection: 0,
@@ -818,7 +818,7 @@ export const selectedMenagesForSurvery = async (user, communeId, quota, amenages
                     moughataaId: new ObjectId(localites[i].moughataaId),
                     communeId: new ObjectId(localites[i].communeId),
                     localiteId: new ObjectId(localites[i]._id),
-                    operationId: new ObjectId(user.operationId),
+                    operationId: new ObjectId(user?.operationId),
                     localeName: localites[i].namefr_rs,
                     otherName: localites[i].namear,
                   });
@@ -850,7 +850,7 @@ export const selectedMenagesForSurvery = async (user, communeId, quota, amenages
                     'formulairelocalite',
                     {
                       _id: new ObjectId(localQuest[0]._id),
-                      _partition: user._partition,
+                      _partition: user?._partition,
                       syncedAt: null,
                       updatedAt: date,
                       leftForSelection: left,
@@ -865,7 +865,7 @@ export const selectedMenagesForSurvery = async (user, communeId, quota, amenages
                 global.realms[0].write(() => {
                   global.realms[0].create('formulairelocalite', {
                     _id: new ObjectId(),
-                    _partition: user._partition,
+                    _partition: user?._partition,
                     syncedAt: null,
                     updatedAt: date,
                     leftForSelection: left,
@@ -877,7 +877,7 @@ export const selectedMenagesForSurvery = async (user, communeId, quota, amenages
                     moughataaId: new ObjectId(localites[i].moughataaId),
                     communeId: new ObjectId(localites[i].communeId),
                     localiteId: new ObjectId(localites[i]._id),
-                    operationId: new ObjectId(user.operationId),
+                    operationId: new ObjectId(user?.operationId),
                     localeName: localites[i].namefr_rs,
                     otherName: localites[i].namear,
                   });
@@ -913,7 +913,7 @@ export const selectedMenagesForSurvery = async (user, communeId, quota, amenages
                 'formulairelocalite',
                 {
                   _id: new ObjectId(localQuest[0]._id),
-                  _partition: user._partition,
+                  _partition: user?._partition,
                   syncedAt: null,
                   updatedAt: date,
                   excludedNum: 0,
@@ -924,7 +924,7 @@ export const selectedMenagesForSurvery = async (user, communeId, quota, amenages
             } else {
               global.realms[0].create('formulairelocalite', {
                 _id: new ObjectId(),
-                _partition: user._partition,
+                _partition: user?._partition,
                 syncedAt: null,
                 updatedAt: date,
                 createdAt: date,
@@ -934,7 +934,7 @@ export const selectedMenagesForSurvery = async (user, communeId, quota, amenages
                 moughataaId: new ObjectId(localites[i].moughataaId),
                 communeId: new ObjectId(localites[i].communeId),
                 localiteId: new ObjectId(localites[i]._id),
-                operationId: new ObjectId(user.operationId),
+                operationId: new ObjectId(user?.operationId),
                 localeName: localites[i].namefr_rs,
                 otherName: localites[i].namear,
               });
@@ -973,7 +973,7 @@ export const selectedMenagesForSurveryNoFilter = async (user, communeId, quota, 
     const localQuest = global.realms[0]
       .objects('formulairelocalite')
       .filtered(
-        `operationId == oid(${user.operationId}) && localiteId == oid(${localites[i]._id})`,
+        `operationId == oid(${user?.operationId}) && localiteId == oid(${localites[i]._id})`,
       );
     if (localites[i].type === 'Urbain') {
       const localiteSelectedMngs = selectedMenages.filter(

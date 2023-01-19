@@ -1,4 +1,6 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  View, Text, StyleSheet, TouchableOpacity,
+} from 'react-native';
 import React, { useState, useEffect, useCallback } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import { Colors } from 'src/styles';
@@ -6,8 +8,8 @@ import { FlashList } from '@shopify/flash-list';
 import { useTranslation } from 'react-i18next';
 import screenNames from 'src/lib/navigation/screenNames';
 import { Navigation } from 'react-native-navigation';
-import ThrottledNavigateButton from './ThrottledNavigateButton';
 import { hp, wp } from 'src/lib/utilities';
+import ThrottledNavigateButton from './ThrottledNavigateButton';
 
 const NoZones = ({ componentId, user, localite }) => {
   const { t } = useTranslation();
@@ -21,20 +23,23 @@ const NoZones = ({ componentId, user, localite }) => {
         tobBarBackgroundColor={Colors.primary}
         tobBarTitleColor="#fff"
         tobBarTitleText={t('add_zone')}
-        styles={styles.button}>
+        styles={styles.button}
+      >
         <Text style={{}}>{t('add_zone')}</Text>
       </ThrottledNavigateButton>
     </View>
   );
 };
 
-const DiviseLocalite = ({ localite, user, t, componentId }) => {
+const DiviseLocalite = ({
+  localite, user, t, componentId,
+}) => {
   const [zones, setZones] = useState([]);
 
   const initialize = useCallback(async () => {
     const zns = global.realms[0]
       .objects('zone')
-      .filtered(`localiteId == oid(${localite._id}) && operationId == oid(${user.operationId})`);
+      .filtered(`localiteId == oid(${localite._id}) && operationId == oid(${user?.operationId})`);
     setZones(zns);
   }, [user, localite]);
 
@@ -53,7 +58,8 @@ const DiviseLocalite = ({ localite, user, t, componentId }) => {
   return (
     <LinearGradient
       colors={[Colors.primaryGradientStart, Colors.primaryGradientEnd]}
-      style={styles.root}>
+      style={styles.root}
+    >
       <Text>
         {t('zones')}: {zones.length}
       </Text>
@@ -72,11 +78,14 @@ const DiviseLocalite = ({ localite, user, t, componentId }) => {
             <ThrottledNavigateButton
               componentId={componentId}
               destination={screenNames.AddZone}
-              passProps={{ user, t, localite, edit: true, oldzone: item }}
+              passProps={{
+                user, t, localite, edit: true, oldzone: item,
+              }}
               tobBarBackgroundColor={Colors.primary}
               tobBarTitleColor="#fff"
               tobBarTitleText={t('add_zone')}
-              styles={styles.itemContainer}>
+              styles={styles.itemContainer}
+            >
               <View style={styles.flexRow}>
                 <Text style={styles.title}>{`${t('local_name_fr')}:`}</Text>
                 <Text style={styles.result}>{item.namefr}</Text>
@@ -96,7 +105,8 @@ const DiviseLocalite = ({ localite, user, t, componentId }) => {
             tobBarBackgroundColor={Colors.primary}
             tobBarTitleColor="#fff"
             tobBarTitleText={t('add_zone')}
-            styles={styles.button}>
+            styles={styles.button}
+          >
             <Text style={{}}>{t('add_zone')}</Text>
           </ThrottledNavigateButton>
         )}

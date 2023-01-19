@@ -27,7 +27,7 @@ const HistoryEnquete = function ({ user, selectedLocalite, selectedZone }) {
         let mngs = [];
         let mngsv = [];
         let conces = [];
-        if (user.roleId === enqueterRoleId || user.roleId === controllerRoleId) {
+        if (user?.roleId === enqueterRoleId || user?.roleId === controllerRoleId) {
           if (selectedLocalite && selectedLocalite.type === 'Urbain') {
             mngs = global.realms[0]
               .objects('menage')
@@ -48,7 +48,7 @@ const HistoryEnquete = function ({ user, selectedLocalite, selectedZone }) {
           }
           setLoading(false);
         }
-        if (user.roleId === supervisorRoleId) {
+        if (user?.roleId === supervisorRoleId) {
           const lcts = global.realms[0].objects('localite');
           mngs = global.realms[0].objects('menage');
           setLocalites(
@@ -87,14 +87,16 @@ const HistoryEnquete = function ({ user, selectedLocalite, selectedZone }) {
   return (
     <LinearGradient
       colors={[Colors.primaryGradientStart, Colors.primaryGradientEnd]}
-      style={styles.root}>
+      style={styles.root}
+    >
       <LoadingModalTransparent loading={loading} />
       {user?.roleId === supervisorRoleId ? (
         <View
           style={{
             width: wp(100),
             flex: 5,
-          }}>
+          }}
+        >
           <FlashList
             data={localites}
             showsVerticalScrollIndicator={false}
@@ -123,8 +125,8 @@ const HistoryEnquete = function ({ user, selectedLocalite, selectedZone }) {
                         item.progress > 0.9
                           ? Colors.primary
                           : item.progress < 0.5
-                          ? Colors.error
-                          : Colors.yellow
+                            ? Colors.error
+                            : Colors.yellow
                       }
                       showsText
                       animated
@@ -135,13 +137,14 @@ const HistoryEnquete = function ({ user, selectedLocalite, selectedZone }) {
             }}
           />
         </View>
-      ) : (user?.roleId === enqueterRoleId || user?.roleId === controllerRoleId) &&
-        menages.length > 0 ? (
+      ) : (user?.roleId === enqueterRoleId || user?.roleId === controllerRoleId)
+        && menages.length > 0 ? (
         <View
           style={{
             width: '100%',
             flex: 5,
-          }}>
+          }}
+        >
           <View style={styles.itemContainer2}>
             <View>
               <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
@@ -150,8 +153,8 @@ const HistoryEnquete = function ({ user, selectedLocalite, selectedZone }) {
                     ? selectedZone.namefr
                     : selectedZone.namear
                   : language === 'fr'
-                  ? selectedLocalite.namefr_rs
-                  : selectedLocalite.namear}
+                    ? selectedLocalite.namefr_rs
+                    : selectedLocalite.namear}
               </Text>
               <Text>{`${t('eligibles')}${menages.length}`}</Text>
               <Text>{`${t('enqueted')}${menagesValidated.length}`}</Text>
@@ -162,8 +165,7 @@ const HistoryEnquete = function ({ user, selectedLocalite, selectedZone }) {
                 size={100}
                 progress={menagesValidated.length / menages.length}
                 formatText={() =>
-                  `${parseInt((menagesValidated.length / menages.length) * 100, 10)}%`
-                }
+                  `${parseInt((menagesValidated.length / menages.length) * 100, 10)}%`}
                 showsText
                 animated
               />
@@ -210,7 +212,8 @@ const HistoryEnquete = function ({ user, selectedLocalite, selectedZone }) {
             textAlign: 'center',
             paddingVertical: hp(20),
             color: Colors.error,
-          }}>
+          }}
+        >
           {t('no_menages_found')}
         </Text>
       )}

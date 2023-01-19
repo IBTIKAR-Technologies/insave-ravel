@@ -13,14 +13,14 @@ import screenNames from 'src/lib/navigation/screenNames';
 import { nextlevels } from 'src/lib/utilities';
 import ThrottledNavigateButton from './ThrottledNavigateButton';
 
-const Users = function ({ componentId }) {
+const UnitesLiees = function ({ componentId }) {
   const { t } = useTranslation();
   const [user, setUser] = useState({});
   const [users, setUsers] = useState([]);
   const initialize = useCallback(async () => {
     let userData = await AsyncStorage.getItem('userData');
     userData = JSON.parse(userData);
-    const usrs = global.realms[1].objects('user').filtered(`createdById == oid(${userData._id})`).sorted('createdAt', true);
+    const usrs = global.realms[1].objects('user').filtered(`initiativeId == oid(${userData._id})`).sorted('communeId', true);
     console.log('usrs.length', usrs.length);
     const persn = global.realms[0].objects('person');
     setUsers(
@@ -52,89 +52,36 @@ const Users = function ({ componentId }) {
       colors={[Colors.primaryGradientStart, Colors.primaryGradientEnd]}
       style={CommonStyles.root}
     >
-      {
-        user?.role && (
-          <>
-            <Text style={{ textAlign: 'center' }}>
-              {t('total_acteurs')}: {users.length}
-            </Text>
-            <Text style={{ textAlign: 'center' }}>
-              {t('t_added')}: {user?.globCount || 0}
-            </Text></>
-        )
-      }
-      <ThrottledNavigateButton
-        styles={{
-          backgroundColor: Colors.primary,
-          paddingVertical: 5,
-          paddingHorizontal: 20,
-          borderRadius: 20,
-          alignSelf: 'center',
-          marginVertical: 15,
-          elevation: 5,
-        }}
-        destination={screenNames.AddUser}
-        componentId={componentId}
-        tobBarTitleText={t('add_user')}
-        tobBarBackgroundColor={Colors.primary}
-        passProps={{ user }}
-      >
-        <Text>{t('add_user')}</Text>
-      </ThrottledNavigateButton>
-      {
-        user?.role === "actniv1" && user?.categorie === "initiative" ? (
-          <ThrottledNavigateButton
-            styles={{
-              backgroundColor: Colors.primary,
-              paddingVertical: 5,
-              paddingHorizontal: 20,
-              borderRadius: 20,
-              alignSelf: 'center',
-              elevation: 5,
-            }}
-            destination={screenNames.UnitesLiees}
-            componentId={componentId}
-            tobBarTitleText={t('unites_liees')}
-            tobBarBackgroundColor={Colors.primary}
-            passProps={{ user }}
-          >
-            <Text>{t('unites_liees')}</Text>
-          </ThrottledNavigateButton>
-        ) : null
-      }
+      <Text style={{ textAlign: 'center' }}>
+        {t('total_unites_liees')}: {users.length}
+      </Text>
+      <Text style={{ textAlign: 'center' }}>
+        {t('t_added')}: {users.reduce((acc, obj) => (acc + (obj?.user?.addedCount || 0)), 0) || 0}
+      </Text>
+
       {
         user?.role ? (
           <FlashList
             data={users}
             renderItem={({ item }) => {
-              const count = (item.user?.role !== "actniv3" && user?.categorie === "parti") ? global.realms[1].objects('user').filtered(`createdById == oid(${item.user?._id.toString()})`).length : item.user?.addedCount || 0;
               console.log('item', item);
               return (
-                <ThrottledNavigateButton
-                  styles={{
-                    backgroundColor: '#fff',
-                    borderRadius: 10,
-                    elevation: 5,
-                    alignSelf: 'center',
-                    padding: 10,
-                    marginVertical: 5,
-                    width: '95%',
-                  }}
-                  destination={screenNames.SubUsers}
-                  componentId={componentId}
-                  tobBarBackgroundColor={Colors.primary}
-                  tobBarTitleColor="#fff"
-                  tobBarTitleText={`${t('sub_users')} (${nextlevels[nextlevels[user?.role]]})`}
-                  disabled={!count}
-                  tobBarSubtitleText={item.user?.fullName}
-                  passProps={{ act: item.user }}
+                <View style={{
+                  backgroundColor: '#fff',
+                  borderRadius: 10,
+                  elevation: 5,
+                  alignSelf: 'center',
+                  padding: 10,
+                  marginVertical: 5,
+                  width: '95%',
+                }}
                 >
                   <View style={{ flexDirection: 'row' }}>
                     <View>
                       <Image
                         resizeMode="contain"
                         source={{
-                          uri: item.person.image,
+                          uri: item?.user?.person?.image,
                         }}
                         style={[styles.imageResult, item.user?.syncedAt ? {} : styles.nosync]}
                       />
@@ -143,12 +90,12 @@ const Users = function ({ componentId }) {
                       <Text style={{ width: '100%' }}>
                         {t('name')}: {item.user?.fullName}
                       </Text>
-                      {user?.role === "admin" && user?.categorie === "initiative" ? <Text>{`${t('code_initiative')}: ${item.user?.codeInitiative}`}</Text> : <Text>{`${t('born_at')}: ${item.person.birthDate}`}</Text>}
+                      <Text>{`${t('location')}: ${global.realms[1].objectForPrimaryKey("commune", item.user?.communeId)?.namefr_rs}`}</Text>
                       <Text>{`${t('nni')}: ${item.user?.nni}`}</Text>
-                      <Text>{`${t('added')}: ${count}`}</Text>
+                      <Text>{`${t('added')}: ${item.user?.addedCount}`}</Text>
                     </View>
                   </View>
-                </ThrottledNavigateButton>
+                </View>
               );
             }}
             keyExtractor={item => item.user?._id}
@@ -165,7 +112,7 @@ const Users = function ({ componentId }) {
                   justifyContent: 'center',
                 }}
               >
-                <Text style={{ color: 'red' }}>{t('no_users')}</Text>
+                <Text style={{ color: 'red' }}>{t('no_unites_liees')}</Text>
               </View>
             )}
           />
@@ -175,7 +122,7 @@ const Users = function ({ componentId }) {
   );
 };
 
-export default Users;
+export default UnitesLiees;
 
 // react native styles
 const styles = StyleSheet.create({

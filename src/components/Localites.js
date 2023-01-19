@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { fetchCommunes, fetchLocalites, fetchZones } from 'src/models/cartes';
 import { Colors } from 'src/styles';
@@ -27,9 +29,9 @@ const Localites = ({ user, componentId }) => {
     setLoading(true);
     let lcts = await fetchLocalites();
     let zns = await fetchZones(user);
-    if (user.roleId === controllerRoleId) {
-      lcts = lcts.filtered(`communeId == oid(${user.communeId})`);
-      zns = zns.filtered(`communeId == oid(${user.communeId})`);
+    if (user?.roleId === controllerRoleId) {
+      lcts = lcts.filtered(`communeId == oid(${user?.communeId})`);
+      zns = zns.filtered(`communeId == oid(${user?.communeId})`);
     }
     const cmns = await fetchCommunes();
     const newComns = JSON.parse(JSON.stringify(cmns));
@@ -142,7 +144,9 @@ const Localites = ({ user, componentId }) => {
     global.realms[0].write(() => {
       global.realms[0].create(
         'localite',
-        { _id: new ObjectId(localite._id), active: false, updatedAt: new Date(), syncedAt: null },
+        {
+          _id: new ObjectId(localite._id), active: false, updatedAt: new Date(), syncedAt: null,
+        },
         'modified',
       );
     });
@@ -164,9 +168,10 @@ const Localites = ({ user, componentId }) => {
   return (
     <LinearGradient
       colors={[Colors.primaryGradientStart, Colors.primaryGradientEnd]}
-      style={styles.root}>
+      style={styles.root}
+    >
       <View style={{ alignContent: 'flex-start', flex: 1 }}>
-        {user.roleId === supervisorRoleId && (
+        {user?.roleId === supervisorRoleId && (
           <>
             <Text style={{ fontSize: 18, alignSelf: 'center' }}>{t('commune')}: </Text>
             <View style={styles.container2}>
@@ -202,7 +207,8 @@ const Localites = ({ user, componentId }) => {
                     }}
                     onPress={() => {
                       handleEditLocalite(item);
-                    }}>
+                    }}
+                  >
                     <View style={styles.flexRow}>
                       <Text style={styles.title}>{`${t('local_name_fr')}:`}</Text>
                       <Text style={styles.result}>{item.namefr_rs || item.namefr_ons}</Text>
@@ -226,12 +232,15 @@ const Localites = ({ user, componentId }) => {
             <ThrottledNavigateButton
               componentId={componentId}
               destination={screenNames.AddLocalite}
-              passProps={{ user, communes: filters, t, language, selectedCommune: value }}
+              passProps={{
+                user, communes: filters, t, language, selectedCommune: value,
+              }}
               tobBarBackgroundColor={Colors.primary}
               tobBarTitleColor="#fff"
               tobBarTitleText={t('add_local')}
               styles={styles.button}
-              noBackButton>
+              noBackButton
+            >
               <Text style={styles.buttonText}>{t('add_local')}</Text>
             </ThrottledNavigateButton>
           </View>

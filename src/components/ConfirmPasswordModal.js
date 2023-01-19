@@ -39,9 +39,9 @@ const ConfirmPasswordModal = ({
   const [items, setItems] = useState(
     membres
       ? membres.map(m => ({
-          value: m._id,
-          label: `${m.firstName} (${t(m.chefLink)})`,
-        }))
+        value: m._id,
+        label: `${m.firstName} (${t(m.chefLink)})`,
+      }))
       : [],
   );
   const [selectContValue, setSelectContValue] = useState('');
@@ -49,9 +49,9 @@ const ConfirmPasswordModal = ({
   const [itemsCont, setItemsCont] = useState(
     membres
       ? membres.map(m => ({
-          value: m._id,
-          label: `${m.firstName} (${t(m.chefLink)})`,
-        }))
+        value: m._id,
+        label: `${m.firstName} (${t(m.chefLink)})`,
+      }))
       : [],
   );
   const [selectCronicValue, setSelectCronicValue] = useState([]);
@@ -59,9 +59,9 @@ const ConfirmPasswordModal = ({
   const [itemsCronic, setItemsCronic] = useState(
     membres
       ? membres.map(m => ({
-          value: m._id,
-          label: `${m.firstName} (${t(m.chefLink)})`,
-        }))
+        value: m._id,
+        label: `${m.firstName} (${t(m.chefLink)})`,
+      }))
       : [],
   );
 
@@ -89,7 +89,7 @@ const ConfirmPasswordModal = ({
   }, []);
 
   const handleCallBack = () => {
-    if (!menage && password !== user.password) {
+    if (!menage && password !== user?.password) {
       setPasswordError(true);
       return;
     }
@@ -167,7 +167,8 @@ const ConfirmPasswordModal = ({
       transparent
       visible={open}
       style={{ zIndex: 1100 }}
-      onRequestClose={() => {}}>
+      onRequestClose={() => { }}
+    >
       <Animated.View style={[styles.closeButton1, { opacity: fadeAnim }]}>
         <TouchableOpacity
           style={{ width: '100%', height: '100%' }}
