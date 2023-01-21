@@ -3,7 +3,7 @@ import Realm from 'realm';
 import RNFS from 'react-native-fs';
 import config from 'src/constants/config';
 import { PERMISSIONS, requestMultiple } from 'react-native-permissions';
-import { PermissionsAndroid, BackHandler } from 'react-native';
+import { PermissionsAndroid, BackHandler, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { throttle } from 'lodash';
 import codePush from 'react-native-code-push';
@@ -12,6 +12,7 @@ import DeviceInfo from 'react-native-device-info';
 import NetInfo from '@react-native-community/netinfo';
 import Toast from 'react-native-toast-message';
 import { t } from 'i18next';
+import { logout } from 'src/models/auth';
 import {
   personSchema, userSchema, user_personSchema, wilayaSchema, moughataaSchema, communeSchema,
 } from './schemas';
@@ -227,20 +228,28 @@ async function restoreRealms(userData) {
   }
 }
 
-async function openRealm(user, userData, setProgress) {
+async function openRealm(user, userDataX, setProgress) {
+  const data = await AsyncStorage.getItem('userData');
+  const userData = JSON.parse(data);
   console.log('appuser', user);
   console.log('user?.id', user?.id);
   console.log('communeId openRealm', userData);
   console.log('realm path', `${realmPath}/${userData._id}`);
 
+  if (!userData._id) {
+    logout();
+    return;
+  }
+
   const realmConfig = {
     schema: [personSchema],
     schemaVersion: 1,
     path: `${realmPath}/${userData._id}`,
-    LogLevel: 'debug',
     sync: {
       user,
       partitionValue: userData._id,
+      newRealmFileBehavior: { type: 'openImmediately', timeOutBehavior: 'throwException' },
+      existingRealmFileBehavior: { type: 'openImmediately', timeOutBehavior: 'openLocalRealm' },
       clientReset: {
         mode: "recoverUnsyncedChanges",
       },
@@ -256,11 +265,12 @@ async function openRealm(user, userData, setProgress) {
   const usersRealmConfig = {
     schema: [userSchema, user_personSchema, wilayaSchema, communeSchema, moughataaSchema],
     schemaVersion: 1,
-    LogLevel: 'debug',
     path: `${realmPath}/${userData._id}1`,
     sync: {
       user,
       partitionValue: 'all',
+      newRealmFileBehavior: { type: 'openImmediately', timeOutBehavior: 'throwException' },
+      existingRealmFileBehavior: { type: 'openImmediately', timeOutBehavior: 'openLocalRealm' },
       clientReset: {
         mode: "recoverUnsyncedChanges",
       },

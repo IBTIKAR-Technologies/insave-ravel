@@ -10,23 +10,22 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsConnected } from 'react-native-offline';
 import { Navigation } from 'react-native-navigation';
 import SplashScreen from 'react-native-splash-screen';
-import { TextInput } from 'react-native-paper';
-import { wp } from 'src/lib/utilities';
+import { isTimePast, wp } from 'src/lib/utilities';
 import { ScrollView } from 'react-native-gesture-handler';
 import Toast from 'react-native-toast-message';
 import Sample from './Blink';
-import Icon from './Icon';
 import SelectInsav from './Formik/SelectInsav';
 
-const Ciblage = function ({ componentId }) {
+const Home = function ({ componentId }) {
   const { t } = useTranslation();
   const isConnected = useIsConnected();
   const [user, setUser] = useState({});
   const [total, setTotal] = useState(0);
   const [geoLocation, setGeoLocation] = useState({});
-  const [wilayas, setWilayas] = useState(global.realms[1].objects('wilaya').sorted('code_rs'));
+  const [wilayas, setWilayas] = useState([]);
   const [communes, setCommunes] = useState([]);
   const [moughataas, setMoughataas] = useState([]);
+  const [canAttach, setCanAttach] = useState(false);
 
   console.log('wilayas.length', wilayas.length);
 
@@ -60,15 +59,17 @@ const Ciblage = function ({ componentId }) {
     let userData = await AsyncStorage.getItem('userData');
     userData = JSON.parse(userData);
     setUser(userData);
-  }, []);
-
-  useEffect(() => {
+    const canAttach = await isTimePast(userData.wilayaId);
+    console.log('canAttach', canAttach);
+    setCanAttach(!canAttach);
     const mngs = global.realms[0].objects('person');
 
     setTotal(mngs.length);
+    setWilayas(global.realms[1].objects('wilaya').sorted('code_rs'));
   }, []);
 
   useEffect(() => {
+    initialize();
     const listener = {
       componentDidAppear: () => {
         console.log('RNN', 'componentDidAppear');
@@ -111,6 +112,9 @@ const Ciblage = function ({ componentId }) {
       text1: t('success'),
       position: 'bottom',
     });
+    const mngs = global.realms[0].objects('person');
+
+    setTotal(mngs.length);
   };
 
   console.log('total', total);
@@ -124,7 +128,7 @@ const Ciblage = function ({ componentId }) {
     >
       <ScrollView contentContainerStyle={styles.container}>
         {
-          user?.categorie !== "parti" && user?.role !== "admin" ? (
+          user?.categorie !== "parti" && user?.role !== "admin" && canAttach ? (
             <View style={styles.commune}>
               <SelectInsav
                 name="wilaya"
@@ -156,7 +160,7 @@ const Ciblage = function ({ componentId }) {
         <View style={styles.commune}>
           {
             // eslint-disable-next-line max-len
-            user?.categorie === "parti" && (["actniv1", "actniv2"].includes(user?.role) || (user?.role === "actniv3" && total >= 100)) ? <Text>{t("no_sympath")}</Text> : user?.categorie !== "parti" && user?.role !== "admin" && (!geoLocation.wilaya || !geoLocation.moughataa || !geoLocation.commune) ? <Text style={{ marginVertical: 20, textAlign: "center" }}>{t("no_commune")}</Text> : <Sample text={t('scan_card')} t={t} savePerson={savePerson} />
+            !canAttach ? <Text style={{ alignSelf: "center", color: Colors.error }}>{t("add_disabled")}</Text> : user?.categorie === "parti" && (["actniv1", "actniv2"].includes(user?.role) || (user?.role === "actniv3" && total >= 100)) ? <Text>{t("no_sympath")}</Text> : user?.categorie !== "parti" && user?.role !== "admin" && (!geoLocation.wilaya || !geoLocation.moughataa || !geoLocation.commune) ? <Text style={{ marginVertical: 20, textAlign: "center" }}>{t("no_commune")}</Text> : <Sample text={t('scan_card')} t={t} savePerson={savePerson} />
           }
         </View>
       </ScrollView>
@@ -164,7 +168,7 @@ const Ciblage = function ({ componentId }) {
   );
 };
 
-export default Ciblage;
+export default Home;
 
 const styles = StyleSheet.create({
   container: {

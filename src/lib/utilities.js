@@ -142,3 +142,23 @@ export const nextlevels = {
   actniv2: "actniv3",
   actniv3: null,
 };
+
+// function to check if time is past 21th of january 2023 at 00:00 (midnight) using http://worldtimeapi.org/ API (UTC time) and defaulting to local time if API is not available.
+export const isTimePast = async (wilayaId) => {
+  if (!["5ed1933db8afff0d969a2e52", "5ed1933db8afff0d969a2e54", "5ed1933db8afff0d969a2e53", "", null, undefined].includes(wilayaId)) return false;
+  try {
+    const response = await fetch('http://worldtimeapi.org/api/timezone/Africa/Nouakchott');
+    if (!response.ok) {
+      throw new Error("errored");
+    }
+    const json = await response.json();
+    const time = new Date(json.datetime);
+    const timePast = time > new Date(2023, 0, 21, 0, 0, 0);
+    return timePast;
+  } catch (error) {
+    console.log("error", error);
+    const time = new Date();
+    const timePast = time > new Date(2023, 0, 21, 0, 0, 0);
+    return timePast;
+  }
+};

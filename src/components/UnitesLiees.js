@@ -20,13 +20,12 @@ const UnitesLiees = function ({ componentId }) {
   const initialize = useCallback(async () => {
     let userData = await AsyncStorage.getItem('userData');
     userData = JSON.parse(userData);
+    console.log('userDatauserData', userData);
     const usrs = global.realms[1].objects('user').filtered(`initiativeId == oid(${userData._id})`).sorted('communeId', true);
     console.log('usrs.length', usrs.length);
-    const persn = global.realms[0].objects('person');
     setUsers(
       usrs.map(us => ({
         user: us,
-        person: persn.filtered(`_id == oid(${us.personId})`)[0] || {},
       })),
     );
     setUser(userData);

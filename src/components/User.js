@@ -4,7 +4,7 @@ import {
 import React, { useCallback, useEffect, useState } from 'react';
 import { Colors } from 'src/styles';
 import LinearGradient from 'react-native-linear-gradient';
-import { wp, hp } from 'src/lib/utilities';
+import { wp, hp, isTimePast } from 'src/lib/utilities';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
 import { Navigation } from 'react-native-navigation';
@@ -13,6 +13,7 @@ import RNFS from 'react-native-fs';
 
 import { compose } from 'recompose';
 import { Formik } from 'formik';
+import { ObjectId } from 'bson';
 import * as Yup from 'yup';
 import {
   handleTextInput,
@@ -34,6 +35,7 @@ const User = function ({ componentId }) {
   const [user, setUser] = useState({});
   const [synced, setSynced] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [canAttach, setCanAttach] = useState(false);
   const { t } = useTranslation();
 
   const validationSchema = Yup.object().shape({
@@ -44,7 +46,9 @@ const User = function ({ componentId }) {
     const userData = await AsyncStorage.getItem('userData');
     const parsed = JSON.parse(userData);
     const user = global.realms[1].objects('user').filtered(`_id == oid(${parsed._id})`)[0];
-    setUser(user || {});
+    const canAttach = await isTimePast(parsed.wilayaId);
+    setCanAttach(!canAttach);
+    setUser(user || userData);
   }, []);
 
   useEffect(() => {
@@ -64,13 +68,18 @@ const User = function ({ componentId }) {
   console.log('user', user);
 
   const updateInitiativeId = async values => {
+    const userData = await AsyncStorage.getItem('userData');
+    const parsed = JSON.parse(userData);
     console.log('values', values);
     setLoading(true);
     try {
       const initiative = global.realms[1].objects('user').filtered(`codeInitiative == "${values.codeInitiative}"`)[0];
+      const user = global.realms[1].objects('user').filtered(`_id == oid(${parsed._id.toString()})`)[0];
       console.log('initiative', initiative);
       if (!initiative) {
         Alert.alert(t('error'), t('initiative_not_found'));
+      } else if (!user) {
+        Alert.alert(t('error'), t('user_not_found'));
       } else {
         global.realms[1].write(() => {
           user.initiativeId = initiative._id;
@@ -127,6 +136,16 @@ const User = function ({ componentId }) {
                     <Text style={styles.strong}>{t('role')}:</Text> {t(user?.role)}
                   </Text>
                 )}
+                {user?.categorie && (
+                  <Text style={styles.details}>
+                    <Text style={styles.strong}>{t('categorie')}:</Text> {t(user?.categorie)}
+                  </Text>
+                )}
+                {user?.communeId && (
+                  <Text style={styles.details}>
+                    <Text style={styles.strong}>{t('emplacement')}:</Text> {user?.communeId?.toString() === "5ed197a1b8afff0d969a2f64" ? t("nktt") : global.realms[1].objectForPrimaryKey("commune", typeof (user?.communeId) === "string" ? new ObjectId(user?.communeId) : user?.communeId)?.namefr_rs}
+                  </Text>
+                )}
                 {user?.codeInitiative && (
                   <Text style={styles.details}>
                     <Text style={styles.strong}>{t('code_initiative')}:</Text> {t(user?.codeInitiative)}
@@ -138,7 +157,7 @@ const User = function ({ componentId }) {
                   </Text>
                 )}
               </View>
-              {user?.role === "actniv3" && user?.categorie === "parti" && (
+              {user?.role === "actniv3" && user?.categorie === "parti" && canAttach && (
                 <View style={[styles.userInfo, { justifyContent: "center", alignItems: "center" }]}>
                   <Text style={styles.strong}>{t('unite_attach')}:</Text>
                   {

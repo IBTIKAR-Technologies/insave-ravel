@@ -1051,5 +1051,9 @@
   "created_by": "Créé par",
   "warning": "Attention",
   "free_space": "Attention! Le niveau de stockage restant de votre appareil est très faible!",
-  "loading": "Chargement..."
+  "loading": "Chargement...",
+  "user_not_found": "Utilisateur non trouvé!",
+  "add_disabled": "L'ajout est désactivé",
+  "nktt": "Nouakchott",
+  "emplacement": "Emplacement"
 }

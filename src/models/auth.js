@@ -63,8 +63,10 @@ export const login = async data => {
 };
 
 export const logout = async () => {
-  if (app.currentUser) app.currentUser.logOut();
-  const keys = ['selectedLocaliteEnq', 'selectedZone', 'userData'];
+  if (app.currentUser) {
+    await app.currentUser.logOut();
+  }
+  const keys = ['userData'];
   AsyncStorage.multiRemove(keys).then(() => {
     SplashScreen.show();
     setTimeout(() => {

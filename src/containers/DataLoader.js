@@ -29,11 +29,10 @@ const DataLoader = function () {
       } catch (error) {
         Alert.alert(t('error'), error.message);
       }
-      Realm.App.Sync.reconnect(app);
       const { syncSession } = global.realms[0];
       const { syncSession: syncSession1 } = global.realms[1];
-      syncSession.resume();
-      syncSession1.resume();
+      syncSession.downloadAllServerChanges();
+      syncSession1.downloadAllServerChanges();
       syncSession.uploadAllLocalChanges();
       syncSession1.uploadAllLocalChanges();
 
@@ -57,7 +56,7 @@ const DataLoader = function () {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setProgress(100);
-    }, 30000);
+    }, 20000);
 
     return () => {
       clearTimeout(timeout);

@@ -41,9 +41,9 @@ const AddUser = function ({ componentId, user }) {
       data.categorie = user?.categorie;
     }
     if (user?.communeId) {
-      data.communeId = user?.communeId;
-      data.moughataaId = user?.moughataaId;
-      data.wilayaId = user?.wilayaId;
+      data.communeId = user?.communeId?.toString();
+      data.moughataaId = user?.moughataaId?.toString();
+      data.wilayaId = user?.wilayaId?.toString();
     }
     return data;
   }, [user]);
@@ -56,7 +56,6 @@ const AddUser = function ({ componentId, user }) {
     const uExistsLength = uExists.length;
 
     let added = true;
-    const perId = new ObjectId();
     // if (user?.role !== "parti") {
     //   try {
     //     global.realms[0].write(() => {
@@ -90,7 +89,6 @@ const AddUser = function ({ componentId, user }) {
           password: card.NNI,
           _id: new ObjectId(),
           _partition: 'all',
-          personId: perId,
           createdAt: new Date(),
           updatedAt: new Date(),
           syncedAt: null,

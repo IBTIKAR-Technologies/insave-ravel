@@ -19,18 +19,18 @@ const Deconnexion = function ({ synced }) {
 
   const versi = DeviceInfo.getSystemVersion();
   const gologout = async () => {
-    let userData = await AsyncStorage.getItem('userData');
-    userData = JSON.parse(userData);
-    let secondBackupPath;
-    if (parseInt(versi, 10) > 10) {
-      secondBackupPath = `${RNFS.DocumentDirectoryPath}/ravel-backup${userData._id}`;
-    } else {
-      secondBackupPath = `${RNFS.ExternalStorageDirectoryPath}/.ravel-backup${userData._id}`;
-    }
-    const secondBackupExists = await RNFS.exists(secondBackupPath);
-    if (secondBackupExists) {
-      await RNFS.unlink(secondBackupPath);
-    }
+    // let userData = await AsyncStorage.getItem('userData');
+    // userData = JSON.parse(userData);
+    // let secondBackupPath;
+    // if (parseInt(versi, 10) > 10) {
+    //   secondBackupPath = `${RNFS.DocumentDirectoryPath}/ravel-backup${userData._id}`;
+    // } else {
+    //   secondBackupPath = `${RNFS.ExternalStorageDirectoryPath}/.ravel-backup${userData._id}`;
+    // }
+    // const secondBackupExists = await RNFS.exists(secondBackupPath);
+    // if (secondBackupExists) {
+    //   await RNFS.unlink(secondBackupPath);
+    // }
     logout();
   };
   const handleDialog = useCallback(() => {
@@ -41,7 +41,8 @@ const Deconnexion = function ({ synced }) {
       <TouchableOpacity
         style={isConnected ? styles.button : styles.buttonDisabled}
         onPress={handleDialog}
-        disabled={!isConnected}>
+        disabled={!isConnected}
+      >
         <MaterialIcons name="logout" size={20} style={{ paddingHorizontal: 2 }} color="white" />
         <Text style={styles.normalText}>{t('logout')}</Text>
       </TouchableOpacity>
@@ -67,7 +68,8 @@ const Deconnexion = function ({ synced }) {
               color={Colors.error}
               onPress={gologout}
               style={isConnected && synced ? styles.confirmButton : styles.confirmButtonDisabled}
-              disabled={!isConnected || !synced}>
+              disabled={!isConnected || !synced}
+            >
               <Text style={styles.normalText}>{t('confirm')}</Text>
             </TouchableOpacity>
           </Dialog.Actions>
